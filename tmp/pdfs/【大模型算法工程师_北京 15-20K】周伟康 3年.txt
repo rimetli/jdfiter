@@ -1,0 +1,533 @@
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+R                                                                                 
+N                                        90fe38ae2defdfd21HJz3Ny7ElNTwoW_VPycWOWglv7RNxNRqN
+7                                                                             7   
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                 周伟康                                     O       
+W                                                                        W        
+c                                                                        c        
+y                                                                       y         
+P                                                                       P         
+V                                                                      V          
+_                                                                     _           
+W                                                                    W            
+o                       男 | 13144865594 | 13144865594@163.com        o            
+w                                                                   w             
+T                                                                  T              
+N                                                                  N              
+El                                 3年工作经验                         El              
+7                                                                7                
+y                                                               y                 
+N                                                               N                 
+3                                                              3                  
+z                                                              z                  
+J                                                             J                   
+H                                                            H                    
+2 1 教育经历                                                    2 1                   
+d                                                           d                     
+df                                                         df                     
+ef                                                        ef                      
+d                                                        d                        
+2                                                        2                        
+e                                                       e                         
+a                                                      a                          
+3 8 长江大学    本科    数据科学与大数据技术                          3 8               2019-2023 
+e                                                     e                           
+0f                                                   0f                           
+9                                                   9                             
+   资格证书                                                                           
+   大学英语六级                                                                         
+   专业技能                                                                           
+                                        q                                         
+                                       N                                          
+                                       x                                          
+                                      N                                           
+                                     R                                            
+                                    7                                             
+                                    v                                             
+   • 掌握基于LangGraph、A2A、MCP和RAG对多智能体g进l行编排；                                        
+                                  W                                               
+                                 O                                                
+                                W                                                 
+   • 掌握LangGraph搭建大模型RAG框架，实现从知c识库构建、文本分块、向量化检索到大模型生成的完整流程；                       
+                               y                                                  
+                              P                                                   
+                              V                                                   
+   • 掌握Python语言并熟练使用Numpy，PaWn_das，Matplotlib进行数据清洗、筛选等操作；                        
+                            o                                                     
+                           w                                                      
+   • 掌握基于LLaMA-Factory的模型全参微T调和LoRA微调；                                            
+                         N                                                        
+                        El                                                        
+                        7                                                         
+   • 熟悉prompt 工程，FunctionCaNlyl，MCP，Agent等技术和实践；                                  
+                      3                                                           
+                     z                                                            
+                     J                                                            
+   • 熟练使用Sql常用函数，熟悉HLinux、Git的常用命令；                                               
+                    1                                                             
+                   2                                                              
+                  d                                                               
+   • 掌握模型压缩技术，如                                                                   
+                 ef：df                                                            
+                   模型量化、知识蒸馏；                                                     
+                d                                                                 
+                2                                                                 
+               e                                                                  
+   • 熟悉FastAPI、Flaask和Docker等工具的使用。                                               
+              8                                                                   
+             3                                                                    
+             e                                                                    
+            0f                                                                    
+           9                                                                      
+   工作经历                                                                           
+   深圳联友科技有限公司广州分公司            算法工程师                                    2025.09-至今 
+   郑州皂白软件科技有限公司           算法工程师                                     2023.02-2025.08
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+v                                                                            v    
+gl 项目经历                                                                     gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+c                                                                        c        
+y                                                                       y         
+P                                                                       P         
+_ V 基于LangGraph的多智能体东风日产App客服问答系统                                     _ V         
+W                                                                    W            
+o                                                                    o            
+w                                                                   w             
+T                                                                  T              
+N  项目背景                                                            N              
+El                                                                El              
+7                                                                7                
+y                                                               y                 
+N  针对东风日产App高频复杂的车控、保养与故障排查咨询，传统单一RAG无法处理多模态长文档，且极易N因缺失车型参数产生跨车                   
+3                                                              3                  
+z                                                              z                  
+J                                                             J                   
+H                                                            H                    
+1  型回答幻觉的痛点，设计并落地融合Multi-Agent架构、多模态解析与Milvus隔离存储的智能问答系1统，显著提升垂域问答准确率             
+2                                                           2                     
+d                                                           d                     
+df                                                         df                     
+ef 与车主交互体验。                                               ef                      
+d                                                        d                        
+2                                                        2                        
+e                                                       e                         
+a                                                      a                          
+8  技术栈：Python、FastAPI、RAG、Multi-Agent、LangGraph、MinerU、BGE-M3、BG8E-Reranker-v2-m3、Milvus、MinIO、
+3                                                     3                           
+e                                                     e                           
+0f                                                   0f                           
+9  Tool Calling                                     9                             
+   项目内容                                                                           
+   • 知识库构建：负责1048份异构文档与2万条FAQ的数据清洗，使用MinerU完成OCR、版面和表格解析，以最大化内容保真度和检              
+   索友好性；                                                                          
+   • 检索优化：搭建Milvus 向量库进行隔离存储，使用父/子块切分，结合多级索引实现混合检索，通过加权融合提升召回率和检索                 
+   精度，最后引入Reranker精排；                                                             
+                                        q                                         
+                                       N                                          
+                                       x                                          
+                                      N                                           
+                                     R                                            
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+                                  W                                               
+                                 O                                                
+                                W                                                 
+                                c                                                 
+                               y                                                  
+                              P                                                   
+                              V                                                   
+                             _                                                    
+                            W                                                     
+                            o                                                     
+                           w                                                      
+                          T                                                       
+                         N                                                        
+                        El                                                        
+                        7                                                         
+                       y                                                          
+                       N                                                          
+                      3                                                           
+                     z                                                            
+                     J                                                            
+                    H                                                             
+                    1                                                             
+                   2                                                              
+                  d                                                               
+                  df                                                              
+                 ef                                                               
+                d                                                                 
+                2                                                                 
+               e                                                                  
+              a                                                                   
+              8                                                                   
+             3                                                                    
+             e                                                                    
+            0f                                                                    
+           9                                                                      
+                                                                               qNxNR7vlgWOWcyPV_WowTNlE7yN3zJH12dfdfed2ea83ef09
+
+=== PAGE ===
+
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+gl v • 意图识别路由：构建意图理解Agent，完成指代消解、错别字纠正、车型及术语归一，结构化输出Query、路由、业务标签和g置l        v    
+W                                                                          W      
+O                                                                         O       
+W  信度，低置信度时动态反问并重新识别；                                                    W        
+c                                                                        c        
+y                                                                       y         
+P                                                                       P         
+_ V • 智能体编排：基于LangGraph编排意图理解、RAG和DataTool 三个Agent，通过统一GraphState和条件边完成FA_QV、知识问  
+W                                                                    W            
+o                                                                    o            
+w                                                                   w             
+T  答、实时数据查询、闲聊及人工转接等业务分流；                                          T              
+N                                                                  N              
+El                                                                El              
+y 7 • 性能评估：使用Ragas框架完成RAG自动化评估，关键指标达Answer   Relevance=0.87， Faithfulness y=70.89。构建3000条人
+N                                                               N                 
+3                                                              3                  
+z                                                              z                  
+H J 工标注测试集，整体Accuracy达90%，具备良好泛化能力。                          H J                  
+1                                                            1                    
+2                                                           2                     
+d                                                           d                     
+df 项目成果                                                    df                     
+ef                                                        ef                      
+d                                                        d                        
+2                                                        2                        
+a e • 系统上线后自动应答率超80%，人工客服压力降低约50%；                     a e                        
+8                                                      8                          
+3                                                     3                           
+e                                                     e                           
+0f • 回答准确率与用户满意度显著提升，支持知识库动态更新。                      0f                           
+9                                                   9                             
+   东风智销多智能体平台                                                                     
+   项目背景                                                                           
+   面向东风日产线上购车咨询场景，传统客服难以处理车型推荐、配置对比、库存报价、金融试算和试驾预约等跨系统复杂需求。基                      
+   于LangGraph、A2A、MCP和RAG构建多智能体销售平台，实现购车需求分析、业务Agent     协同执行及销售线索闭环。             
+   技术栈：Python、FastAPI、LangGraph、Multi-Agent、A2NAq、MCP、RAG、Milvus、Redis、Docker、vLLM、BGE-M3、
+                                       x                                          
+                                      N                                           
+                                     R                                            
+   Qwen-Plus                        7                                             
+                                    v                                             
+                                   gl                                             
+                                  W                                               
+   项目内容                          O                                                
+                                W                                                 
+                                c                                                 
+   • 使用LangChain构建意图识别、销售主管、车P型y问答、车型推荐、车型对比、库存报价、金融试算、试驾预约及销售线索等9个               
+                              V                                                   
+                             _                                                    
+                            W                                                     
+   业务Agent，并以节点或子图形式接入LanogGraph；                                                 
+                           w                                                      
+                          T                                                       
+                         N                                                        
+   • 主导意图识别Agent 开发，结合历史El对话完成Query改写、指代消解、单多意图分类、槽位抽取及置信度判断，为业务Agent        路    
+                        7                                                         
+                       y                                                          
+                       N                                                          
+   由和任务拆解提供结构化输入；z    3                                                           
+                     J                                                            
+                    H                                                             
+                    1                                                             
+   • 基于自定义SalesState、d条2件边及路由实现多Agent 主调度、信息补全、异常重试和用户确认流程，并根据任务依赖关系执行串           
+                  df                                                              
+                 ef                                                               
+   行或并行调度；      2 d                                                               
+               e                                                                  
+              a                                                                   
+              8                                                                   
+   • 构建车型RAG知e 3识库，使用BGE-M3进行混合检索，并基于车型、版本、年份等元数据过滤后存储至Milvus，降低跨车型及新旧            
+            0f                                                                    
+           9                                                                      
+   配置混淆；                                                                          
+   • 封装车型知识、库存报价、金融试算、门店查询、试驾预约和CRM等MCPServer，统一工具参数、返回格式、异常码及权限规                 
+   范；                                                                             
+   • 针对试驾预约和CRM写入等有副作用操作，设计用户二次确认、幂等控制、重复执行检测和失败回查机制；                             
+   • 基于FastAPI、SSE和Redis 实现服务接口、流式响应与会话状态管理，使用Docker 和vLLM完成AgentServer 及本地模型部署。  
+   项目成果                                                                           
+q                                                                                q
+N                                                                               N 
+N x • 基于3,000+条汽车销售咨询测试集进行评估，意图识别准确率达到93.2%，关键槽位抽取F1达到91.5%，多轮指代类问题识别准         N x
+R                                                                             R   
+7                                                                             7   
+gl v 确率提升约12%。                                                              gl v  
+W                                                                          W      
+O                                                                         O       
+W  • 系统覆盖车型咨询、车型推荐、配置对比、库存报价、金融试算、试驾预约等核心场景，常见销售咨询自动闭环率达到8W8%，复                   
+c                                                                        c        
+y                                                                       y         
+P                                                                       P         
+_ V 杂多意图任务端到端成功率达到84.6%。                                              _ V         
+W                                                                    W            
+o                                                                    o            
+w                                                                   w             
+T                                                                  T              
+N                                                                  N              
+El                                                                El              
+y                                                                                 
+7  基于Qwen2.5-7B的大模型微调在电商商品信息抽取中的应用与优化                                             
+                                                                y                 
+                                                                 7                
+N                                                               N                 
+3                                                              3                  
+z                                                              z                  
+J                                                             J                   
+1 H 项目背景                                                     1 H                  
+2                                                           2                     
+d                                                           d                     
+ef df 电商平台海量商品详情页、直播口播稿及用户评价等非结构化文本中包含大量关键信息（如商品ef         d品 f 牌、核心品类、关键属性、适用    
+d                                                        d                        
+2                                                        2                        
+e                                                       e                         
+8                                                                                 
+a  人群等），传统规则或小模型方法泛化能力差。为提升信息抽取的准确率与泛化性，本项8目a基于Qwen2.5-7B大语言模型，使用                 
+3                                                     3                           
+e                                                     e                           
+9                                                                                 
+0f                                                                                
+   Llama-Factory框架进行高效微调，实现端到端的结构化信息抽取系统。           9                             
+                                                     0f                           
+   技术栈：Python、PyTorch、Transformers、LLaMA-Factory、Qwen2.5-7B-Instruct、PEFT/LoRA、Pandas、
+   JSONSchema、scikit-learn、腾讯云GPU                                                 
+   项目内容                                                                           
+   第一阶段：基线模型构建（Full   Fine-tuning）                                                
+   构建高质量标注数据集：从真实电商商品描述与长尾品类文本中提取并标注2000+样本，涵盖4类核心实体，4种关联关系，采用                    
+                                        q                                         
+                                       N                                          
+                                       x                                          
+                                      N                                           
+                                     R                                            
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+                                  W                                               
+                                 O                                                
+                                W                                                 
+                                c                                                 
+                               y                                                  
+                              P                                                   
+                              V                                                   
+                             _                                                    
+                            W                                                     
+                            o                                                     
+                           w                                                      
+                          T                                                       
+                         N                                                        
+                        El                                                        
+                        7                                                         
+                       y                                                          
+                       N                                                          
+                      3                                                           
+                     z                                                            
+                     J                                                            
+                    H                                                             
+                    1                                                             
+                   2                                                              
+                  d                                                               
+                  df                                                              
+                 ef                                                               
+                d                                                                 
+                2                                                                 
+               e                                                                  
+              a                                                                   
+              8                                                                   
+             3                                                                    
+             e                                                                    
+            0f                                                                    
+           9                                                                      
+                                                                               qNxNR7vlgWOWcyPV_WowTNlE7yN3zJH12dfdfed2ea83ef09
+
+=== PAGE ===
+
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+gl                                                                                
+v  JSONSchema定义输出结构。使用Llama-Factory进行全参数微调，初始验证集F1为78.5%，但训练成本高（L20×2，1天），gl且v    
+W                                                                          W      
+O                                                                         O       
+W  出现轻微过拟合。问题分析：参数量大导致资源消耗高，小样本下易过拟合。                                    W        
+c                                                                        c        
+y                                                                       y         
+P                                                                       P         
+_ V 第二阶段：引入LoRA进行高效微调                                                 _ V         
+W                                                                    W            
+o                                                                    o            
+w                                                                   w             
+T  改用LoRA进行参数高效微调，设置r=64，仅微调0.6%参数。训练效率提升8倍，显存占用下降90%，F1提升至T81.5%。引入              
+N                                                                  N              
+El                                                                El              
+y 7 Prompt Engineering：设计结构化指令模板，如“请从以下商品描述文本中提取JSON格式信息：{schemya7}”提升模型对任务的      
+N                                                               N                 
+3                                                              3                  
+z                                                              z                  
+H J 理解。                                                      H J                  
+1                                                            1                    
+2                                                           2                     
+d                                                           d                     
+df 第三阶段：数据增强                                               df                     
+ef                                                        ef                      
+d                                                        d                        
+2                                                        2                        
+a e 方法1：采用同义替换与模板生成扩充至5,000+样本，F1提升至88.5%。             a e                        
+8                                                      8                          
+3                                                     3                           
+e                                                     e                           
+0f 方法2：采用大模型提示词工程以及人工审核再扩充训练集3000+样本，F1提升至91.50%f。                                
+9                                                   9                             
+   第四阶段：模型评估与部署验证                                                                 
+   在独立测试集（500条真实业务文本）上达到F1=92%，关键字段（如核心属性、品牌）召回率>90%。对比实验：优于微调后的                  
+   Qwen2.5-1.5B（F1=83.4%）。输出支持Schema动态配置，具备业务可扩展性，已交付搜索推荐与选品部门试用。                 
+   基于Dify平台的跨境电商问答机器人智能体                                                          
+   项目背景                                N q                                        
+                                       x                                          
+                                      N                                           
+                                     R                                            
+   跨境电商学科快速发展，学生咨询量激增导致教师答疑压力7大、效率低。为解决人工答疑痛点，基于Dify智能体平台与豆包大模                    
+                                    v                                             
+                                   gl                                             
+                                  W                                               
+   型，构建支持文字/图片交互的自动化问答系统，实现O7×24小时高效答疑，缓解教师压力并提升学生服务体验。                           
+                                W                                                 
+                                c                                                 
+   技术栈：Dify、RAG、Doubao-pro-32k、DouPbyao-vision-pro-32k、doubao-embedding-text-240515、Python、
+                              V                                                   
+                             _                                                    
+                            W                                                     
+   FastAPI、Pandas、python-docx、微信客o服API                                            
+                           w                                                      
+                          T                                                       
+                         N                                                        
+   项目内容                 El                                                        
+                        7                                                         
+                       y                                                          
+                       N                                                          
+   • 知识库构建：构建1000条跨境z电3商问答对的Excel知识库，实现高效检索；                                      
+                     J                                                            
+                    H                                                             
+                    1                                                             
+   • 模型选型：利用豆包1.5大d 2模型，实现语义理解与自然语言生成，提升回答准确度和表达自然度；                              
+                  df                                                              
+                 ef                                                               
+   • 识别模块：集成图片2识d别模块，利用豆包1.5多模态大模型，实现对微信上传商品图片的侵权判定；                              
+               e                                                                  
+              a                                                                   
+              8                                                                   
+   • 对接交互：实现e 3微信客服端接入，支持多模态问答交互，保证系统响应时效和稳定性，支持多用户并发访问。                          
+            0f                                                                    
+           9                                                                      
+   主要流程                                                                           
+   用户输入-->请求传递-->智能体接收并分类判断-->图片类型问题处理-->其他问题处理-->答案判空与分流-->结果返回                  
+   部署与运维                                                                          
+   • 部署在Dify云平台， 方便维护与管理；                                                         
+   • 日志监控与异常报警；                                                                   
+   • 知识库及模型定期维护和更新。                                                               
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+v                                                                            v    
+gl 个人优势                                                                     gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+c                                                                        c        
+y                                                                       y         
+P                                                                       P         
+V                                                                      V          
+_  • 拥有3年的python编程经验，有良好的代码编写风格，熟悉机器学习和深度学习的算法原理；                     _           
+W                                                                    W            
+o                                                                    o            
+w                                                                   w             
+T  • 对新技术时刻保持好奇心，喜欢学习新知识；英语六级，具备较强的英文文献阅读能力，密切关注国内外人工T智能领域的最新新                    
+N                                                                  N              
+El                                                                El              
+y 7 闻与前沿文献，及时了解行业动态与技术发展趋势；                                     y 7               
+N                                                               N                 
+3                                                              3                  
+z                                                              z                  
+H J • 团队中工作积极向上，有良好的团队沟通协作能力，既能精准传达任务要求与目标，又能充分倾听组H           J员意见，高效完成任务。        
+1                                                            1                    
+2                                                           2                     
+d                                                           d                     
+df                                                         df                     
+ef                                                        ef                      
+d                                                        d                        
+2                                                        2                        
+e                                                       e                         
+a                                                      a                          
+8                                                      8                          
+3                                                     3                           
+e                                                     e                           
+0f                                                   0f                           
+9                                                   9                             
+                                        q                                         
+                                       N                                          
+                                       x                                          
+                                      N                                           
+                                     R                                            
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+                                  W                                               
+                                 O                                                
+                                W                                                 
+                                c                                                 
+                               y                                                  
+                              P                                                   
+                              V                                                   
+                             _                                                    
+                            W                                                     
+                            o                                                     
+                           w                                                      
+                          T                                                       
+                         N                                                        
+                        El                                                        
+                        7                                                         
+                       y                                                          
+                       N                                                          
+                      3                                                           
+                     z                                                            
+                     J                                                            
+                    H                                                             
+                    1                                                             
+                   2                                                              
+                  d                                                               
+                  df                                                              
+                 ef                                                               
+                d                                                                 
+                2                                                                 
+               e                                                                  
+              a                                                                   
+              8                                                                   
+             3                                                                    
+             e                                                                    
+            0f                                                                    
+           9                                                                      
+                                                                               qNxNR7vlgWOWcyPV_WowTNlE7yN3zJH12dfdfed2ea83ef09

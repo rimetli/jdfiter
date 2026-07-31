@@ -1,0 +1,884 @@
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+R                                                                                 
+N                                      b5b21a7cb35d44331HJz0tW6FFNQx4S6WPqWWOWglv7RNxNRqN
+7                                                                             7   
+v                                                                            v    
+gl                                                                          gl    
+W                                                    19291060421           W      
+O   孙晨凯                离职                                                 O       
+W                                                                        W        
+W                                                                       W         
+P q                    工作年限：5年                       28岁               P q        
+W                                                                     W           
+6                                                                    6            
+4                                                                                 
+S   AI应用开发工程师                                                                     
+                                                                    4             
+                                                                     S            
+Q x                    本科                            邮箱:614446323@q Q qx.com      
+N                                                                 N               
+F                                                                F                
+F                                                                F                
+6                                                               6                 
+W                                                              W                  
+z                                                                                 
+0t                                                                                
+      专业技能                                                    z                   
+                                                              0t                  
+J                                                            J                    
+H                                                           H                     
+1                                                           1                     
+3                                                          3                      
+3                                                          3                      
+4                                                         4                       
+4                                                         4                       
+d                                                        d                        
+5                                                       5                         
+3                                                       3                         
+b                                                      b                          
+c                                                      c                          
+7                                                     7                           
+a                                                    a                            
+b 2 1 熟悉  MCP 与 Agent 工程化架构：   能够将  LLM、RAG、Prompt、b 2 1 Memory、Tool 抽象为共享服务，     
+5                                                  5                              
+b                                                  b                              
+      熟练使用   LangGraph 进行复杂工作流编排。                                                 
+      精通  RAG 检索增强生成全链路：      掌握文档切片、Embedding、混合检索、Metadata       过滤、Cross-      
+      Encoder Rerank、MMR 及评测集驱动调优。                                                
+      熟悉  LLM 推理与实时语音优化：      理解  Prefix Caching、KV Cache、TTFT、多模型路由，具备           
+      ASR/TTS、Barge-in 和轮次状态管理经验。                                                 
+      具备  AI 数据治理与多模态资产建设经验：        掌握会话清洗、脱敏、审核、训练数据导出，以及                        
+      OCR/VLM/ASR 语料增强与跨模态检索。                                                     
+      熟悉大模型微调及生产部署：        掌握  LoRA、QLoRA、SFT、DPO    与 LLaMA-Factory，熟悉 Docker、   
+      Serverless 部署、Trace/Eval 和灰度回滚。                                             
+      精通  Python AI 应用后端开发：  熟练使用   FastAPI、asyncio、Pydantic，掌握异步并发、SSE   流式      
+      输出、接口限流、重试与熔断降级。                                                            
+                                        q                                         
+                                       N                                          
+                                       x                                          
+      工作经验                           R N                                          
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+                                  W                                               
+                                 O                                                
+                                W                                                 
+    北京薇米科技有限公司                 W    AI 应用开发工程师                      2021/10 - 至今  
+                               q                                                  
+                              P                                                   
+                             W                                                    
+                            6                                                     
+                            S                                                     
+                           4                                                      
+                           x                                                      
+                          Q                                                       
+                         N                                                        
+      负责电商   AI Agent 体系建F设，推动实时客服、内容生产、销售考核等业务场景落地。                              
+                        F                                                         
+                       6                                                          
+                      W                                                           
+                     0t                                                           
+      参与搭建   MCP 多 AJgzent 共享平台，统一  LLM、RAG、Prompt、Memory  与 Tool 等公共能力。          
+                   H                                                              
+                   1                                                              
+                  3                                                               
+                  3                                                               
+      建设  AI 数据中4台4、多模态素材中心及模型微调链路，为各类            Agent 提供数据、知识与模型支撑。             
+                d                                                                 
+               5                                                                  
+               3                                                                  
+      推动权限管7  c b 控、Trace/Eval、人工审批、灰度发布及   Bad Case 回流，形成可观测、可迭代的生产闭             
+            a                                                                     
+            1                                                                     
+           2                                                                      
+      环。  5 b                                                                     
+         b                                                                        
+      负责服务容器化与云原生部署，各服务独立             Docker 镜像部署至阿里云    Serverless，实现按依赖分层       
+      发布、灰度回滚与自动弹性伸缩。                                                             
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+W                                                                       W         
+q                                                                       q         
+P                                                                      P          
+W                                                                     W           
+6                                                                    6            
+S                                                                    S            
+4                                                                   4             
+x                                                                   x             
+Q                                                                  Q              
+N                                                                 N               
+F                                                                F                
+F                                                                F                
+6                                                               6                 
+W                                                              W                  
+0t                                                            0t                  
+z                                                             z                   
+J                                                            J                    
+H                                                           H                     
+1                                                           1                     
+3                                                          3                      
+3                                                          3                      
+4                                                         4                       
+4                                                         4                       
+d                                                        d                        
+5                                                       5                         
+3                                                       3                         
+b                                                      b                          
+c                                                      c                          
+7                                                     7                           
+a                                                    a                            
+1                                                    1                            
+2                                                   2                             
+b                                                   b                             
+5                                                  5                              
+b                                                  b                              
+                                                                               qNxNR7vlgWOWWqPW6S4xQNFF6Wt0zJH13344d53bc7a12b5b
+
+=== PAGE ===
+
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+W                                                                       W         
+q                                                                       q         
+P                                                                      P          
+W                                                                     W           
+6                                                                    6            
+S                                                                    S            
+4                                                                   4             
+x                                                                   x             
+Q                                                                  Q              
+F                                                                                 
+N     AI项目架构图                                                                     
+                                                                 F                
+                                                                  N               
+F                                                                F                
+6                                                               6                 
+W                                                              W                  
+0t                                                            0t                  
+z                                                             z                   
+J                                                            J                    
+H                                                           H                     
+1                                                           1                     
+3                                                          3                      
+3                                                          3                      
+4                                                         4                       
+4                                                         4                       
+d                                                        d                        
+5                                                       5                         
+3                                                       3                         
+b                                                      b                          
+c                                                      c                          
+7                                                     7                           
+a                                                    a                            
+1                                                    1                            
+2                                                   2                             
+b                                                   b                             
+5                                                  5                              
+b                                                  b                              
+                                        q                                         
+                                       N                                          
+                                       x                                          
+    电商业务   Agent、MCP 共享平台、AI   数据中台                                               
+                                     R                                            
+                                      N、多模态素材中心、RAG      知识库与模型微调系统的数据            
+                                    7                                             
+                                    v                                             
+    流转与反馈闭环。                      W                                               
+                                   gl                                             
+                                 O                                                
+                                W                                                 
+                               W                                                  
+                               q                                                  
+                              P                                                   
+                             W                                                    
+      项目经历                  6                                                     
+                            S                                                     
+                           4                                                      
+                           x                                                      
+                          Q                                                       
+                         N                                                        
+                        F                                                         
+                        F                                                         
+    智枢 AgentHub｜电商智能W  6体共享服务平台                                  2022/06 - 2023/12
+                     0t                                                           
+                     z                                                            
+    项目描述：面向多个电     1 H商J业务 Agent 建设统一控制平面，将模型调用、RAG、Prompt、Memory、                
+                  3                                                               
+                  3                                                               
+    Tool 与治理能力沉 d 4 4淀为可复用的共享服务。                                                  
+               5                                                                  
+               3                                                                  
+              b                                                                   
+              c                                                                   
+    1. 拆分 4 类 1 a独7立 MCP Server： 将 LLM Gateway、RAG Service、Prompt Center 和 Memory Service
+           2                                                                      
+           b                                                                      
+          5                                                                       
+      从业务b Agent 中抽离，通过   Streamable HTTP 暴露标准化  Tool/Prompt 原语；平台负责能力契约，         
+      业务  Agent 保留流程编排、异常决策和人工转交职责。                                               
+    2. 设计 REST → MCP 协议桥接网关：    基于  FastAPI 构建认证、日志、配额、路由四层中间件，在入口                
+      固化  tenant_id、project_id、agent_id、trace_id、数据范围和风险等级；通过   MCP  Client       
+      Manager 统一连接管理，使现有      REST/SDK 业务能够平滑接入。                                  
+    3. 构建统一  LLM Gateway： 以逻辑模型名屏蔽不同模型供应商和          Endpoint 差异，按任务类型、延迟要         
+      求、预算与健康状态进行       auto/pro/lite 路由；通过 YAML 配置热切换模型，并统一回传        Token       
+      Usage、路由原因与成本数据供配额模块归因。                                                     
+    4. 实现多租户   RAG 服务：  按 project_id 划分独立 Collection，检索前执行租户、项目、审核状态和有            
+      效期硬过滤，再完成语义切分、混合召回、Rerank            与证据返回；证据不足时进入澄清、拒答或人工链                 
+      路。                                                                          
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+W                                                                       W         
+q                                                                       q         
+P                                                                      P          
+W                                                                     W           
+6                                                                    6            
+S                                                                    S            
+4                                                                   4             
+x                                                                   x             
+Q                                                                  Q              
+N                                                                 N               
+F                                                                F                
+F                                                                F                
+6                                                               6                 
+W                                                              W                  
+0t                                                            0t                  
+z                                                             z                   
+J                                                            J                    
+H                                                           H                     
+1                                                           1                     
+3                                                          3                      
+3                                                          3                      
+4                                                         4                       
+4                                                         4                       
+d                                                        d                        
+5                                                       5                         
+3                                                       3                         
+b                                                      b                          
+c                                                      c                          
+7                                                     7                           
+a                                                    a                            
+1                                                    1                            
+2                                                   2                             
+b                                                   b                             
+5                                                  5                              
+b                                                  b                              
+                                                                               qNxNR7vlgWOWWqPW6S4xQNFF6Wt0zJH13344d53bc7a12b5b
+
+=== PAGE ===
+
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+v                                                                            v    
+gl                                                                          gl    
+O W 5. 设计双层记忆与版本化      Prompt Center： 短期会话记忆按   project_id + session_id 隔离，获授O权 W 的
+W                                                                        W        
+W                                                                       W         
+P q   稳定用户偏好按     user_id 幂等沉淀，订单与物流等实时事实不写入          Memory；Prompt 使用 Y P qAML 定 
+W                                                                     W           
+6                                                                    6            
+4 S   义参数  Schema、版本和灰度策略，请求执行期间固定版本，支持热更新、回放与回滚。4                   S            
+x                                                                   x             
+Q                                                                  Q              
+F F N 6. 建立 Tool Registry、Trace/Eval 与风险治理： 统一工具的输入输出  Schema、版F本F N 、权限范围、风      
+6                                                               6                 
+W                                                              W                  
+0t    险等级、超时、重试、幂等键和审计字段，高风险写操作必须经过对象归属校验0t、Policy                    Guard 与人    
+z                                                             z                   
+J                                                            J                    
+H                                                           H                     
+1                                                           1                     
+3 3   工审批；以    trace_id/span_id 串联 RAG、Tool、Prompt、LLM、Guard 和3 3 Output，支持问题定位、  
+4                                                         4                       
+4                                                         4                       
+d                                                        d                        
+3 5   回放评测与成本归因。                                        3 5                       
+b                                                      b                          
+c                                                      c                          
+7                                                     7                           
+2 1 a 7. 固化 Agent 七步编排与容器化交付：    将“召回历史   → 读取画像   → 2 1检 a 索知识 → 渲染 Prompt → LLM 
+b                                                   b                             
+5                                                  5                              
+b                                                  b                              
+      推理  → 保存记忆   → 提取事实”封装为统一调用链，各服务独立构建             Docker 镜像并部署至阿里云           
+      FC/SAE，支持按依赖拓扑灰度发布、异常降级、版本回滚与               SIGTERM 优雅终止。                   
+    商语通｜电商实时语音咨询与客服平台                                               2024/12 - 至今  
+    项目描述：面向电商售前与客服咨询场景，构建融合               ASR、RAG、LLM   和 TTS 的实时语音客服系统，          
+    支持流式应答、插话打断与人工转接。                                                             
+    1. 搭建端到端实时语音状态机：       将用户音频依次经过      ASR 流式转写、EOU    轮次判断、Query              
+      Rewrite、RAG/Tool、LLM 流式生成和  TTS 播放；以   session_id + round_id + event_id 管理 ASR
+      Final、Barge-in 和 INTERRUPTED 状态，插话后立即停止旧音频并丢弃迟到事件，避免跨轮串话。                   
+    2. 构建 RAG 知识检索链路：    直接消费数据中台导出的        RAG 数据，采用混合检索、Int8     量化和            
+      Metadata 标签过滤，通过   Top-K、候选数量及    Rerank 调优提升知识召回效果。                        
+                                        q                                         
+                                       N                                          
+                                       x                                          
+    3. 优化 LLM 推理链路：   固定  RAG 检索片段排R序 N 、合并  System Prompt 消息体，深度触发   Prefix      
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+      Caching 与 KV Cache，将复杂 RAG 场W景的首字延迟（TTFT）从      15s 压缩至 2s 内；并针对业务进         
+                                 O                                                
+                                W                                                 
+                               W                                                  
+      行模型选型与资源池优先级调优。q                                                            
+                              P                                                   
+                             W                                                    
+    4. 建立 Prompt 评测闭环：  基于  SP 6 rompt Pilot 管理提示词，构建评测集实现自动化评分与版本对比；对            
+                           4                                                      
+                           x                                                      
+                          Q                                                       
+      负样本进行提示词重构，并F      N 将高质量样本回流数据中台，为后续模型精调（Fine-tuning）储备语料。                 
+                        F                                                         
+                       6                                                          
+                      W                                                           
+    5. 接入微调模型作为     LL0Mt 层： 通过缩短 System Prompt 进一步降低 TTFT；建立  Max Token 分级控制     
+                     z                                                            
+                    J                                                             
+                   H                                                              
+      模型，按   95% 覆3盖 1 率边界动态配置推理/输出比例，提升单请求         Token 利用率。                    
+                  3                                                               
+                 4                                                                
+                4                                                                 
+                d                                                                 
+               5                                                                  
+               3                                                                  
+              b                                                                   
+              c                                                                   
+             7                                                                    
+            a                                                                     
+            1                                                                     
+           2                                                                      
+           b                                                                      
+          5                                                                       
+         b                                                                        
+    数智工坊｜AI   训练与知识数据中台                                             2025/07 - 至今  
+    项目描述：将微信会话及多源业务数据加工为可训练、可检索、可审核的数据资产，为客服、知识库、模                                
+    型微调和销售考核提供统一数据底座。                                                             
+    1. 设计全链路数据流水线：      搭建  ETL → 原始库  → 暂存区  → 人工审核   → 多下游流程；从微信本地              
+      SQLite（MSG0-5.db + MicroMsg.db）抽取消息，完成通讯录      wxid → 显示名映射、群消息发送者          
+      解析、时间过滤与      (session, timestamp, content) 去重后落入不可变的 raw_chats 原始库。        
+    2. 构建 DataFilter 内容过滤与脱敏引擎：   按 9 级优先级分类（系统/媒体/过短/敏感/闲聊/垃圾/高价值）               
+      丢弃噪声，对手机号、身份证、银行卡、邮箱、API             Key 做正则脱敏；设计清洗、写入、导出三层冗                
+      余脱敏，并将价格脱敏设为硬红线。                                                            
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+W                                                                       W         
+q                                                                       q         
+P                                                                      P          
+W                                                                     W           
+6                                                                    6            
+S                                                                    S            
+4                                                                   4             
+x                                                                   x             
+Q                                                                  Q              
+N                                                                 N               
+F                                                                F                
+F                                                                F                
+6                                                               6                 
+W                                                              W                  
+0t                                                            0t                  
+z                                                             z                   
+J                                                            J                    
+H                                                           H                     
+1                                                           1                     
+3                                                          3                      
+3                                                          3                      
+4                                                         4                       
+4                                                         4                       
+d                                                        d                        
+5                                                       5                         
+3                                                       3                         
+b                                                      b                          
+c                                                      c                          
+7                                                     7                           
+a                                                    a                            
+1                                                    1                            
+2                                                   2                             
+b                                                   b                             
+5                                                  5                              
+b                                                  b                              
+                                                                               qNxNR7vlgWOWWqPW6S4xQNFF6Wt0zJH13344d53bc7a12b5b
+
+=== PAGE ===
+
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+v                                                                            v    
+gl                                                                          gl    
+O W 3. 实现“一键清洗”对话块构建：      基于  5 分钟时间窗切分会话、合并同角色连续消息并去重，完成分O类              W 、    
+W                                                                        W        
+W                                                                       W         
+q     质量评分、Q&A    提取和敏感标记等自动预标注；高质量数据进入              staging_conversations 暂q存区，  
+P                                                                      P          
+W                                                                     W           
+S 6   经人工  approve/reject/编辑后成为唯一可信数据源。                              S 6          
+4                                                                   4             
+x                                                                   x             
+Q                                                                  Q              
+F F N 4. 实现训练与检索数据多格式导出：       完成价格脱敏、风格修复、过短过滤、过长截断和F           F N 占位符清理，一      
+6                                                               6                 
+W                                                              W                  
+0t    份数据导出为    ShareGPT / Alpaca / OpenAI JSONL（供微调）与 RAG CSV（0供t知识库），打通模        
+z                                                             z                   
+J                                                            J                    
+H                                                           H                     
+1                                                           1                     
+3     型微调链路。                                               3                      
+3                                                          3                      
+4                                                         4                       
+4                                                         4                       
+3 5 d 5. 构建向量知识库下游：   对 approved 数据执行  Embedding（DashScop3 5e d text-embedding-v3）并写
+b                                                      b                          
+c                                                      c                          
+7                                                     7                           
+a                                                    a                            
+2 1   入 knowledge_chunks，再由  LLM 提炼为结构化   knowledge_a 2 r1ticles（场景/客户话术/推荐回复/置   
+b                                                   b                             
+5                                                  5                              
+b                                                  b                              
+      信度），为    RAG 检索和  AI 考核出题提供素材。                                              
+    6. 作为数据总线对接全业务：       将直播切片的    ASR 转写结果回流入库，接收素材中心图片/视频补充多模                  
+      态语料，形成“数据采集      →  治理 → 使用  → 回流”的持续闭环。                                    
+    灵材 AssetHub｜多模态商品素材管理与检                                                       
+                                                                    2026/01 - 至今  
+    索平台                                                                           
+    项目描述：建设图片、视频和文本统一管理与语义检索能力，通过人工标注和机器增强，为                         AI 客服与内      
+    容业务提供可复用的多模态素材。                                                               
+    1. 设计统一向量底座     rag_assets ：text/image/video 三模态共用一张表（pgvector 1024 维 + HNSW  
+      vector_cosine_ops），通过一条  SQL 实现跨模态召回；不直接向量化媒体本身，而是向量化其检索                    
+      文本  retrieval_text（“这张图/视频能回答什么问题”），与用户文本提问自然对齐。                            
+                                        q                                         
+                                       N                                          
+                                       x                                          
+    2. 实现人工即时命中（manual）路线：       图片/视R N 频上传时人工维护标题、描述、标签和分类，拼接为                  
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+      retrieval_text，经 text-embedding-vW3 入库后即可被检索命中；返回素材时使用打码版       TOS URL     
+                                 O                                                
+                                W                                                 
+                               W                                                  
+      保护隐私。                    q                                                  
+                              P                                                   
+                             W                                                    
+    3.                                                                            
+      实现离线机器增强（enrichedS）6路线：                                                     
+                                  使用  OCR（RapidOCR）+  VLM（Qwen-VL）补充图片文字          
+                           4                                                      
+                           x                                                      
+                          Q                                                       
+      与看图描述，使用      ASR + F LNLM 摘要补充视频口播；人工内容在前、机器内容追加，重写                        
+                        F                                                         
+                       6                                                          
+                      W                                                           
+      retrieval_text 并重新0 tEmbedding，使召回相似度从约 0.38 提升至约 0.71；按 (source_table,     
+                     z                                                            
+                    J                                                             
+                   H                                                              
+      source_id) UPSE 3 1RT 保证幂等回扫。                                               
+                  3                                                               
+                 4                                                                
+                4                                                                 
+    4. 设计长视频片  3 5 d段级检索： 按 ASR 时间戳将长视频拆分为多条      rag_assets，media_url 携带 #t=秒    
+              b                                                                   
+              c                                                                   
+             7                                                                    
+      数，命中1 a 后播放器直接跳转至对应片段；统一应答按“文字必发、图片               ≤3、视频  ≤1”混排，并设置递增        
+           2                                                                      
+           b                                                                      
+          5                                                                       
+      阈值（ btext 0.35 < image 0.40 < video 0.42）。                                  
+    销练通｜智能销售培训与考核平台                                                 2026/03 - 至今  
+    项目描述：基于企业知识库构建销售培训与考核系统，使用                LLM 自动生成分级场景题、评判作答结果，               
+    并支持人工复核与持续优化。                                                                 
+    1. 实现 LLM 自动出题：   消费数据中台产出的      knowledge_articles / knowledge_chunks，按场景分类  
+      与置信度获取素材，以“资深考官”角色（temperature        0.7）生成简单、中等、困难分级的开放式场景                
+      题与参考答案。                                                                     
+    2. 实现 LLM 自动评判：   以“资深评审专家”角色（temperature    0.3）从实战性、需求把握、销售策略、话             
+      术自然度和红线检查五个维度逐题评分，按“平均分              × 10”映射百分制，并支持人工二次复核校准。                
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+W                                                                       W         
+q                                                                       q         
+P                                                                      P          
+W                                                                     W           
+6                                                                    6            
+S                                                                    S            
+4                                                                   4             
+x                                                                   x             
+Q                                                                  Q              
+N                                                                 N               
+F                                                                F                
+F                                                                F                
+6                                                               6                 
+W                                                              W                  
+0t                                                            0t                  
+z                                                             z                   
+J                                                            J                    
+H                                                           H                     
+1                                                           1                     
+3                                                          3                      
+3                                                          3                      
+4                                                         4                       
+4                                                         4                       
+d                                                        d                        
+5                                                       5                         
+3                                                       3                         
+b                                                      b                          
+c                                                      c                          
+7                                                     7                           
+a                                                    a                            
+1                                                    1                            
+2                                                   2                             
+b                                                   b                             
+5                                                  5                              
+b                                                  b                              
+                                                                               qNxNR7vlgWOWWqPW6S4xQNFF6Wt0zJH13344d53bc7a12b5b
+
+=== PAGE ===
+
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+v                                                                            v    
+gl                                                                          gl    
+O W 3. 设计十万级知识库     RAG 出题方案：   由 LLM 对模糊请求规划主题，再进行多轮向量检索                 O W     
+W                                                                        W        
+W                                                                       W         
+q     （pgvector/Milvus）与 MMR 去重，保证题目多样性，解决固定        Top-30 带来的题目重复和长q尾素材          
+P                                                                      P          
+W                                                                     W           
+6                                                                    6            
+S     浪费问题。                                                          S            
+4                                                                   4             
+x                                                                   x             
+Q                                                                  Q              
+N                                                                 N               
+F                                                                F                
+F                                                                F                
+6                                                               6                 
+W                                                              W                  
+0t                                                            0t                  
+z                                                             z                   
+J                                                            J                    
+H                                                           H                     
+1                                                           1                     
+3                                                          3                      
+3                                                          3                      
+4                                                         4                       
+4                                                         4                       
+d                                                        d                        
+5                                                       5                         
+3                                                       3                         
+7 c b 多渠道内容生产与运营平台                                    7 c b      2025/04 - 2023/06
+a                                                    a                            
+1                                                    1                            
+2                                                   2                             
+5 b 项目描述：面向自媒体内容生产场景，构建覆盖选题、写作、配图和5                 b素材沉淀的   LangGraph 工作流，提      
+b                                                  b                              
+    升内容生成效率与过程可控性。                                                                
+    1. 基于 LangGraph 构建多阶段内容生成工作流：       使用  SubGraph 将选题、写作、配图拆分为独立编排             
+      单元，通过    PostgreSQL Checkpointer 持久化状态，支持任意历史节点回滚与增量重试，将故障恢复                
+      粒度从整图细化到单节点。                                                                
+    2. 建设 LLM 全链路指标追踪：     设计 MetricsContext 上下文管理器，采集各节点     Token 消耗、推理延迟       
+      和错误率，结合火山引擎定价模型完成成本核算，为模型选型提供数据支撑。                                          
+    3. 实现 SSE 流式输出：   与 LangGraph astream_events 深度集成，监听 on_chat_model_stream 捕   
+      获 Token 级实时流，配合前端     ReadableStream 将感知 TTFT 降低 60%，并保证流式/非流式场景下           
+      Checkpointer 数据结构一致。                                                        
+    4. 优化配图批量生成：     使用 asyncio.gather + run_in_executor 将同步 API 封装为协程并发执行，引      
+      入指数退避重试（1s     → 2s → 4s）应对服务抖动，使整体生成耗时缩减           70%。                    
+    5. 构建多模型动态路由：     简单任务使用轻量      Flash q 模型，复杂任务使用旗舰模型，配合                      
+                                       N                                          
+                                       x                                          
+      with_structured_output 做 Pydantic ScheRmNa 强约束，并以 JSON Mode + 手动解析解决结构化输    
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+      出与  Token 统计不兼容问题，降低     40%W 推理成本。                                         
+                                 O                                                
+                                W                                                 
+    6. 完善开发调试与可观测性：       设计环境q W 变量驱动的  Mock 开关（LLM/Image/Checkpointer）解耦外部服     
+                              P                                                   
+                             W                                                    
+      务，结合   Swagger UI 与 NgroSk6 提升本地调试效率 3 倍；接入  LangSmith、structlog 与          
+                           4                                                      
+                           x                                                      
+                          Q                                                       
+      request_id，将问题定位从F N小时级压缩至分钟级。                                              
+                        F                                                         
+                       6                                                          
+                      W                                                           
+                     0t                                                           
+                     z                                                            
+                    J                                                             
+                   H                                                              
+                   1                                                              
+                  3                                                               
+                  3                                                               
+                 4                                                                
+                4                                                                 
+                d                                                                 
+               5                                                                  
+               3                                                                  
+              b                                                                   
+    商语智训｜销   7 售c话术专属模型训练平台                                         2025/08 - 至今  
+            a                                                                     
+            1                                                                     
+           2                                                                      
+    项目描述5：b利用高质量销售与客服会话构建专属模型训练链路，通过                 SFT/DPO 学习表达风格，并结合           
+         b                                                                        
+    RAG 保持业务知识的可更新性。                                                              
+    1. 建设微调语料链路：     直接消费数据中台     approved 的 ShareGPT/OpenAI 格式数据，将对话分流为          
+      SFT 数据（保留多轮上下文和销售话术风格）与            RAG 知识库数据，践行“微调管风格、RAG          管知识”     
+      的职责分离，知识更新只需调整知识库而无需重训。                                                     
+    2. 采用“本地小模型验证     + 云端大模型训练”策略：      本地使用   LLaMA-Factory + Qwen2.5-7B-Instruct 进
+      行 QLoRA（rank=64、alpha=128、lr=2e-4），单卡 RTX 4090 约 40 分钟完成一轮数据质量验证；           
+      通过后在火山引擎方舟对豆包         1.6 进行生产级  LoRA（rank=32、lr=1e-5），风格一致性人工盲评从           
+      2.1 提升至 4.3（5 分制）。                                                          
+    3. 规划 SFT → DPO 两阶段训练路径：SFT     解决“从不会到会说”的风格模仿，DPO         通过销售主管标注          
+      chosen/rejected 偏好对训练回复优劣，解决“会说但说不好”；在偏好数据仅几百条时，选择跳过奖励                      
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+W                                                                       W         
+q                                                                       q         
+P                                                                      P          
+W                                                                     W           
+6                                                                    6            
+S                                                                    S            
+4                                                                   4             
+x                                                                   x             
+Q                                                                  Q              
+N                                                                 N               
+F                                                                F                
+F                                                                F                
+6                                                               6                 
+W                                                              W                  
+0t                                                            0t                  
+z                                                             z                   
+J                                                            J                    
+H                                                           H                     
+1                                                           1                     
+3                                                          3                      
+3                                                          3                      
+4                                                         4                       
+4                                                         4                       
+d                                                        d                        
+5                                                       5                         
+3                                                       3                         
+b                                                      b                          
+c                                                      c                          
+7                                                     7                           
+a                                                    a                            
+1                                                    1                            
+2                                                   2                             
+b                                                   b                             
+5                                                  5                              
+b                                                  b                              
+                                                                               qNxNR7vlgWOWWqPW6S4xQNFF6Wt0zJH13344d53bc7a12b5b
+
+=== PAGE ===
+
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O     模型训练、稳定性更高且成本更低的           DPO。                                     O       
+W                                                                        W        
+W                                                                       W         
+P q 4. 构建三阶段   RAG Pipeline： 使用火山引擎  Embedding 向量化并执行   Top-20 粗召回，再以P  qCross-   
+W                                                                     W           
+6                                                                    6            
+4 S   Encoder 精排获取  Top-5，提升语义相近文档的区分度，使知识命中率从             72% 提升至  849S%。        
+x                                                                   x             
+Q                                                                  Q              
+N                                                                 N               
+F F 5. 将微调模型接入    RTC 实时语音链路：    形成“客户语音    → ASR → RAG → 微调  LLMF F→ TTS → 语音回   
+6                                                               6                 
+W                                                              W                  
+z 0t  复”流程，通过微调缩短      System Prompt、降低 TTFT，完成“数据中台     → 微调z 0→t 客服”的回路闭合。      
+J                                                            J                    
+H                                                           H                     
+1                                                           1                     
+3                                                          3                      
+3                                                          3                      
+4                                                         4                       
+4                                                         4                       
+d                                                        d                        
+5                                                       5                         
+3                                                       3                         
+b     教育经历                                             b                          
+c                                                      c                          
+7                                                     7                           
+a                                                    a                            
+1                                                    1                            
+2                                                   2                             
+b                                                   b                             
+5                                                  5                              
+b                                                  b                              
+    东北石油大学                          计算机科学与技术     · 本科                             
+      主修课程：数据结构、算法设计、操作系统、计算机网络                                                   
+                                        q                                         
+                                       N                                          
+                                       x                                          
+                                      N                                           
+                                     R                                            
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+                                  W                                               
+                                 O                                                
+                                W                                                 
+                               W                                                  
+                               q                                                  
+                              P                                                   
+                             W                                                    
+                            6                                                     
+                            S                                                     
+                           4                                                      
+                           x                                                      
+                          Q                                                       
+                         N                                                        
+                        F                                                         
+                        F                                                         
+                       6                                                          
+                      W                                                           
+                     0t                                                           
+                     z                                                            
+                    J                                                             
+                   H                                                              
+                   1                                                              
+                  3                                                               
+                  3                                                               
+                 4                                                                
+                4                                                                 
+                d                                                                 
+               5                                                                  
+               3                                                                  
+              b                                                                   
+              c                                                                   
+             7                                                                    
+            a                                                                     
+            1                                                                     
+           2                                                                      
+           b                                                                      
+          5                                                                       
+         b                                                                        
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                             7   
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+W                                                                       W         
+q                                                                       q         
+P                                                                      P          
+W                                                                     W           
+6                                                                    6            
+S                                                                    S            
+4                                                                   4             
+x                                                                   x             
+Q                                                                  Q              
+N                                                                 N               
+F                                                                F                
+F                                                                F                
+6                                                               6                 
+W                                                              W                  
+0t                                                            0t                  
+z                                                             z                   
+J                                                            J                    
+H                                                           H                     
+1                                                           1                     
+3                                                          3                      
+3                                                          3                      
+4                                                         4                       
+4                                                         4                       
+d                                                        d                        
+5                                                       5                         
+3                                                       3                         
+b                                                      b                          
+c                                                      c                          
+7                                                     7                           
+a                                                    a                            
+1                                                    1                            
+2                                                   2                             
+b                                                   b                             
+5                                                  5                              
+b                                                  b                              
+                                                                               qNxNR7vlgWOWWqPW6S4xQNFF6Wt0zJH13344d53bc7a12b5b

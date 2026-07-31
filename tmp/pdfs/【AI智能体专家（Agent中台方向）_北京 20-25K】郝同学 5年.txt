@@ -1,0 +1,321 @@
+q                                                                                q
+N                                                                               N 
+x                                                                              x  
+R                                                                                 
+N                                      60016a43e5a8ac941HJz3Ny8EFRWx4y4VPmeWOWglv7RNxNRqN
+7                                                                            7    
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                    郝锦涛                                  O       
+W                                                                        W        
+e                                                                        e        
+m                                                                       m         
+P                                                                      P          
+V                                                                     V           
+4                                                                     4           
+y                                                                    y            
+4                                                                    4            
+x                                 Agent开发/AI全栈开发                    x             
+W                                                                  W              
+R                                                                 R               
+F                                                                 F               
+E                                                                E                
+8                   男 硕士  北京  5年经验  16622981169 haojintao291@163.com 8            
+y                                                               y                 
+N                                                              N                  
+3                                                              3                  
+z                                                             z                   
+J                                                            J                    
+H                                                            H                    
+1                                                           1                     
+4                                                           4                     
+9                                                          9                      
+c                                                         c                       
+a                                                         a                       
+8                                                        8                        
+a                                                        a                        
+5                                                       5                         
+3 e 教育背景                                               3 e                        
+4                                                     4                           
+a                                                     a                           
+6                                                    6                            
+1                                                    1                            
+0                                                   0                             
+0                                                  0                              
+6                                                  6                              
+    2018.09-2021.06 硕士-中国民航大学-计算机技术专业                                             
+    2014.09-2018.06 本科-长江大学-软件工程                                                  
+    专业技能                                                                          
+    ● Agent开发：熟悉LangChain、LangGraph、DeepAgents、Skills、MCP ，熟悉RAG流程，Milvus向量库 。    
+    ● 大模型：有  vLLM、Ollama 部署经验，熟练使用  LLaMA-Factory 完成 QLoRA 量化微调，了解PyTorch。        
+    ● 工程化：熟悉Python，熟练使用FastAPI/Flask/Celery/Kafka；熟悉SSE/WebSocket；熟悉MySQL/Redis/Postgre
+    SQL；熟悉Langfuse观测平台，熟悉Vue前端；熟悉Linux常见命令；了解FFmpeg/VLM    / 图生图 / 图生视频模型。        
+    ● AI应用：OpenClaw 、DeepAgents、Dify、MaxKB， RAGFlow部署与实战经验。                       
+    ● 云原生与Golang开发：熟悉   Golang/Gin 开发，熟悉 Docker/K8s常见命令 、Prometheus 及 MinIO 存储。   
+    ● 熟练使用  Codex、Trae 等 AI 编程助手。可借助AI完成全栈开发。                                     
+    工作经验                                q                                         
+                                       N                                          
+                                      x                                           
+                                      N                                           
+                                     R                                            
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+    2025.03 - 2026.08             W                        北京汉邦高科数智科技有限公司         
+                                 O                                                
+                                W                                                 
+    Agent开发                     e                                                 
+                               m                                                  
+                              P                                                   
+                             V                                                    
+    一、智能体开发平台                4                                                    
+                            y                                                     
+                            4                                                     
+                           x                                                      
+    项目介绍：项目基于    LangGraph + DWeepAgents+ReAct，用Middleware 管线组装 + 沙盒隔离执行的 Harness 思想，
+                         R                                                        
+                         F                                                        
+    把 Agent 的skills，工具，知识库8 E，子智能体都做成了可配置的。集成混合检索    RAG 与自动化评测。                  
+                       y                                                          
+                      N                                                           
+    1. 中间件能力：构建四层中间z 3件链——基础设施层（沙箱文件系统       + 大输出转存）、上下文注入层（附件解析）、能力             
+                    J                                                             
+                    H                                                             
+    注入层（知识库/Skills/子4 1Agent）、容错层（摘要压缩 + 工具调用修补 + 模型重试）。                          
+                  9                                                               
+                 c                                                                
+                 a                                                                
+    2. 安全的沙箱隔离方8案：参考DeerFlow的沙箱架构方案，引入all-in-one-sandbox镜像+agent_sandbox SDK，基于De 
+                a                                                                 
+               5                                                                  
+              e                                                                   
+    epAgents的基类4 3扩展了 调用沙箱用 API 替换 shell 脚本，路径权限管控，沙箱生命周期管理。                      
+             a                                                                    
+            6                                                                     
+    3. 内容审查方0 1案：采用关键字检测+采用QLoRA  4bit 量化微调Qwen3-4B在Agent执行前做内容合规监测。              
+          0                                                                       
+          6                                                                       
+    4. RAG链路及评测：基于  Milvus 构建 Dense+BM25 Sparse双路检索，采用 RRF 融合，支持 Reranker 重排，文档解  
+    析适配 MinerU 引擎；构建自动评测体系——LLM    自动生成评测数据集并校验      gold_chunk_ids 防幻觉。从检索和答案    
+    两个维度评价：检索阶段计算Recall@K，答案阶段      LLM-as-Judge 判断事实一致性。                         
+    5. 工程化实现：API-Worker 分离架构，API 层先将任务持久化  PG 再通过 ARQ 入 Redis 队列后立即返回 run_id，Wor  
+    ker取任务异步执行，Agent 事件通过  Redis Stream传递,SSE 轮询消费；支持 Worker 水平扩容;Langfuse 全链路追   
+    踪。                                                                            
+    【技术栈】  LangChain /DeepAgents/Harness/QLoRA/Skills/ FastAPI /Milvus /PostgreSQL/ Langfuse / Docker
+    二、AI视频创作平台                                                                    
+    1. 剧本生成：输入一句话创意，调用LLM生成剧本。从台词和情节双维度评估后修订，形成"生成→评估→修订"闭环。                      
+    2. 角色与场景设计：从剧本中提取角色外貌和场景描述，并发生成角色四视图参考图和场景全景图；每张图交给VLM做评                      
+    估，评估不通过将反馈追加到提示词优化重生成，最多3轮；三轮不过由VLM从所有版本中选最佳兜底。                               
+    3. 分镜规划：逐行标注剧本时长，用LLM将剧本划分为5-15秒的视频片段，再为每个片段设计具体镜头（景别、机位、人                    
+    物站位）；最后做跨镜头站位连续性检查，修正人物位置朝向不连贯问题。                                             
+    4. 参考图生成：拿着分镜数据和角色场景参考图，使用图生图模型为每一个片段生成一张高质量的首帧参考图。                           
+q                                                                                q
+N                                                                               N 
+x                                                                              x  
+N                                                                              N  
+R                                                                             R   
+7                                                                            7    
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+e                                                                        e        
+m                                                                       m         
+P                                                                      P          
+V                                                                     V           
+4                                                                     4           
+y                                                                    y            
+4                                                                    4            
+x                                                                   x             
+W                                                                  W              
+R                                                                 R               
+F                                                                 F               
+E                                                                E                
+8                                                               8                 
+y                                                               y                 
+N                                                              N                  
+3                                                              3                  
+z                                                             z                   
+J                                                            J                    
+H                                                            H                    
+1                                                           1                     
+4                                                           4                     
+9                                                          9                      
+c                                                         c                       
+a                                                         a                       
+8                                                        8                        
+a                                                        a                        
+5                                                       5                         
+e                                                      e                          
+3                                                      3                          
+4                                                     4                           
+a                                                     a                           
+6                                                    6                            
+1                                                    1                            
+0                                                   0                             
+0                                                  0                              
+6                                                  6                              
+                                                                               qNxNR7vlgWOWemPV4y4xWRFE8yN3zJH149ca8a5e34a61006
+
+=== PAGE ===
+
+q                                                                                q
+N                                                                               N 
+x                                                                              x  
+N                                                                              N  
+R                                                                             R   
+7                                                                            7    
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+e                                                                        e        
+m                                                                       m         
+P                                                                      P          
+V                                                                     V           
+4                                                                     4           
+4 y 5. 视频生成：基于生成的参考图首帧生成视频，并发生成视频片段，每个片段支持重新生成。               使用FFmpe4gy拼接为完整视    
+x                                                                   x             
+W                                                                  W              
+R   频。                                                            R               
+F                                                                 F               
+E                                                                E                
+y 8 【技术栈】FastAPI/ FFmpeg / VLM / 图生图 / 图生视频                     y 8               
+N                                                              N                  
+3                                                              3                  
+z                                                             z                   
+J                                                            J                    
+H                                                            H                    
+1                                                           1                     
+9 4 三、SQL智能助手                                              9 4                    
+c                                                         c                       
+a                                                         a                       
+8                                                        8                        
+a   项目介绍：基于   LangGraph 构建 8 节点有向工作流，实现自然语言到   SQL及生成说明a的端到端转换，集成混合检索表选           
+5                                                       5                         
+e                                                      e                          
+3                                                      3                          
+a                                                                                 
+4   择、多层安全防护、人机确认与自愈重试机制，解决非技术用户查询数据库的门槛a问4题。                                     
+6                                                    6                            
+1                                                    1                            
+0 0 1.基于 LangGraph 设计有向图（路由→重写→表选择→SQL生成→验证→确认0     0→执行→合成），支持异常重试，错误信           
+6                                                  6                              
+    息回注 LLM 上下文修正  SQL。                                                           
+    2. 设计两阶段表选择策略：阶段A采用     BM25 关键词 +向量双路检索，阶段B由    LLM 从候选集中精选1-5张表。            
+    3. 基于外键关系自动构建   JOIN 图，支持复杂查询和多表关联。                                           
+    4. 路由层用正则拦截高危操作意图；SQL    验证层做白名单校验，只允许      SELECT 语句，                        
+    【技术栈】  LangGraph / Qdrant / BM25 / FastAPI / SSE                              
+    2023.04 - 2025.02                                         烽台科技（北京）有限公司        
+    Golang/Python开发                                                               
+    一、AI智算平台（PaaS）                                                                
+    1. 海光 DCU 异构调度：基于 K8s Device Plugin 开发 DCU 设备插件（DaemonSet），实现硬件自动发现，资源上报及     
+    容器设备注入；实现基于硬件属性的高级调度；开发         dcu-exporter，采集显卡指标供 Prometheus/Grafana 使用。   
+    2. 对象存储：封装 MinIO接口，实现统一的对象存储服务，支持子账号策略隔离与桶级读写权限控制。                            
+    3. 容器编排管理：开发容器实例管理，支持自定义资源配置；基于          NodePort/ClusterIP 暴露服务，通过 WebSocket 实
+    现 Pod Web 终端直连。                                                               
+    【技术栈】K8s / Golang / MinIO / WebSocket                                         
+                                        q                                         
+                                       N                                          
+                                      x                                           
+                                      N                                           
+    二、工业信息安全实训平台                    7 R                                           
+                                    v                                             
+                                   gl                                             
+    1. 后端开发：主导资源管理使用分片上传优化大文W件处理（分片策略，状态管理，哈希校验，使用分布式锁进行原子化合                      
+                                 O                                                
+                                W                                                 
+    并）、实验管理（异步调用PVE，开启关闭实验e）、账户策略（封禁/解封）、流量仿真集成及攻击事件实时推送（djang                    
+                               m                                                  
+                              P                                                   
+    o信号+Websocket），并开发django自定V义命令功能。负责其他后端业务模块的开发。                               
+                             4                                                    
+                            y                                                     
+                            4                                                     
+    2. 架构优化：将传统部署改为容器化W（xDocker），实现服务解耦、统一环境底层软件版本。                               
+                         R                                                        
+                         F                                                        
+                        E                                                         
+                       8                                                          
+                       y                                                          
+    2021.07 - 2023.04 N                                  奇安信网神信息技术股份有限公司          
+                     3                                                            
+                     z                                                            
+                    J                                                             
+    Python开发        H                                                             
+                   1                                                              
+                  4                                                               
+                  9                                                               
+                 c                                                                
+    一，天眼威胁检测与8分a析系统（流量探针）                                                         
+                a                                                                 
+               5                                                                  
+              e                                                                   
+    1. 威胁检测流程3：基于ZeroMQ+Protobuf实现数据高效传输，二次开发Python库实现WebIDS移动设备指纹识别，通            
+             4                                                                    
+             a                                                                    
+            6                                                                     
+    过减少正则编0 1译次数将告警处理效率提升一倍。                                                      
+          0                                                                       
+          6                                                                       
+    2. 负责后端功能开发；实现通过Kafka将告警推送到分析平台；通过Node_exporter扩展业务指标采集。                      
+    【技术栈】Flask、ZeroMQ、Protobuf、Prometheus、Kafka、Supervisor。                       
+    2020.06 - 2020.08                                           北京小米科技（实习）        
+    Python开发                                                                      
+    1. 从数据仓库获取得到json格式的数据，编写python脚本处理解析数据，为"小爱同学"算法模型优化提供数据支持。                   
+    2. 负责业务平台后端接口的开发，完成关键指标通过邮件每天定时推送给相关负责人的功能。                                   
+    自我评价                                                                          
+      能够快速熟悉环境，抗压能力强。                                                             
+      对技术有浓厚的兴趣，善于利用AI工具提高效率。                                                     
+      善于从多方面思考并解决问题，时间观念强。                                                        
+q                                                                                q
+N                                                                               N 
+x                                                                              x  
+N                                                                              N  
+R                                                                             R   
+7                                                                            7    
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+e                                                                        e        
+m                                                                       m         
+P                                                                      P          
+V                                                                     V           
+4                                                                     4           
+y                                                                    y            
+4                                                                    4            
+x                                                                   x             
+W                                                                  W              
+R                                                                 R               
+F                                                                 F               
+E                                                                E                
+8                                                               8                 
+y                                                               y                 
+N                                                              N                  
+3                                                              3                  
+z                                                             z                   
+J                                                            J                    
+H                                                            H                    
+1                                                           1                     
+4                                                           4                     
+9                                                          9                      
+c                                                         c                       
+a                                                         a                       
+8                                                        8                        
+a                                                        a                        
+5                                                       5                         
+e                                                      e                          
+3                                                      3                          
+4                                                     4                           
+a                                                     a                           
+6                                                    6                            
+1                                                    1                            
+0                                                   0                             
+0                                                  0                              
+6                                                  6                              
+                                                                               qNxNR7vlgWOWemPV4y4xWRFE8yN3zJH149ca8a5e34a61006

@@ -1,0 +1,920 @@
+x                                                                                    
+N                                                                                    
+q                                                                                    
+                                                                                  x  
+                                                                                   N 
+                                                                                    q
+R                                                                                    
+N                                            c8c9a62c100cb2ff1HJz3N--FFZRxIq9U_6cWOWglv7RNxNRqN
+7                                                                               7    
+v                                                                               v    
+gl                                                                             gl    
+W                                                                             W      
+O                                                                            O       
+W                                                                           W        
+c                                                                          c         
+6                                                                          6         
+_                                                                         _          
+U                                                                        U           
+9                       冯冰-大模型算法工程师-5年                                   9           
+q                                                                       q            
+xI                                                                      xI           
+R                                                                      R             
+Z                                                                     Z              
+F                                                                    F               
+F                                                                    F               
+N--                                                                N--               
+3                                                                  3                 
+J z 个人信息                                                          J z                
+H                                                                H                   
+1                                                               1                    
+2ff                                                            2ff                   
+b                                                              b                     
+0 0 c · 工作经验：5年算法           求职意向：大模型算法|大模型应用工程师              0 0 c                   
+1                                                           1                        
+c                                                           c                        
+2                                                          2                         
+6                                                          6                         
+9 a · 年龄：32                 学历：本科                        9 a                         
+c                                                        c                           
+8                                                       8                            
+c                                                       c                            
+    · 电话：15600035021        邮箱：a1282558666@gmail.com                                 
+   核心能力                                                                              
+    · 智能体：LangChain/LangGraph构建多Agent协同架构（Plan-and-Execute + ReAct两种模式），CheckPoint   
+     HITL中断恢复与人工复核闭环，长短期记忆（BaseStore       + MemoryManager），Function Calling工具编排，    
+     IntentClassifier独立分类节点（structured output + logprobs置信度），Agent注册制 + URL动态路由，     
+                                         q                                           
+     A2A/MCP协议，Coze/Dify应用开发平台；         N                                            
+                                        x                                            
+                                       N                                             
+                                      R                                              
+                                      7                                              
+    · RAG知识库：Query改写、qwen3-embeddin g gl v/DashScope text-embedding-v3向量化、HybridSearch
+                                   W                                                 
+                                   O                                                 
+     （Dense+Sparse混合检索）、BGE-ReranWker重排序及上下文压缩，Milvus向量库索引构建与高效检索                    
+                                 c                                                   
+                                6                                                    
+     （IVF/HNSW），RAGAS自动化评估，U知_识库（pymilvus直接建schema，ANN+SQL混合搜索+三步降级）；                
+                              9                                                      
+                              q                                                      
+                             xI                                                      
+                            R                                                        
+    · 模型微调与部署：Qwen/LlaMA/DZeepSeek开源大模型LoRA指令微调，LLaMA-Factory训练框架，VLLM推理加            
+                           F                                                         
+                          F                                                          
+     速 + INT4量化部署（50+                                                                
+                       QPNS--                                                        
+                          , <500ms），Prompt Engineering优化，RAGAS评估体系；                  
+                        3                                                            
+                        z                                                            
+                       J                                                             
+                       H                                                             
+    · NLP与深度学习：命名实   2ff体1识别NER、文本分类等经典NLP任务，BERT/BiLSTM-CRF下游微调与模型蒸馏；               
+                    b                                                                
+                    c                                                                
+     Python/PyTorch/Tr0a0nsformers开发，Transformer/RNN/LSTM原理，机器学习算法（KNN/随机森林          
+                  1                                                                  
+                 c                                                                   
+                 2                                                                   
+     /GBDT/XGBoosat6等）；                                                              
+               9                                                                     
+              c                                                                      
+              8                                                                      
+             c                                                                       
+    · 大数据与工程：Hadoop/Hive/Doris/Spark/Flink大数据技术，离线和实时数仓，Java/Python数据清洗与特征工          
+     程，Kafka/Redis消息队列与缓存，Docker  Compose容器化部署；                                      
+   工作经验                                                                              
+   玩咖欢聚科技北京有限公司       — 大模型算法工程师     2023.10 - 至今                                    
+q                                                                                   q
+N  1. 主导大模型、RAG、多Agent智能体项目的全链路架构设计与工程落地，负责整体方案选型与技术路线规划，覆盖广                       N 
+x                                                                                 x  
+N                                                                                N   
+R                                                                                R   
+v 7 告投放方案生成、客服智能问答、广告文案微调与部署等核心业务场景。                                            v 7  
+gl                                                                             gl    
+W                                                                             W      
+O                                                                            O       
+W  2. 基于MCP协议与LangGraph框架设计多Agent协同架构，实现任务自动编排与意图驱动路由；针对广告投放W场景进                     
+c                                                                          c         
+6                                                                          6         
+_                                                                         _          
+U                                                                        U           
+9  行LLM领域适配微调（LoRA），搭建并维护向量知识库，完成数据治理、向量化及混合检索链路构建。                      9           
+q                                                                       q            
+xI                                                                      xI           
+R                                                                      R             
+Z                                                                     Z              
+F  3. 持续迭代优化模型推理性能与任务准确率，采用LLM推理加速、模型量化及私有化部署策略，针对F性解决语义理解、                          
+F                                                                    F               
+N--                                                                N--               
+3  合规审核、召回精准度等业务核心痛点。                                              3                 
+z                                                                 z                  
+J                                                                 J                  
+H                                                                H                   
+1                                                               1                    
+2ff 4. 统筹推进项目从需求调研、原型验证、模型迭代到上线交付的全流程落地，搭建LangSm2itffh/RAGAS智能体评测体系                  
+b                                                              b                     
+c                                                             c                      
+0                                                            0                       
+1 0 保障项目稳定交付与持续迭代优化。                                        1 0                      
+c                                                           c                        
+2                                                          2                         
+6                                                          6                         
+a                                                         a                          
+c                                                                                    
+9                                                                                    
+                                                         c                           
+                                                         9                           
+8                                                       8                            
+c                                                       c                            
+   北京科脉科技有限公司      — NLP算法工程师    2021.05 — 2023.10                                   
+    1. 开发NLP算法，优化语言模型性能（RNN、Transformer、BERT等），应用于文本分类、序列标注、文本相似度计                   
+    算等任务  ；                                                                          
+    2. 对接企业项目，训练实体识别、文本分类、医疗知识图谱构建等模型，并进行参数调优和性能评估；                                  
+    3. 数据处理与清洗：收集、清洗和标注文本数据；                                                         
+                                         q                                           
+                                        N                                            
+                                        x                                            
+                                       N                                             
+                                      R                                              
+                                      7                                              
+                                     v                                               
+                                    gl                                               
+                                   W                                                 
+                                   O                                                 
+                                  W                                                  
+                                 c                                                   
+                                6                                                    
+                                _                                                    
+                               U                                                     
+                              9                                                      
+                              q                                                      
+                             xI                                                      
+                            R                                                        
+                            Z                                                        
+                           F                                                         
+                          F                                                          
+                         N--                                                         
+                        3                                                            
+                        z                                                            
+                       J                                                             
+                       H                                                             
+                      1                                                              
+                     2ff                                                             
+                    b                                                                
+                    c                                                                
+                   0                                                                 
+                  0                                                                  
+                  1                                                                  
+                 c                                                                   
+                 2                                                                   
+                6                                                                    
+                a                                                                    
+               9                                                                     
+              c                                                                      
+              8                                                                      
+             c                                                                       
+                                                                                  qNxNR7vlgWOWc6_U9qIxRZFF--N3zJH1ff2bc001c26a9c8c
+
+=== PAGE ===
+
+q                                                                                   q
+N                                                                                  N 
+x                                                                                 x  
+N                                                                                N   
+R                                                                                R   
+7                                                                               7    
+v                                                                               v    
+W gl 北京钧云科技有限公司     —大数据工程师       2016.69 — 2021.05                           W gl   
+O                                                                            O       
+W                                                                           W        
+c                                                                          c         
+6   1. 设计Hadoop/Spark/Flink/Hive/Doris大数据离线及实时数仓架构及TB级ETL链路；               6         
+_                                                                         _          
+U                                                                        U           
+9                                                                        9           
+q                                                                       q            
+R xI 2. 主导数仓建模与性能调优，开发数仓表，构建自动化调度系统，构建数据采集平台；                          R xI          
+Z                                                                     Z              
+F                                                                    F               
+F                                                                    F               
+N-- 3. 搭建数据质量与元数据管理体系；                                             N--               
+3                                                                  3                 
+z                                                                 z                  
+J                                                                 J                  
+H                                                                H                   
+1                                                               1                    
+2ff                                                            2ff                   
+b                                                              b                     
+0 c 项目经验                                                     0 c                     
+1                                                                                    
+0                                                                                    
+                                                            1                        
+                                                             0                       
+c                                                           c                        
+2                                                          2                         
+6                                                          6                         
+a                                                         a                          
+9                                                        9                           
+c                                                        c                           
+c 8 项目：智能出行多智能体项目            | 2026.01-至今               c 8                          
+   项目描述：                                                                             
+   对接旅行服务公司和商家，传统的旅行服务，用户在行程规划、信息查询、票务预订等环节需频繁切换多个应用，导                               
+   致决策效率低、体验割裂。为解决这一问题，本项目基于多智能体协同架构，融合大语言模型、MCP、A2A，构建智                             
+   能化旅行规划系统，提升用户出行决策效率与使用体验。                                                         
+                                         q                                           
+                                        N                                            
+                                        x                                            
+                                       N                                             
+   核心技术栈：Python,  LangGraph & LangChain, FasRtAPI, SSE (StreamingResponse), Pydantic v2, Streamlit,
+                                      7                                              
+                                     v                                               
+                                    gl                                               
+   Milvus Standalone, LlamaIndex & pymilvus, QWwen (DashScope), LangSmith, pytest, uv, SQLite/PostgreSQL,
+                                   O                                                 
+                                  W                                                  
+                                 c                                                   
+   Docker Compose；              6                                                    
+                                _                                                    
+                               U                                                     
+                              9                                                      
+                              q                                                      
+                             xI                                                      
+                            R                                                        
+                           F                                                         
+                            Z                                                        
+                          F                                                          
+                         N--                                                         
+   核心工作：                3                                                            
+                        z                                                            
+                       J                                                             
+                       H                                                             
+      1. 智能体设计：参与智   2ff能1体角色定义，核心智能体包括意图识别agent、天气查询agent、路线规划agent、票务              
+                    b                                                                
+                    c                                                                
+        查询agent、票务0预定agent、景点推荐agent等9个agent。调研智能体开发框架，包括LangGraph、A2A、              
+                  0                                                                  
+                  1                                                                  
+                 c                                                                   
+        CrewAI等，6因2A2A在多智能体协作流程的可编程性与通信机制上设计更灵活，最后选定A2A。设计                 A2A 协议：   
+                a                                                                    
+               9                                                                     
+              c                                                                      
+        任务传输c 8方式、消息格式、任务状态、结果存储、超时与重试策略等。                                           
+      2. MCP Sserver 构建：统一工具描述规范，包括名称、描述、版本、参数介绍等。封装携程API、12306API、                  
+        大麦API等，查询飞机票、火车票、演出票等信息，并进行数据格式化处理，构建票务查询工具，并通过mcp                           
+        包封装成票务查询MCP     Server。封装美团API、携程API、12306API、大麦API等，构建票务预定MCP       Server， 
+        实现对飞机票、火车票、演出票等的预定功能。使用Python            requests包爬取和风网天气数据，并定期更新到           
+        MySQL数据库中。通过SQL查询MySQL，获取想要的天气信息，进行格式化后输出。将查询逻辑封装成天气                         
+        查询MCP  Server。将精品旅游路线和景点介绍等知识，进行切分向量化后存入Milvus的不同collection中，用               
+        于构建RAG系统。使用bge-m3对知识库进行混合检索，并通过GLM-4-9B-Chat生成检索结果。最后其封装成                    
+q                                                                                   q
+N                                                                                  N 
+N x     知识检索MCP，用于精品路线和景点介绍等查询。                                                  N x 
+R                                                                                R   
+7                                                                               7    
+gl                                                                                   
+v                                                                                    
+                                                                               gl    
+                                                                                v    
+W                                                                             W      
+O                                                                            O       
+W     3. Agent Server构建：使用GLM-4-32B模型完成对用户问题的理解、缺失信息识别、查询SQL生成等功能W。并基                
+c                                                                          c         
+6                                                                          6         
+U _     于此方法，使用A2AServer构建天气查询Agent。使用react模式，构建票务查询agent，智能分析用U          _户的查票      
+9                                                                        9           
+q                                                                       q            
+R                                                                                    
+xI                                                                                   
+        意图，并自动调用票务查询MCP                                                              
+                              Server中的工具，实现票务的查询。设计票务预定agent与票R务xI                   
+                                                                        查询agent的     
+Z                                                                     Z              
+F                                                                    F               
+N-- F   内部交互逻辑，先基于用户的意图查询余票信息，然后调用票务预定MCP完成票务的预定                                     
+                                                                   N                 
+                                                                    。 -- F通过调用联网检索   
+3                                                                  3                 
+J z     MCP、知识库检索MCP和景点评价MCP，整合在线信息和知识库信息，生成完整、详细J                z、真实的景点介绍内         
+H                                                                H                   
+1                                                               1                    
+b                                                                                    
+2ff                                                                                  
+        容，进而构建成景点介绍agent。                                      b                     
+                                                               2ff                   
+c                                                             c                      
+0                                                            0                       
+0                                                            0                       
+1                                                           1                        
+c                                                           c                        
+2                                                          2                         
+6                                                          6                         
+9 a   4. 主流程开发：参与多智能体协作系统主流程设计与实现，构建端到端处理链9               a路：用户输入   → 意图识别   → 业     
+c                                                        c                           
+8                                                       8                            
+c                                                       c                            
+        务Agent处理  → 信息整合与响应生成。主导意图识别Agent的开发，基于            Qwen-Plus 大模型【或微调后的       
+        大模型】实现用户意图分类与语义解析；通过引入问题改写模块，有效补充上下文缺失，提升多轮对话中问题                             
+        的完整性。构建测试用例，测试各个需求的功能完备性，以及对异常问题的处理鲁棒性。针对识别错误、路由                             
+        偏差等异常问题，通过提示词工程优化、Agent逻辑重构、输入输出格式调整等手段持续迭代，显著提升系统                           
+        容错能力与整体稳定性。                                                                  
+                                         q                                           
+                                        N                                            
+                                        x                                            
+                                       N                                             
+                                      R                                              
+                                      7                                              
+                                     v                                               
+                                    gl                                               
+                                   W                                                 
+                                   O                                                 
+                                  W                                                  
+                                 c                                                   
+                                6                                                    
+                                _                                                    
+                               U                                                     
+                              9                                                      
+                              q                                                      
+                             xI                                                      
+                            R                                                        
+                            Z                                                        
+                           F                                                         
+                          F                                                          
+                         N--                                                         
+                        3                                                            
+                        z                                                            
+                       J                                                             
+                       H                                                             
+                      1                                                              
+                     2ff                                                             
+                    b                                                                
+                    c                                                                
+                   0                                                                 
+                  0                                                                  
+                  1                                                                  
+                 c                                                                   
+                 2                                                                   
+                6                                                                    
+                a                                                                    
+               9                                                                     
+              c                                                                      
+              8                                                                      
+             c                                                                       
+                                                                                  qNxNR7vlgWOWc6_U9qIxRZFF--N3zJH1ff2bc001c26a9c8c
+
+=== PAGE ===
+
+q                                                                                   q
+N                                                                                  N 
+N x   5. 项目部署：基于   Docker 将核心业务   Agent 封装为微服务，实现与主系统的解耦部署与独立伸缩，提升服务N             x  
+R                                                                                R   
+7                                                                               7    
+v                                                                               v    
+gl      可用性与维护效率。使用vllm部署本地模型，实现模型的高效推理。                                       gl    
+W                                                                             W      
+O                                                                            O       
+W                                                                           W        
+c                                                                          c         
+6                                                                          6         
+_                                                                         _          
+U     6. 项目优化：                                                           U           
+9                                                                        9           
+q                                                                       q            
+xI                                                                      xI           
+R       6.1 模型优化：多种LLM模型混合使用，提升服务效率，降低使用成本：对于复杂的任务和需求R，调用强大的                         
+Z                                                                     Z              
+F                                                                    F               
+F                                                                    F               
+N--     模型来处理，如NLP2SQL、景点推荐agent；而简单任务，调用本地的小模型来处理，如                                 
+                                                                   N                 
+                                                                   票--务查询agent、结     
+3                                                                  3                 
+z                                                                 z                  
+H                                                                                    
+J       果优化agent等。构建意图分类及查询改写数据集，对GLM-4-32B模型进行LoRA微调H，J使其适配旅游领域相关                   
+1                                                               1                    
+b                                                                                    
+2ff                                                                                  
+        知识，提升意图分类和查询改写的效果。                                     b                     
+                                                               2ff                   
+c                                                             c                      
+0                                                            0                       
+0                                                            0                       
+c 1     6.2 流程优化：对于复杂的多意图问题或者Agent需要调用多个无依赖关系的Acg1ent或工具时，使用并行的方式                    
+2                                                          2                         
+6                                                          6                         
+a                                                         a                          
+9                                                        9                           
+c       进行调用，加快执行效率。优化上下文存储策略：将用户的历史对话，循环c保存10轮在内存中，并异步存储到                           
+8                                                       8                            
+c                                                       c                            
+        MySQL中，从而支持长对话场景。动态历史对话调整：对于简单任务，如天气查询，票务查询，直接使用最近                           
+        3轮对话，追加到大模型的上下文中；对于复杂任务，比如路线规划和景点推荐，需要使用长上下文时，使用                             
+        GLM-4-32B模型对对话进行递归压缩，然后再输入大模型。                                               
+        6.3 Agent 优化：通过构建本地知识库，将整理好的精品旅游路线和景点介绍等信息存储到Milvus中，通过                      
+        RAG系统进行内容检索，提供高价值信息，最终提高生成质量。在生成景点推荐时，使用用户偏好MCP，将用                           
+        户的偏好信息考虑进来，使生成的结果会更具个性化。在进行酒店预定时，加入酒店比价逻辑，使结果更具参                             
+                                         q                                           
+        考性。在路线规划时，通过调用天气查询，考虑到N天气情况，使出行规划更具实际意义。                                     
+                                        x                                            
+                                       N                                             
+                                      R                                              
+                                     v                                               
+                                      7                                              
+                                    gl                                               
+                                   W                                                 
+      7. 项目成果：                    W                                                  
+                                   O                                                 
+                                 c                                                   
+                                6                                                    
+         1. 通过多智能体架构，完成多功能U整_合，极大降低了用户的使用成本，客户满意度达94%；                               
+                              9                                                      
+                              q                                                      
+         2. 系统成功覆盖并解决用户                                                              
+                            9R2xI                                                    
+                              % 的常见旅游服务需求，实现高比例问题闭环处理；                               
+                            Z                                                        
+                           F                                                         
+         3. 多智能体并行调度与流                                                               
+                         N-                                                          
+                          程- F优化使任务完成效率提升   28%，复杂查询类请求处理速度加快近一倍；                    
+                        3                                                            
+                        z                                                            
+                       J                                                             
+                       H                                                             
+                      1                                                              
+   项目：多Agent广告投      2ff放智能助手平台      | 2025.06-2025.12                               
+                    b                                                                
+                    c                                                                
+                   0                                                                 
+                  0                                                                  
+                  1                                                                  
+   项目描述：         2 c                                                                 
+                6                                                                    
+                a                                                                    
+               9                                                                     
+   针对游戏广告投放8  c依赖资深优化师经验、新人上手难、跨渠道预算分配靠人工估算的痛点，基于                   LangGraph        
+             c                                                                       
+   Supervisor 构建了多 Agent 协同投放平台。系统包含     6 个子 Agent——5  个组成方案生成流水线（策略分析→素            
+   材创意→预算规划→人工审批→报告生成），1           个竞品分析   Agent 采用 ReAct 自主探索模式；外加     1 个意图分类      
+   器做前置路由。通过      MCP 协议标准化工具层     + 多租户四级隔离    + SSE 流式推送，将单次投放方案生成从人工        30    
+   分钟压缩至   30 秒。                                                                     
+   核心技术栈：Python,  LangGraph & LangChain, FastAPI, SSE (StreamingResponse), Pydantic v2, Streamlit,
+   Milvus Standalone, LlamaIndex & pymilvus, Qwen (DashScope), LangSmith, pytest, uv, SQLite/PostgreSQL,
+q                                                                                   q
+N  Docker Compose；                                                                 N 
+x                                                                                 x  
+N                                                                                N   
+R                                                                                R   
+7                                                                               7    
+v                                                                               v    
+gl                                                                             gl    
+W                                                                             W      
+O  核心工作：                                                                     O       
+W                                                                           W        
+c                                                                          c         
+_ 6   1. 智能体设计：基于    LangGraph 框架构建 1 Supervisor + 6 子 Agent（策略分析 / 素材创意 / 预_ 6算规划 / 
+U                                                                        U           
+9                                                                        9           
+q                                                                       q            
+xI      人工审批   / 报告生成  / 竞品分析）的中心化编排架构，Agent       注册制  + URL 动态路由。方案x生I成走   Plan-   
+R                                                                      R             
+Z                                                                     Z              
+F                                                                    F               
+N-- F   and-Execute 固定流水线（按序调度    5 个 Agent），竞品分析走   ReAct 动态探索（Ag                   
+                                                                   N                 
+                                                                    e --nFt 自主决定检索轮  
+3                                                                  3                 
+z                                                                 z                  
+H J     数）。通过   MCP 协议标准化工具层，Agent     与工具解耦。。                   H J                 
+1                                                               1                    
+2ff                                                            2ff                   
+c b   2. MCP Sserver 构建：使用 FastMCP 封装 4 个核心工具——行业基准数据查询（c      bsearch_benchmarks）、  
+0                                                            0                       
+0                                                            0                       
+1                                                           1                        
+2 c     高转化素材检索（search_creatives）、多平台预算分配（allocate_budget）2 c、ROI 预估（estimate_roi）。  
+6                                                          6                         
+a                                                         a                          
+9                                                        9                           
+c       MCP Server 独立进程运行，Agent  通过  MCP Client 连接调用，工具与c编排层解耦，新增数据源只需扩展             
+8                                                       8                            
+c                                                       c                            
+        Server。。                                                                     
+      3. Agent Server构建：基于 FastAPI + LangGraph 构建服务层，Supervisor 用 qwen-plus 做关键路由决策  
+        （意图判断、Agent   调度、结果整合），Worker     用 qwen-turbo 执行专项任务。SSE   三流推送（updates     
+        + messages + custom），定位 `subgraphs=True` 下 `create_agent` 与 `create_react_agent` 内部节点
+        命名不一致根因，基于白名单精确匹配实现后端过滤，消息量从               35 条压缩至   5 条。                    
+      4. 主流程开发：端到端链路——用户自然语言输入           → IntentClassifier 前置分类（JSON mode + logprobs 置
+                                         q                                           
+                                        N                                            
+                                        x                                            
+                                       N                                             
+                                      R                                              
+                                      7                                              
+                                     v                                               
+                                    gl                                               
+                                   W                                                 
+                                   O                                                 
+                                  W                                                  
+                                 c                                                   
+                                6                                                    
+                                _                                                    
+                               U                                                     
+                              9                                                      
+                              q                                                      
+                             xI                                                      
+                            R                                                        
+                            Z                                                        
+                           F                                                         
+                          F                                                          
+                         N--                                                         
+                        3                                                            
+                        z                                                            
+                       J                                                             
+                       H                                                             
+                      1                                                              
+                     2ff                                                             
+                    b                                                                
+                    c                                                                
+                   0                                                                 
+                  0                                                                  
+                  1                                                                  
+                 c                                                                   
+                 2                                                                   
+                6                                                                    
+                a                                                                    
+               9                                                                     
+              c                                                                      
+              8                                                                      
+             c                                                                       
+                                                                                  qNxNR7vlgWOWc6_U9qIxRZFF--N3zJH1ff2bc001c26a9c8c
+
+=== PAGE ===
+
+q                                                                                   q
+N                                                                                  N 
+N x     信度提取，双阈值路由分流）→        Supervisor 编排调度 → 子 Agent 按序执行  → 信息整合   → SSE 流式推N x  
+R                                                                                R   
+7                                                                               7    
+v                                                                               v    
+gl      送至  Streamlit 前端。预算分配与  ROI 预估走确定性代码（CPA     反比加权，零    Token 消耗零计算误差）gl，     
+W                                                                             W      
+O                                                                            O       
+W       单渠道预算   >10 万触发  `interrupt()` 人工审批，用户确认后 `Command(resume)` 恢复执行。   W        
+c                                                                          c         
+6                                                                          6         
+_                                                                         _          
+U     5. 项目部署：Docker Compose 一键部署，包含    PostgreSQL （Checkpointer + Store）、MilvuUs    
+9                                                                        9           
+q                                                                       q            
+xI                                                                      xI           
+R       Standalone（向量库）、etcd（Milvus 元数据）、MinIO（Milvus  对象存储）。FastAPI  多R Worker 水平   
+Z                                                                     Z              
+F                                                                    F               
+F                                                                    F               
+N--     扩展，Agent  实例无状态，全部状态持久化至        PostgreSQL。                N--               
+3                                                                  3                 
+z                                                                 z                  
+H J   6. 项目优化：模型分级策略（Supervisor   / Worker 按任务复杂度分配不同模型）；10      H万J条素材库  pymilvus   
+1                                                               1                    
+b                                                                                    
+2ff                                                                                  
+        直接建  schema，ANN+SQL  混合搜索   + 三步降级（精确匹配→放宽品类/平台→b                            
+                                                               2f                    
+                                                                无                    
+                                                                f                    
+                                                                 过滤）；多租户四层隔          
+c                                                             c                      
+0                                                            0                       
+0                                                            0                       
+c 1     离（API Key → Checkpointer → Store/Milvus → 工具层）；长短期记忆c（1Checkpointer 按 thread_id
+2                                                          2                         
+6                                                          6                         
+a                                                         a                          
+c 9     + MemoryManager 按 (tenant_id, user_id)，关键词提取零 LLM 消耗c）9；LangSmith 全链路追踪 + Eval
+8                                                       8                            
+c                                                       c                            
+        Pipeline（10 用例 × 7 维度自动评分）。                                                  
+   项目成果：                                                                             
+    · 方案生成从人工   2-3 小时压缩到  30 秒，优化师日均产出从     3 份提升至  15+ 份；                          
+    · 新优化师上手周期从    3-6 个月缩短至  1 个月，AI 出初稿、人工审改即可交付；                                  
+    · 客户方案响应从隔天交付提升至即时产出，提升客户满意度和续约率；                                                
+    · 资深优化师的品类基准判断和预算分配经验被算法化，降低人员变动带来的知识流失风险；                                       
+                                         q                                           
+                                        N                                            
+                                        x                                            
+                                       N                                             
+                                      R                                              
+                                      7                                              
+                                     v                                               
+   项目：RAG广告智能客服系统             | 2024                                                 
+                                   W                                                 
+                                    .1gl0-2025.06                                    
+                                   O                                                 
+                                  W                                                  
+                                 c                                                   
+   项目描述：                        _ 6                                                  
+                               U                                                     
+                              9                                                      
+    · 基于RAG知识库的公司内部智能问答x系I    q统。针对员工咨询广告业务、HR制度、运维、财务等问题咨询量大、人工答                    
+                            R                                                        
+                            Z                                                        
+     疑成本高的痛点，通过RAG      + 大F F模型实现高效低成本的知识服务。                                        
+                         N--                                                         
+   核心技术栈：Python,  Milvus, Bz 3ERT, Sentence-BERT, Qwen2.5-14B, LoRA, RagAS, OCR (PaddleOCR), FastAPI,
+                       J                                                             
+                       H                                                             
+                      1                                                              
+   LangGraph, Neo4j, Faiss, 2Cffypher                                                
+                    b                                                                
+                    c                                                                
+                   0                                                                 
+   核心工作：          1 0                                                                
+                 c                                                                   
+                 2                                                                   
+                6                                                                    
+         1. RAG知9 a识库: 整理清洗PDF/Word/PPT/Markdown等文档，累计50万+条数据，支持知识库动态更新；             
+              c                                                                      
+              8                                                                      
+             c                                                                       
+         2. 文档预处理：文本加载、去噪清洗、智能分块（按语义边界）、多模态内容处理（OCR+PaddleOCR）；                      
+         3. Milvus向量数据库: 设计4个collections多集合存储策略，支持不同部门知识隔离管理与高效检索；                   
+         4. BERT意图识别：支持4种意图分类（广告代理/考勤报销/网络打印机/通用），F1-Score达90%，意图路                   
+            由→检索→Prompt拼接→Qwen2.5-14B生成；                                             
+         5. 混合检索优化：稀疏+稠密向量加权融合         + Rerank重排序，Top-5相关性提升35%；Query改写（关键          
+            词扩展/子查询分解/HyDE策略/口语化去噪）；                                                 
+         6. GraphRAG 知识图谱（二期）：LangGraph   8节点  StateGraph 编排，自然语言→实体抽取→Faiss    模    
+q           糊匹配→Neo4j  Cypher 多跳查询→诊断建议完整闭环。6类实体+6类关系，元数据注入使             Cypher 合   q
+N                                                                                  N 
+x                                                                                 x  
+N                                                                                N   
+R           法率从  <20% 提升至  >95%；                                                 R   
+7                                                                               7    
+v                                                                               v    
+gl                                                                             gl    
+W        7. 评测与微调：RagAS   评估体系（答案相关性≥0.89、忠诚性≥0.9，1000条测试集准确率90%）；            W      
+O                                                                            O       
+W                                                                           W        
+c           Qwen2.5-14B LoRA 微调适配广告代理领域术语；                                 c         
+6                                                                          6         
+_                                                                         _          
+U                                                                        U           
+q 9 项目成果                                                                q 9          
+xI                                                                      xI           
+R                                                                      R             
+F Z · 项目上线后自动应答率超过80%，人工客服压力降低约50%；                                  F Z             
+F                                                                    F               
+3                                                                                    
+N--                                                                                  
+    · 回答准确率与用户满意度显著提升，获内部技术创新项目认可；                                 3                 
+                                                                   N--               
+z                                                                 z                  
+J                                                                 J                  
+1 H · 支持知识库动态更新，具备可扩展性与私有化部署能力。                                 1 H                  
+2ff                                                            2ff                   
+b                                                              b                     
+0                                                                                    
+c                                                                                    
+                                                             0                       
+                                                              c                      
+0                                                            0                       
+1                                                           1                        
+c                                                           c                        
+6                                                                                    
+2                                                                                    
+                                                           6                         
+                                                           2                         
+a                                                         a                          
+9                                                        9                           
+c                                                        c                           
+8                                                       8                            
+c  项目：“经济日报”新闻分类智能推荐系统                 | 2021.05-2022.04c                            
+   项目描述:                                                                             
+    此项目是为经济日报研发的新闻智能推荐项目。为提高用户的留存率，基于新闻的                                             
+    标题数据，实现自动文本分类。将分类后的新闻作为推送流，提供给用户。从而提高新闻WEB                                       
+   和APP的用户粘度，增加用户的使用时间。                                                              
+   核心技术栈：Python,  Qwen2.5-32B, LoRA, LLaMA-Factory, VLLM, INT4 量化, FastAPI, Docker   
+                                         q                                           
+                                        N                                            
+                                        x                                            
+                                       N                                             
+                                      R                                              
+                                      7                                              
+                                     v                                               
+                                    gl                                               
+                                   W                                                 
+                                   O                                                 
+                                  W                                                  
+                                 c                                                   
+                                6                                                    
+                                _                                                    
+                               U                                                     
+                              9                                                      
+                              q                                                      
+                             xI                                                      
+                            R                                                        
+                            Z                                                        
+                           F                                                         
+                          F                                                          
+                         N--                                                         
+                        3                                                            
+                        z                                                            
+                       J                                                             
+                       H                                                             
+                      1                                                              
+                     2ff                                                             
+                    b                                                                
+                    c                                                                
+                   0                                                                 
+                  0                                                                  
+                  1                                                                  
+                 c                                                                   
+                 2                                                                   
+                6                                                                    
+                a                                                                    
+               9                                                                     
+              c                                                                      
+              8                                                                      
+             c                                                                       
+                                                                                  qNxNR7vlgWOWc6_U9qIxRZFF--N3zJH1ff2bc001c26a9c8c
+
+=== PAGE ===
+
+q                                                                                   q
+N                                                                                  N 
+x                                                                                 x  
+N   项目职责：                                                                        N   
+R                                                                                R   
+7                                                                               7    
+v                                                                               v    
+W gl 1、对接用户：分析用户需求，提供技术解决方案。                                                  W gl   
+O                                                                            O       
+W                                                                           W        
+c   2、数据处理：制定标注规范，样本类别均衡度、Badcase修复、数据格式转换等。                               c         
+6                                                                          6         
+_                                                                         _          
+U                                                                        U           
+9                                                                        9           
+q   3、模型搭建：先基于Fasttext搭建baseline模型进行初步判断，后使用Bert进行对比实验。                 q            
+xI                                                                      xI           
+R                                                                      R             
+Z                                                                     Z              
+F F 4、模型优化：提升推理速度，使用模型量化、知识蒸馏优化。                                     F F             
+N--                                                                N--               
+3                                                                  3                 
+J z 项目成果：模型的准确率，随机森林为84.3%，Fasttext为88.1%，Bert为95.64%。基于          J z                
+H                                                                H                   
+1                                                               1                    
+b 2ff Bert 蒸馏优化后，模型大小压缩缩小为17.7倍，RT     提升13倍，准确率仅有1.5%的小幅下b    2f降 f 。               
+c                                                             c                      
+0                                                            0                       
+0                                                            0                       
+c                                                                                    
+1                                                                                    
+                                                            c                        
+                                                            1                        
+2                                                          2                         
+6                                                          6                         
+a                                                         a                          
+9                                                        9                           
+c                                                        c                           
+8                                                       8                            
+c                                                       c                            
+   项目：医疗知识图谱知识图谱智能问答系统                   | 2022.05-2023-05                           
+   项目描述：                                                                             
+    · 基于LangChain+DeepSeek构建的医疗知识图谱智能问答系统，整合多源网页数据库与结构化医学知识，融合向量                     
+     语义匹配与多智能体工作流，实现用户自然语言输入到图谱知识返回的全自动闭环。                                           
+   核心技术栈：Python,  LangChain，DeepSeek，Neo4j，Faiss，LangGraph，Streamlit，Requests，       
+   BeautifulSoup，Git                                                                 
+                                         q                                           
+   核心工作：                                N                                            
+                                        x                                            
+                                       N                                             
+                                      R                                              
+         1. 设计并搭建完整系统架构，涵盖爬虫、数v       7据清洗、知识抽取、图谱构建、语义检索；                           
+                                    gl                                               
+                                   W                                                 
+         2. 使用LangChain + DeepSeek 抽取O医药实体及功效信息，构建    Neo4j知识图谱；                     
+                                  W                                                  
+                                 c                                                   
+         3. 基于 Faiss 实现症状、功效、疾_ 6病的语义检索，支持模糊匹配；                                      
+                               U                                                     
+                              9                                                      
+                              q                                                      
+         4. 利用 LangGraph 多 AgenxIt 实现意图识别、实体匹配、Cypher  查询生成等复杂流程；                    
+                            R                                                        
+                            Z                                                        
+                           F                                                         
+   技术指标：                  F                                                          
+                         N--                                                         
+                        3                                                            
+        1. 构建3万+中药、症状J  z、功效、疾病实体，及5万+知识体系；                                          
+                       H                                                             
+                      1                                                              
+        2.                                                                           
+          语义检索召回率2较ff                                                                
+                       关键词检索提升    18%；                                               
+                    b                                                                
+                    c                                                                
+                   0                                                                 
+                  0                                                                  
+   业务指标：          1                                                                  
+                 c                                                                   
+                 2                                                                   
+                6                                                                    
+                a                                                                    
+        1. 覆盖95c 9%常见中医问答场景（症状-疾病/药材、药材-功效/禁忌、疾病-方剂推荐）；                              
+              8                                                                      
+             c                                                                       
+        2. 用户测试整体答案满意度      提升至85%；                                                  
+   教育背景                                                                              
+   北京理工大学-计算机科学与技术专业-本科-2020届                                                        
+q                                                                                   q
+N                                                                                  N 
+x                                                                                 x  
+N                                                                                N   
+R                                                                                R   
+7                                                                               7    
+v                                                                               v    
+gl                                                                             gl    
+W                                                                             W      
+O                                                                            O       
+W                                                                           W        
+c                                                                          c         
+6                                                                          6         
+_                                                                         _          
+U                                                                        U           
+9                                                                        9           
+q                                                                       q            
+xI                                                                      xI           
+R                                                                      R             
+Z                                                                     Z              
+F                                                                    F               
+F                                                                    F               
+N--                                                                N--               
+3                                                                  3                 
+z                                                                 z                  
+J                                                                 J                  
+H                                                                H                   
+1                                                               1                    
+2ff                                                            2ff                   
+b                                                              b                     
+c                                                             c                      
+0                                                            0                       
+0                                                            0                       
+1                                                           1                        
+c                                                           c                        
+2                                                          2                         
+6                                                          6                         
+a                                                         a                          
+9                                                        9                           
+c                                                        c                           
+8                                                       8                            
+c                                                       c                            
+                                         q                                           
+                                        N                                            
+                                        x                                            
+                                       N                                             
+                                      R                                              
+                                      7                                              
+                                     v                                               
+                                    gl                                               
+                                   W                                                 
+                                   O                                                 
+                                  W                                                  
+                                 c                                                   
+                                6                                                    
+                                _                                                    
+                               U                                                     
+                              9                                                      
+                              q                                                      
+                             xI                                                      
+                            R                                                        
+                            Z                                                        
+                           F                                                         
+                          F                                                          
+                         N--                                                         
+                        3                                                            
+                        z                                                            
+                       J                                                             
+                       H                                                             
+                      1                                                              
+                     2ff                                                             
+                    b                                                                
+                    c                                                                
+                   0                                                                 
+                  0                                                                  
+                  1                                                                  
+                 c                                                                   
+                 2                                                                   
+                6                                                                    
+                a                                                                    
+               9                                                                     
+              c                                                                      
+              8                                                                      
+             c                                                                       
+                                                                                  qNxNR7vlgWOWc6_U9qIxRZFF--N3zJH1ff2bc001c26a9c8c

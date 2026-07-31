@@ -1,0 +1,1111 @@
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+R                                                                                 
+N                                        e5e37f635cb25a941HJz3Ny6F1ZXw4-9V_2dWOWglv7RNxNRqN
+7                                                                            7    
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+d     姜丽媛                                                                d        
+2                                                                       2         
+_                                                                      _          
+V                                                                      V          
+9                                                                     9           
+4-                                                                   4-           
+w                                                                   w             
+X                                                                   X             
+Z                                                                  Z              
+1     意向岗位：AI      全栈开发工程师/AI        应用开发工程师                       1              
+F                                                                 F               
+6                                                                6                
+y                                                                y                
+N                                                               N                 
+3                                                              3                  
+z                                                              z                  
+J                                                             J                   
+H                                                             H                   
+1     性别：女                   年龄：27                           1                    
+4                                                           4                     
+9                                                           9                     
+a                                                          a                      
+5                                                          5                      
+b 2   电话：18045886134         户籍：河北                        b 2                     
+c                                                        c                        
+5                                                       5                         
+3                                                       3                         
+6                                                      6                          
+7f    邮箱：uw38998@gmail.com   民族：汉族                    7f                          
+3                                                     3                           
+e                                                    e                            
+5                                                    5                            
+e                                                   e                             
+          相关技能                                                                    
+      AI 框架 & Agent 智能体                                                           
+      • 精通Java/Python双栈AI开发，熟练使用Spring AI、LangChain、LangGraph、LangChain4j开发大模型；熟练对
+       接DeepSeek、通义千问等主流大模型，具备gRPC跨语言混合架构落地经验，掌握         MCP、WebSocket、WebRTC 协议。 
+                                        q                                         
+                                       N                                          
+      • 精通LangGraph多智能体状态机编排，掌握ReAct推N理x循环、分层记忆管理、FunctionCall工具调度；依托LangSmith    
+                                     R                                            
+                                    7                                             
+                                    v                                             
+       实现链路追踪，通过Token滑动窗口剪枝、最W大gl迭代限制解决Agent死循环与上下文溢出问题。                          
+                                 O                                                
+                                W                                                 
+      • 具备自研LLM统一流量网关经验，集成OpdenTelemetry、Langfuse实现SSE流式输出、TTFT延迟监控、多模型动态         
+                               2                                                  
+                              _                                                   
+                              V                                                   
+       路由、限流熔断与全链路算力计费管     4-控9。                                                 
+                           w                                                      
+                           X                                                      
+      • 熟练基于Milvus、Neo4j搭建R1 Z AG/GraphRAG检索体系，通过HitRate、MRR、NDCG优化多路召回与重排效果；集成   
+                         F                                                        
+                        6                                                         
+                        y                                                         
+                       N                                                          
+       TruLens、Ragas实现模型3忠实度、相关性量化审计，搭建可迭代的RAG评测流水线。                              
+                      z                                                           
+                     J                                                            
+                     H                                                            
+                    1                                                             
+      • 精通大模型私有化部4署、量化推理与Prompt工程，熟练使用Dify快速搭建自动化任务链路，落地智能客服、智能                   
+                   9                                                              
+                  a                                                               
+                  5                                                               
+                 2                                                                
+       批改、数据分析c b、批量内容生成等商业化AI场景。                                                 
+               5                                                                  
+               3                                                                  
+              6                                                                   
+      后端框架  &7f微服务                                                                
+             3                                                                    
+            e                                                                     
+            5                                                                     
+           e                                                                      
+      • 熟练SpringBoot、SpringCloud Alibaba全套生态，擅长基于 Pig / RuoYi-Cloud 微服务脚手架进行深度二次开发
+       与架构扩展，掌握Nacos、Gateway、Sentinel、OpenFeign、Seata等核心组件，具备独立微服务架构拆分与全链路        
+       治理能力。                                                                      
+      • 精通SaaS多租户架构，采用动态数据源自适应切换落地租户数据隔离、RBAC精细化权限管控与数据脱敏审计，适配                    
+       政企私有化部署场景。                                                                 
+      • 擅长高并发性能优化，熟练（Caffeine+Redis）多级缓存、异步队列、分库分表等调优方案，引入            WebFlux 优   
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N      化长连接；掌握JVM调优与线上性能瓶颈排查，可独立封装通用业务组件与工具类。                                  N  
+R                                                                             R   
+7                                                                            7    
+v                                                                            v    
+W                                                                                 
+gl                                                                                
+      数据库与存储                                                               W      
+                                                                            gl    
+O                                                                         O       
+W                                                                        W        
+2 d   • 精通MySQL索引优化、事务机制、MVCC  与锁原理、慢SQL治理，具备读写分离、基于       ShardingSphere 的分2库d分表 
+_                                                                      _          
+V                                                                      V          
+9                                                                     9           
+4-     实战经验，擅长各类业务数据表结构设计。                                           4-           
+w                                                                   w             
+X                                                                   X             
+Z                                                                  Z              
+F 1   • 熟练Redis多级缓存架构，引入布隆过滤器系统性解决缓存穿透、击穿、雪崩问题，落地基于              ReFd1isson 的分布式  
+6                                                                6                
+y                                                                y                
+N                                                               N                 
+z 3    锁、会话存储、热点数据缓存方案。                                        z 3                
+J                                                             J                   
+H                                                             H                   
+1                                                            1                    
+9 4   • 熟练 Elasticsearch 全文检索与 IK 智能分词调优，结合 Canal 基于 Binlog 增量订阅9 4实现 MySQL 与向量库、检
+a                                                          a                      
+5                                                          5                      
+2                                                         2                       
+c b    索库的实时异构数据同步。                                      c b                      
+5                                                       5                         
+3                                                       3                         
+6                                                      6                          
+3 7f  • 熟练 Milvus （HNSW 索引调优）、Neo4j 搭建向量知识库与知识图谱，掌握  M3o7n f goDB 非结构化数据存储、MinIO 分
+e                                                    e                            
+5                                                    5                            
+e                                                   e                             
+       布式文件存储（大文件分片与断点续传），适配高并发、高可靠私有化业务场景。                                       
+      中间件                                                                         
+      • 熟练 RabbitMQ、RocketMQ 等消息中间件，运用异步解耦、流量削峰、死信队列机制处理      AI 文档解析、数据同步        
+                                        q                                         
+                                       N                                          
+                                      x                                           
+                                      N                                           
+                                     R                                            
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+                                  W                                               
+                                 O                                                
+                                W                                                 
+                                d                                                 
+                               2                                                  
+                              _                                                   
+                              V                                                   
+                             9                                                    
+                            4-                                                    
+                           w                                                      
+                           X                                                      
+                          Z                                                       
+                         1                                                        
+                         F                                                        
+                        6                                                         
+                        y                                                         
+                       N                                                          
+                      3                                                           
+                      z                                                           
+                     J                                                            
+                     H                                                            
+                    1                                                             
+                   4                                                              
+                   9                                                              
+                  a                                                               
+                  5                                                               
+                 2                                                                
+                b                                                                 
+                c                                                                 
+               5                                                                  
+               3                                                                  
+              6                                                                   
+             7f                                                                   
+             3                                                                    
+            e                                                                     
+            5                                                                     
+           e                                                                      
+                                                                               qNxNR7vlgWOWd2_V9-4wXZ1F6yN3zJH149a52bc536f73e5e
+
+=== PAGE ===
+
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                            7    
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+2 d    等高并发任务，落地分布式接口幂等性设计，闭环解决线上消息堆积、丢失、乱序问题。                          2 d       
+_                                                                      _          
+V                                                                      V          
+9                                                                     9           
+4-    • 熟练 XXL-Job 分布式定时任务，结合分片广播与失败重试机制，实现向量库增量同步、报表生成、数据4补-偿、异常                 
+w                                                                   w             
+X                                                                   X             
+Z                                                                  Z              
+F 1    预警等自动化调度场景。                                                F 1             
+6                                                                6                
+y                                                                y                
+N                                                               N                 
+z 3   前端技术                                                     z 3                
+J                                                             J                   
+H                                                             H                   
+1                                                            1                    
+9 4   • 熟练Vue3、ElementPlus、Pinia、uni-app、微信小程序开发，进行管理后台、数据可视9 4化大屏、移动端页面开发。       
+a                                                          a                      
+5                                                          5                      
+2                                                         2                       
+b                                                         b                       
+c     • 擅长通用业务组件、请求拦截、权限路由封装，精通前后端接口联调，多端项目落地c，具备完整全栈协同交付能力。                      
+5                                                       5                         
+3                                                       3                         
+6                                                      6                          
+3                                                                                 
+7f                                                                                
+      DevOps                                          3                           
+                                                      7f                          
+e                                                    e                            
+5                                                    5                            
+e                                                   e                             
+      • 熟练 Linux 运维操作与线上疑难问题排查，熟练使用     top、iostat、netstat 定位性能瓶颈，掌握 Docker 容器化   
+       部署、多阶段构建优化（Multi-stage）与资源配额管控。                                            
+      • 熟悉 Jenkins、K8s，搭建CI/CD自动化流水线、灰度发布与版本回滚流程，具备私有化项目部署、压测调优、故障                
+       复盘的完整工程化能力。                                                                
+      开发工具                                                                        
+      • 基础开发：IDEA、VSCode、PyCharm、HBuilderX、微信开发者工具、Maven、pnpm、Gitee、Postman、ApiFox、DBeaver、
+                                        q                                         
+                                       N                                          
+                                      x                                           
+                                      N                                           
+       ARDM、FinalShell、Docker；熟练分支管理、代码R评审、接口测试、版本迭代流程；                           
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+      • AI 编程：Codex、Windsurf、Claude Code、AWugment Code、Devin、Kiro、Cursor，熟练运用 CLI 智能体与全量上
+                                 O                                                
+                                W                                                 
+                                d                                                 
+       下文引擎  进行跨多仓库架构重构、性能2调优、线上       Bug 修复，大幅提升研发交付效率。                         
+                              _                                                   
+                              V                                                   
+                             9                                                    
+          工作经历             w                                                      
+                            4-                                                    
+                           X                                                      
+                          Z                                                       
+                         1                                                        
+                         F                                                        
+                        6                                                         
+                        y                                                         
+                       N                                                          
+      2023.4-至今       3                                   上海得帆智能科技有限公司            
+                      z                                                           
+                     J                                                            
+                     H                                                            
+      AI全栈开发工程师    4 1                                                            
+                   9                                                              
+                  a                                                               
+                  5                                                               
+                 2                                                                
+      工作内容      c b                                                               
+               5                                                                  
+               3                                                                  
+              6                                                                   
+      1. 担任研发3                                                                    
+             7f                                                                   
+              组长，协同梳理业务需求，主导系统顶层架构设计与迭代，统筹分配，推动AI商业化落地。                           
+            e                                                                     
+            5                                                                     
+           e                                                                      
+      2. 设计研发多  Agent、私有 RAG 核心模块，基于 gRPC 完成跨语言大模型生态集成。                           
+      3. 核心研发  LLM 流量网关，实现多模型路由、SSE   流式与限流熔断；打造     Milvus 向量检索及文本分片解析。          
+      4. 优化 ReAct 推理、向量+关键词混合检索，解决模型幻觉、算力争抢、向量检索超时等线上故障。                          
+      5. 落地多级缓存、分布式存储，搭建      Docker+K8s CI/CD 流水线，负责 AI 服务打包、灰度发布与集群运维。          
+      6. 制定团队  AI 开发规范，严格执行代码评审，组织      AI 技术分享，沉淀标准化开发文档，提升团队交付效率。               
+q                                                                                q
+N     2021.7-2023.4                                 贯通贯云（上海）信息科技有限公司            N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+v 7   Java全栈开发工程师                                                            v 7  
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W     工作内容                                                               W        
+d                                                                        d        
+2                                                                       2         
+_                                                                      _          
+9 V   1. 配合产品梳理快递   SaaS 业务，协助拆解模块需求细节。开发     Java 与 Vue 代码，实现揽派管理、数据9 V可视化基      
+4-                                                                   4-           
+w                                                                   w             
+Z X    础功能。                                                        Z X            
+1                                                                  1              
+F                                                                 F               
+6                                                                6                
+N y   2. 学习深耕微服务、缓存、消息队列体系，跟进线上问题修复与系统性能优化                      N y               
+3                                                              3                  
+z                                                              z                  
+J                                                             J                   
+1 H   3. 开发中主动跨岗位沟通，保证开发成果匹配平台业务需求。                          1 H                  
+4                                                           4                     
+9                                                           9                     
+a                                                          a                      
+2 5   4. 参与存储中间件落地与项目     CI/CD 流程，负责代码管理、容器打包与版本迭代。      2 5                     
+b                                                         b                       
+c                                                        c                        
+5                                                       5                         
+3                                                       3                         
+7f 6  5. 参与团队技术分享，学习    AI 相关框架并协助完成业务预研。             7f 6                        
+3                                                     3                           
+e                                                    e                            
+5                                                    5                            
+e         项目经历                                      e                             
+      2025.11-至今                                                 AI 智能算力中枢        
+      AI 应用开发工程师                                                                  
+                                        q                                         
+                                       N                                          
+                                      x                                           
+                                      N                                           
+                                     R                                            
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+                                  W                                               
+                                 O                                                
+                                W                                                 
+                                d                                                 
+                               2                                                  
+                              _                                                   
+                              V                                                   
+                             9                                                    
+                            4-                                                    
+                           w                                                      
+                           X                                                      
+                          Z                                                       
+                         1                                                        
+                         F                                                        
+                        6                                                         
+                        y                                                         
+                       N                                                          
+                      3                                                           
+                      z                                                           
+                     J                                                            
+                     H                                                            
+                    1                                                             
+                   4                                                              
+                   9                                                              
+                  a                                                               
+                  5                                                               
+                 2                                                                
+                b                                                                 
+                c                                                                 
+               5                                                                  
+               3                                                                  
+              6                                                                   
+             7f                                                                   
+             3                                                                    
+            e                                                                     
+            5                                                                     
+           e                                                                      
+                                                                               qNxNR7vlgWOWd2_V9-4wXZ1F6yN3zJH149a52bc536f73e5e
+
+=== PAGE ===
+
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                            7    
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+2                                                                                 
+d     项目介绍：针对企业全员AI落地后Token资费失控、算力开销黑盒、自动化执行不可控等管理与成本痛点，搭2建d企业                    
+_                                                                      _          
+V                                                                      V          
+9                                                                     9           
+4-    级AI经营算力治理中台。平台打通业务与算力资源的数据孤岛，统一数据流与决策流，实现AI算力精细4化-管控、智                      
+w                                                                   w             
+X                                                                   X             
+Z                                                                  Z              
+F 1   能业务决策与ROI数字化治理。基于SpringAI与OpenTelemetry做非侵入式链路观测，集成LangfusF  1e、LangSmith全  
+6                                                                6                
+y                                                                y                
+N                                                               N                 
+z 3   链路监控，落地管理后台+小程序双端体系，有效降低AI算力总成本、减少无效Token消耗，实z           3现企业AI业务可管、        
+J                                                             J                   
+H                                                             H                   
+1                                                            1                    
+9 4   可控、可复盘。                                               9 4                   
+a                                                          a                      
+5                                                          5                      
+2                                                         2                       
+b                                                         b                       
+c     技术栈：Java17、Python、SpringBoot3、SpringAIAlibaba、SpringCloudGateway、cWebFlux、gRPC、MySQL、Redis
+5                                                       5                         
+3                                                       3                         
+6                                                      6                          
+7f                                                    7f                          
+3     Cluster、RocketMQ、XXL-Job、LangGraph、Dify、MCP、LangSmith、Vue3、TruLen3s、Langfuse、TS、ECharts、uni-app、
+e                                                    e                            
+5                                                    5                            
+e                                                   e                             
+      Docker、SSE、WebSocket                                                        
+      主要功能：                                                                       
+      • 全域智能策略网关：依托    WebFlux 与语义缓存，支持 SSE 流式熔断，实现多租户毫秒级流量管控防空转。                 
+      • 语义驱动防御矩阵：集成    Java+Python 双引擎风控，深度审计安全意图，阻断   Agent 死循环以防算力暴涨。           
+      • 多源异构算力调度：基于     MCP 协议统一管理多厂商模型，支持公私有模型无感切换与故障自动漂移。                       
+      • 精细化算力运营流水线：调用链路支持动态路由与上下文裁剪，引入             TruLens 体系常态化抽检大模型质量。          
+                                        q                                         
+                                       N                                          
+                                      x                                           
+                                      N                                           
+      • 人机协同业务自治闭环：基于      LangGraph 实现长R周期任务断点恢复，配套高危场景全链路审批与降级流程。               
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+      • 可视化决策审计引擎：依托     ECharts 打造成W本图谱与 ROI 看板，基于链路追踪提供资费归因与经营决策。               
+                                 O                                                
+                                W                                                 
+                                d                                                 
+      个人职责：                    2                                                  
+                              _                                                   
+                              V                                                   
+                             9                                                    
+      1.                                                                          
+        担任后端研发组长，统筹项目全w周4-                                                        
+                             期研发交付，拆解任务、协调资源，制定AI工程化接入规范与可观测性标准，                  
+                           X                                                      
+                          Z                                                       
+                         1                                                        
+       统一团队开发范式，保障项目F高质量平稳落地。                                                     
+                        6                                                         
+                        y                                                         
+                       N                                                          
+                      3                                                           
+      2. 主导平台顶层架构设计J  z，搭建统一策略网关+语义防火墙双引擎架构，落地多租户算力分摊、流式计量与预算预警                   
+                     H                                                            
+                    1                                                             
+                   4                                                              
+       机制，从架构层面解a  9决AI调用黑盒、算力成本失控问题。                                             
+                  5                                                               
+                 2                                                                
+                b                                                                 
+      3. 攻坚WebFlu5xc流式SSE治理难题，基于OpenTelemetry+Langfuse搭建非侵入式全链路监控，精准定位TTFT性能      
+               3                                                                  
+              6                                                                   
+             7f                                                                   
+       瓶颈；实e现3页面退出秒级算力熔断，结合RocketMQ事务消息构建高可靠算力对账体系，保证计费零错漏。                       
+            5                                                                     
+           e                                                                      
+      4. 设计跨语言双引擎风控体系，通过       Java 极速限流+Python 深度语义审计实现分级防御；依托    LangSmith追踪    
+       LangGraph智能体状态流转，阻断Agent死循环，杜绝异常Token消耗与资费暴涨问题。                            
+      5. 重构模型调用责任链链路，落地多级算力降本策略，实现30%+算力成本优化；引入TruLens自动化评测体系，量                   
+       化模型服务质量，驱动Prompt与模型策略精细化迭代。                                                
+      6. 搭建多模型容灾容错体系，实现算力故障无感漂移与兜底降级，缩短故障恢复时长；负责Docker私有化部署与流                     
+q      水线建设，沉淀公共AI组件与可观测SDK，提升团队整体研发效能。                                          q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                            7    
+gl v  2024.10-2025.11                                                 知学云思  gl v  
+W                                                                          W      
+O                                                                         O       
+W     AI全栈开发工程师                                                          W        
+d                                                                        d        
+2                                                                       2         
+_                                                                      _          
+V                                                                      V          
+9     项目介绍：针对教师备课成本高、多模态教案解析困难、AI教学评估无量化标准、线上考试防作弊难、百万9师生并发                       
+4-                                                                   4-           
+w                                                                   w             
+X                                                                   X             
+1                                                                                 
+Z     卡顿、学情数据零散等痛点，搭建面向学校与教培机构的全场景智能教学系统。基于微服务架构，整1合Z直播授课、即                       
+F                                                                 F               
+6                                                                6                
+y                                                                y                
+3 N   时通讯、AI教学赋能能力，采用多智能体协同架构，分工完成内容生成、知识检索、智能批改、3              N学情分析等任务。自        
+z                                                              z                  
+J                                                             J                   
+H                                                             H                   
+4 1   研多模态文档解析流水线与RAG量化评估体系，依托教育专属知识库与场景化提示词工程，4             1覆盖课前备课、课中互动         
+9                                                           9                     
+a                                                          a                      
+5                                                          5                      
+b 2   及课后巩固。通过多级缓存、异步任务削峰解决百万师生并发卡顿与算力抢占问题，已b             2完成私有化常态化部署；后期          
+c                                                        c                        
+5                                                       5                         
+3                                                       3                         
+6                                                      6                          
+7f    升级WebRTC实时多模态交互中枢，实现动态实时智能教学辅助能力。               7f                          
+3                                                     3                           
+e                                                    e                            
+5                                                    5                            
+e     技术栈：Java、SpringBoot、SpringCloud、Vue3、uni-app、Electron、Netety、GraphRAG、WebSocket、LangGraph、
+      WebRTC、多智能体编排、Ragas/TruLens评估框架、MinerU/Marker布局解析、私有化大模型、提示词工程、BGE-Reranker、
+      Milvus、Neo4j、Redis、RabbitMQ、XXL-Job、流式ASR/TTS、多模态融合                         
+                                        q                                         
+                                       N                                          
+                                      x                                           
+                                      N                                           
+                                     R                                            
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+                                  W                                               
+                                 O                                                
+                                W                                                 
+                                d                                                 
+                               2                                                  
+                              _                                                   
+                              V                                                   
+                             9                                                    
+                            4-                                                    
+                           w                                                      
+                           X                                                      
+                          Z                                                       
+                         1                                                        
+                         F                                                        
+                        6                                                         
+                        y                                                         
+                       N                                                          
+                      3                                                           
+                      z                                                           
+                     J                                                            
+                     H                                                            
+                    1                                                             
+                   4                                                              
+                   9                                                              
+                  a                                                               
+                  5                                                               
+                 2                                                                
+                b                                                                 
+                c                                                                 
+               5                                                                  
+               3                                                                  
+              6                                                                   
+             7f                                                                   
+             3                                                                    
+            e                                                                     
+            5                                                                     
+           e                                                                      
+                                                                               qNxNR7vlgWOWd2_V9-4wXZ1F6yN3zJH149a52bc536f73e5e
+
+=== PAGE ===
+
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                            7    
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+2 d   主要功能：                                                             2 d       
+_                                                                      _          
+V                                                                      V          
+9                                                                     9           
+4-    • 多智能体协作与生成：系统采用多智能体协同架构，支持教案、PPT及多媒体教学素材的全品类智能化一4-键生成。                     
+w                                                                   w             
+X                                                                   X             
+Z                                                                  Z              
+F 1   • GraphRAG智能答疑：基于 Neo4j 与 Milvus 实现图增强检索，集成 TruLens 支持常态化量化审计F 1。           
+6                                                                6                
+y                                                                y                
+N                                                               N                 
+z 3   • 智能组卷与全自动批改：支持基于知识点和难度的智能选题组卷，具备主客观题自动判分与错z             3题自动归集功能。          
+J                                                             J                   
+H                                                             H                   
+1                                                            1                    
+9 4   • 大数据学情分析分析：自动统计学生答题轨迹与薄弱知识点，跨终端输出个人及班级多维9            4度学情量化报告。             
+a                                                          a                      
+5                                                          5                      
+2                                                         2                       
+b                                                         b                       
+c     • 互动式直播授课空间：提供低延迟音视频直播、屏幕共享及跨端连麦互动能力，配套c全功能课后录播回放系统。                        
+5                                                       5                         
+3                                                       3                         
+6                                                      6                          
+3                                                                                 
+7f                                                                                
+      • 即时通讯与资源管理：依托高性能     IM 系统打通多端师生互动链路，支持全流3程                                
+                                                      7f                          
+                                                       教学资源数字化沉淀与智能检索。            
+e                                                    e                            
+5                                                    5                            
+e                                                   e                             
+      个人职责：                                                                       
+      1. 负责高并发直播核心研发，攻坚连麦、投屏、录播全链路；通过Redis缓存与连接池优化，保障万人同屏直播低                      
+       延迟、稳定不掉线。基于Netty+WebSocket搭建IM即时通讯服务，优化线程模型与内存池，自研Redis环形队列结               
+       合RabbitMQ异步削峰，成功应对瞬时消息洪峰。                                                  
+      2. 攻坚多端流式渲染性能瓶颈，针对Web、小程序、Electron多端AI流式输出场景，自研分帧节流聚合算法；优化                  
+       V8引擎渲染机制，通过Web   Worker多线程解析，彻底解决长文本流式输出导致的UI阻塞与内存泄漏问题，保障多                 
+                                        q                                         
+                                       N                                          
+                                      x                                           
+                                      N                                           
+       端交互丝滑稳定。                      R                                            
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+      3. 负责AI智能体编排核心设计，基于LangGraWph搭建多智能体状态机调度体系，通过状态管控与迭代限制解决Agent               
+                                 O                                                
+                                W                                                 
+                                d                                                 
+       死循环、任务阻塞问题；针对复杂非标课2件，结合MinerU布局解析，自研文档分层分块与摘要生成策略，解决长文                     
+                              _                                                   
+                              V                                                   
+                             9                                                    
+       档语义断裂问题。            w                                                      
+                            4-                                                    
+                           X                                                      
+                          Z                                                       
+                         1                                                        
+      4. 主导搭建生产级可量化RAGF评估体系，构建GraphRAG知识链路，依托黄金测试集、多路召回与高精重排机制，结                  
+                        6                                                         
+                        y                                                         
+                       N                                                          
+                      3                                                           
+       合线上多维度指标审计，J   z抑制模型幻觉；优化Milvus索引与MQ消费策略，解决AI算力堆积与检索超时问题，将P99              
+                     H                                                            
+                    1                                                             
+                   4                                                              
+       首字延迟控制在2秒a  9内。                                                            
+                  5                                                               
+                 2                                                                
+                b                                                                 
+      5. 主导架构升5级c，搭建WebRTC低延迟多模态交互中枢，实现200ms内实时师生交互；将语音、视觉多模态特征接入                 
+               3                                                                  
+              6                                                                   
+             7f                                                                   
+       智能体调e度3，构建人机闭环智能教学反馈，提升直播个性化辅导与课堂互动效果，同时负责私有化部署、压测调优                       
+            5                                                                     
+           e                                                                      
+       与线上问题攻坚。                                                                   
+      2023.12-2024.10                                                 信元智域        
+      AI全栈开发工程师                                                                   
+      项目介绍：面向政企私有化部署的智能办公        AI 中台，解决企业文档零散检索慢、办公流程重复、大模型调用管控混                
+      乱等痛点。依托私有    RAG、多 Agent 协同与统一 LLM 网关，实现文档智能问答、自动化办公、多模态内容生成，配              
+q                                                                                q
+N                                                                               N 
+N x   套权限隔离与算力审计，兼顾办公提效与私有化数据安全。                                               N x
+R                                                                             R   
+7                                                                            7    
+gl v  技术栈：Java、Spring Cloud Alibaba、Spring AI、Spring Cloud Gateway、Milvus、Redis、RabbitMQ、MinIO、gl v
+W                                                                          W      
+O                                                                         O       
+W     Elasticsearch、XXL-Job、Vue3、Docker、LLM 大模型、Pig                      W        
+d                                                                        d        
+2                                                                       2         
+_                                                                      _          
+V                                                                      V          
+9     主要功能：                                                           9           
+4-                                                                   4-           
+w                                                                   w             
+X                                                                   X             
+1 Z   • LLM 统一调度网关：多模型路由分发，实现鉴权、限流、算力配额与全链路可观测监控                   1 Z            
+F                                                                 F               
+6                                                                6                
+y                                                                y                
+3 N   • 私有 RAG 知识库：文档分块向量化，文本    + 语义多路召回，支持公文问答、原文溯源          3 N                
+z                                                              z                  
+J                                                             J                   
+H                                                             H                   
+4 1   • 多 Agent 协同调度：多类型智能体分工拆解复合办公需求，自动完成复杂任务              4 1                   
+9                                                           9                     
+a                                                          a                      
+5                                                          5                      
+b 2   • DAG 流程可视化编排：自定义串行   / 并行办公自动化流程，定时批量处理任务          b 2                     
+c                                                        c                        
+5                                                       5                         
+3                                                       3                         
+6                                                      6                          
+7f    • 多模态内容生成：复用模型池生成公文、图表、PPT、配图、业务代码              7f                          
+3                                                     3                           
+e                                                    e                            
+5                                                    5                            
+e     • RBAC 权限资源管控：部门级数据隔离，算力配额校验，全操作安全审计          e                             
+      • 底层中间件支撑：MQ  异步处理耗时任务、定时任务调度、多级缓存、分布式文件存储                                  
+      个人职责：                                                                       
+                                        q                                         
+                                       N                                          
+                                      x                                           
+                                      N                                           
+                                     R                                            
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+                                  W                                               
+                                 O                                                
+                                W                                                 
+                                d                                                 
+                               2                                                  
+                              _                                                   
+                              V                                                   
+                             9                                                    
+                            4-                                                    
+                           w                                                      
+                           X                                                      
+                          Z                                                       
+                         1                                                        
+                         F                                                        
+                        6                                                         
+                        y                                                         
+                       N                                                          
+                      3                                                           
+                      z                                                           
+                     J                                                            
+                     H                                                            
+                    1                                                             
+                   4                                                              
+                   9                                                              
+                  a                                                               
+                  5                                                               
+                 2                                                                
+                b                                                                 
+                c                                                                 
+               5                                                                  
+               3                                                                  
+              6                                                                   
+             7f                                                                   
+             3                                                                    
+            e                                                                     
+            5                                                                     
+           e                                                                      
+                                                                               qNxNR7vlgWOWd2_V9-4wXZ1F6yN3zJH149a52bc536f73e5e
+
+=== PAGE ===
+
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                            7    
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+2 d   1. 参与中台整体架构设计，负责     LLM 网关、私有 RAG、多 Agent、文档资源模块后端开发；设计分层存储      +2 dRedis 
+_                                                                      _          
+V                                                                      V          
+9                                                                     9           
+4-     多级缓存，优化文档查询性能。                                                4-           
+w                                                                   w             
+X                                                                   X             
+Z                                                                  Z              
+F 1   2. 搭建政企私有化   RAG 体系，通过 Canal 同步业务数据至  ES 与 Milvus，采用 RRF 混合召回 +F 1轻量重排模型，   
+6                                                                6                
+y                                                                y                
+N                                                               N                 
+z 3    提升涉密公文检索精准度。                                            z 3                
+J                                                             J                   
+H                                                             H                   
+1                                                            1                    
+9 4   3. 开发统一  LLM 网关，基于 Sentinel 实现路由、限流熔断；接入  OpenTelemetry 全链9 4路监控大模型 TTFT 指标；
+a                                                          a                      
+5                                                          5                      
+2                                                         2                       
+b                                                         b                       
+c      使用 MQ、XXL-Job 异步分流耗时任务，缓解数据库压力。                   c                        
+5                                                       5                         
+3                                                       3                         
+6                                                      6                          
+3                                                                                 
+7f                                                                                
+      4. 基于 RBAC 实现部门数据隔离，对接算力平台管控调用配额，开发多模态生3成                                   
+                                                      7f                          
+                                                        功能；负责  Docker 部署运维、线      
+e                                                    e                            
+5                                                    5                            
+e                                                   e                             
+       上故障排查，统一编码规范并沉淀技术文档。                                                       
+      2023.4-2023.12                                        AI 低代码辅助开发中台          
+      AI 应用开发工程师                                                                  
+      项目介绍：面向研发团队提效的研发效能平台。基于低代码          PaaS 基座，整合私有化大模型、多智能体     Agent 调度与     
+      私有 RAG 向量检索，提供智能代码生成、代码校验、SQL      优化、内部知识库检索能力；依托智能体拆解需求，自动产               
+                                        q                                         
+      出数据模型、接口与代码骨架，MQ     异步处理批量任务、x  N支持代码一键部署；平台支持多租户隔离、细粒度权限与信创               
+                                      N                                           
+                                     R                                            
+                                    7                                             
+      私有化部署，统一研发标准，减少重复开发、提升       gl v交付效率与代码质量。                                 
+                                  W                                               
+                                 O                                                
+      技术栈：Spring Boot、Spring Cloud、SpriWng AI、MyBatis-Plus、Nacos、Sentinel、RabbitMQ、Milvus、MySQL、
+                                d                                                 
+                               2                                                  
+                              _                                                   
+      XXL-Job、Redis 多级缓存、Elasticse9aVrch、私有化大模型、LangGraph 多 Agent 编排、私有 RAG 向量检索、提示
+                            4-                                                    
+                           w                                                      
+                           X                                                      
+      词工程                 Z                                                       
+                         1                                                        
+                         F                                                        
+                        6                                                         
+      主要功能：            N y                                                        
+                      3                                                           
+                      z                                                           
+                     J                                                            
+                     H                                                            
+      • 多智能体需求拆解：基1于   LangGraph 编排多 Agent 自动拆解需求，支持状态持久化与滑动窗口防溢出。                
+                   4                                                              
+                   9                                                              
+                  a                                                               
+                  5                                                               
+      • 全栈代码自动生成2：支持自然语言驱动一键生成数据表、SQL、标准        CRUD 接口及全流程业务代码骨架。                
+                b                                                                 
+                c                                                                 
+               5                                                                  
+               3                                                                  
+      • 智能代码质 7f量6管控：集成 AI 实时审查沙箱与 Prompt 封装调优，提供漏洞检测、慢   SQL 优化与单元测试自动生成。        
+             3                                                                    
+            e                                                                     
+            5                                                                     
+      • 私有 ReAG 知识检索：依托 Milvus 实现混合召回与重排二次精筛，支持内部文档定时增量向量化。                       
+      • 高并发异步与限流：利用    RabbitMQ 解耦大批量任务，结合  Sentinel 落地大模型 API 动态限流与熔断保护。         
+      • 低代码交付与安全多租户：打通     PaaS 底座实现代码预览与一键部署发布，支持精细化租户隔离与信创私有化部署。                
+      个人职责：                                                                       
+      1. 搭建 LangGraph 多智能体编排服务，拆分需求解析、代码生成、质量校验       Agent；对接私有化大模型，搭建标准         
+       化分层  Prompt 体系，提升代码生成效果。                                                   
+q                                                                                q
+N                                                                               N 
+N x   2. 自研 Redis 分布式 Agent 状态持久化方案，采用  Protobuf/gRPC 序列化降低 70% 序列化损耗，搭配滑动窗口   N x
+R                                                                             R   
+7                                                                            7    
+v                                                                            v    
+gl     裁剪冗余上下文，解决长对话      OOM、上下文溢出问题。                                      gl    
+W                                                                          W      
+O                                                                         O       
+W     3. 基于 Milvus 搭建私有 RAG 引擎，实现向量 + 文本多路召回与知识库增量向量化；搭建       Redis 多级缓存，W配合     
+d                                                                        d        
+2                                                                       2         
+_                                                                      _          
+V                                                                      V          
+9      RabbitMQ 异步削峰，缓解大模型高并发调用性能瓶颈。                                  9           
+4-                                                                   4-           
+w                                                                   w             
+X                                                                   X             
+1 Z   4. 开发代码检测、SQL  优化、单元测试模块，重构     Monaco Editor 前端代码沙箱交互组件，打通低1代Z码底座形成全       
+F                                                                 F               
+6                                                                6                
+y                                                                y                
+3 N    流程交付链路；使用    XXL-Job 处理向量增量同步，排查线上   AI 链路各类异常，持续优化中台3   N稳定性。             
+z                                                              z                  
+J                                                             J                   
+H                                                             H                   
+1                                                            1                    
+4                                                           4                     
+a 9   2022.8-2023.4                       商家快递开放    API 中台及a经9营数据可视化运维平台          
+5                                                          5                      
+2                                                         2                       
+b                                                         b                       
+5 c   Java全栈开发工程师                                       5 c                       
+3                                                       3                         
+6                                                      6                          
+7f                                                    7f                          
+3                                                     3                           
+5                                                                                 
+e     项目介绍：驿通达配套物流开放中台，面向电商及实体商家，解决多快递渠道5对e接繁琐、数据分散、运维人工成本高                       
+e                                                   e                             
+      的痛点；统一整合快递接口，提供物流下单、对账、数据可视化、API           权限管控、自动化运维能力，并完成大模型业             
+      务问答预研，降低商家多物流对接成本。                                                          
+      技术栈：Java、SpringCloud、API 网关、MySQL、Redis、RabbitMQ、Elasticsearch、MinIO、Docker、Vue、GitLab
+                                        q                                         
+                                       N                                          
+                                      x                                           
+                                      N                                           
+                                     R                                            
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+                                  W                                               
+                                 O                                                
+                                W                                                 
+                                d                                                 
+                               2                                                  
+                              _                                                   
+                              V                                                   
+                             9                                                    
+                            4-                                                    
+                           w                                                      
+                           X                                                      
+                          Z                                                       
+                         1                                                        
+                         F                                                        
+                        6                                                         
+                        y                                                         
+                       N                                                          
+                      3                                                           
+                      z                                                           
+                     J                                                            
+                     H                                                            
+                    1                                                             
+                   4                                                              
+                   9                                                              
+                  a                                                               
+                  5                                                               
+                 2                                                                
+                b                                                                 
+                c                                                                 
+               5                                                                  
+               3                                                                  
+              6                                                                   
+             7f                                                                   
+             3                                                                    
+            e                                                                     
+            5                                                                     
+           e                                                                      
+                                                                               qNxNR7vlgWOWd2_V9-4wXZ1F6yN3zJH149a52bc536f73e5e
+
+=== PAGE ===
+
+q                                                                                q
+N                                                                               N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                            7    
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O                                                                         O       
+W                                                                        W        
+2 d   CI/CD、LLM 大模型开发框架、XXL-Job                                         2 d       
+_                                                                      _          
+V                                                                      V          
+9                                                                     9           
+4-    主要功能：                                                          4-           
+w                                                                   w             
+X                                                                   X             
+Z                                                                  Z              
+F 1   商家 API 网关鉴权限流、经营数据可视化大屏、ES     多维数据检索、MinIO  文件存储、Docker 自动化F 1运维、大模型文      
+6                                                                6                
+y                                                                y                
+N                                                               N                 
+z 3   档智能问答                                                    z 3                
+J                                                             J                   
+H                                                             H                   
+1                                                            1                    
+9 4   个人职责：                                                 9 4                   
+a                                                          a                      
+5                                                          5                      
+2                                                         2                       
+b                                                         b                       
+c     1. 梳理商家业务需求，输出网关、统计模块概要设计，开发鉴权、对账、报表核心c模块；优化高频接口与报表慢查                       
+5                                                       5                         
+3                                                       3                         
+6                                                      6                          
+7f                                                    7f                          
+3      询，设计网关限流策略提升查询效率。                              3                           
+e                                                    e                            
+5                                                    5                            
+e                                                   e                             
+      2. 基于 Gateway 搭建统一物流网关并封装快递适配层，通过      XXL-Job 拆分海量统计任务降低数据库负载；使用中          
+       间件实现缓存、异步数据同步，开发经营数据可视化大屏。                                                 
+      3. 处理分布式对账、接口幂等问题，制定对外        API 交互规范；维护技术文档、优化    CI/CD 发布流程，负责线上运        
+       维排查，独立完成大模型文档问答      Demo 预研。                                              
+      2021.7-2022.8                                                     驿通达       
+                                        q                                         
+      Java后端开发工程师                      N                                          
+                                      x                                           
+                                      N                                           
+                                     R                                            
+                                    7                                             
+      项目介绍：面向线下快递驿站打造多租户数字化运       gl v营平台，整合包裹收发、商家财务结算全链路业务线上化，通过租              
+                                  W                                               
+                                 O                                                
+      户数据隔离机制区分各门店业务数据；针对业W务高峰期接口响应卡顿、线下人工登记对账效率低下等业务痛点提供整                        
+                                d                                                 
+                               2                                                  
+                              _                                                   
+      套技术解决方案。               9 V                                                  
+                            4-                                                    
+                           w                                                      
+      技术栈：Java、SpringBoot、SpriZn X gCloud、MySQL、Redis、RabbitMQ、Elasticsearch、MinIO、Vue、Docker、多租
+                         1                                                        
+                         F                                                        
+                        6                                                         
+      户架构              N y                                                        
+                      3                                                           
+                      z                                                           
+                     J                                                            
+                     H                                                            
+      主要功能：         1                                                             
+                   4                                                              
+                   9                                                              
+                  a                                                               
+                  5                                                               
+      多租户权限隔离、包2裹全链路管理、商家财务结算、用户小程序寄件、ES          智能检索、消息异步推送、单据文件存储、             
+                b                                                                 
+                c                                                                 
+               5                                                                  
+               3                                                                  
+      自动化部署  7f 6                                                                 
+             3                                                                    
+            e                                                                     
+            5                                                                     
+      个人职责e：                                                                      
+      1. 开发包裹、权限、消息核心业务接口，实现包裹全链路管理，对接多租户隔离体系；通过               ShardingSphere 分库  
+       分表、SQL 优化缓解业务高峰数据库压力。                                                      
+      2. 采用 Seata+MQ 保障分布式事务一致性，Canal 同步数据至  ES；依托  Redis、RabbitMQ 完成高并发流量管控，     
+       学习应用  CI/CD 自动化部署流程。                                                       
+q                                                                                q
+N         教育经历                                                                  N 
+x                                                                               x 
+N                                                                              N  
+R                                                                             R   
+7                                                                            7    
+v                                                                            v    
+gl                                                                          gl    
+W                                                                          W      
+O     2017.9-2021.7                                             吉林大学珠海学O院         
+W                                                                        W        
+d                                                                        d        
+_ 2   计算机科学与技术     | 本科                                                _ 2        
+V                                                                      V          
+9                                                                     9           
+4-                                                                   4-           
+w                                                                   w             
+X                                                                   X             
+Z                                                                  Z              
+F 1       自我评价                                                    F 1             
+6                                                                6                
+y                                                                y                
+N                                                               N                 
+3                                                              3                  
+z                                                              z                  
+J                                                             J                   
+H                                                             H                   
+1     1. 具有扎实的java编程功底以及编码规范,拥有JAVA+AI架构搭建与多       Agent 项目落地从10到1的业务能力;          
+4                                                           4                     
+9                                                           9                     
+a                                                          a                      
+5                                                          5                      
+b 2   2. 能精准拆解业务需求，输出适配高并发、多租户场景的技术方案，保障落地稳定性b            2；                      
+c                                                        c                        
+5                                                       5                         
+3                                                       3                         
+7f 6  3. 深入参与多类开发项目，可高效协同进度、把控代码质量，保障项目落地的敏7f          6捷交付；                      
+3                                                     3                           
+e                                                    e                            
+5                                                    5                            
+e     4. 自学能力强，面对复杂技术难题可自主钻研攻关，独立定位并修复模型、e向量库、中间件各类线上故障；                          
+      5. 擅长跨产品、算法、前端团队协同，沉淀通用组件与故障排查方案，持续优化系统算力成本与业务效率。                           
+                                        q                                         
+                                       N                                          
+                                      x                                           
+                                      N                                           
+                                     R                                            
+                                    7                                             
+                                    v                                             
+                                   gl                                             
+                                  W                                               
+                                 O                                                
+                                W                                                 
+                                d                                                 
+                               2                                                  
+                              _                                                   
+                              V                                                   
+                             9                                                    
+                            4-                                                    
+                           w                                                      
+                           X                                                      
+                          Z                                                       
+                         1                                                        
+                         F                                                        
+                        6                                                         
+                        y                                                         
+                       N                                                          
+                      3                                                           
+                      z                                                           
+                     J                                                            
+                     H                                                            
+                    1                                                             
+                   4                                                              
+                   9                                                              
+                  a                                                               
+                  5                                                               
+                 2                                                                
+                b                                                                 
+                c                                                                 
+               5                                                                  
+               3                                                                  
+              6                                                                   
+             7f                                                                   
+             3                                                                    
+            e                                                                     
+            5                                                                     
+           e                                                                      
+                                                                               qNxNR7vlgWOWd2_V9-4wXZ1F6yN3zJH149a52bc536f73e5e
