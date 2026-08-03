@@ -1,166 +1,88 @@
-# 02 技术架构与API
+# 02 技术架构与 API
 
-## 1. 架构原则
+> 文档基线：当前代码实现，而非目标架构。
 
-MVP采用“受控流水线＋确定性评分引擎”。LLM输出必须通过JSON Schema校验，失败时修复或重试；评分由后端规则计算。
-
-```text
-Vue 3 Web
-  │
-FastAPI ── MySQL 8
-  ├─ 私有对象存储
-  └─ MySQL任务表 ← Worker轮询/抢占
-      ├─ PDF解析/OCR
-      ├─ JD/简历结构化抽取
-      ├─ 规则评分
-      └─ 报告生成
-```
-
-### 1.1 推荐技术栈
-
-- 前端：Vue 3、TypeScript、Vite、Vue Router、Pinia、Element Plus、ECharts、PDF.js
-- 后端：Python 3.12、FastAPI、Pydantic、SQLAlchemy 2、Alembic
-- 数据库：MySQL 8.0
-- 异步任务：MySQL `processing_tasks`任务表＋独立Python Worker
-- 文件：S3兼容私有对象存储，开发环境可使用MinIO
-- 文档：PyMuPDF；扫描件使用PaddleOCR
-- AI：供应商SDK封装层＋JSON Schema结构化输出
-- 部署：Nginx、Docker Compose；规模扩大后再迁移Kubernetes
-
-LangGraph仅用于确实需要状态恢复、分支和人工介入的流程，不作为MVP必选依赖。
-
-### 1.2 为什么优先Python
-
-简历解析、OCR、模型SDK和AI评测主要位于Python生态。使用FastAPI可以让API服务和异步Worker复用同一套Pydantic Schema、Prompt和评分代码，避免Java调用独立Python AI服务产生重复模型和跨服务排错成本。
-
-### 1.3 Java方案何时更合适
-
-如果企业已有成熟的Java中台、统一Spring Security权限、运维规范和Java研发团队，可以采用：
+## 1. 架构
 
 ```text
-Vue 3 → Spring Boot 3 → MySQL 8
-                   └→ Python AI Worker/API
+Vue 3 + Vite（5173）
+        │ HTTP / Bearer Token
+FastAPI（8000） ───────── MySQL 8
+  │  本地文件存储                │
+  └───────────────── processing_tasks
+                                  │ 轮询、抢占
+                            Python Worker
+                    ┌─────────────┴──────────────┐
+                    PDF 文本提取 / 视觉模型 OCR / LLM 评估
 ```
 
-Java负责用户、权限、岗位、候选人和业务API；Python负责PDF/OCR、LLM和评估任务。两者通过任务队列或内部HTTP通信。该方案治理能力更强，但MVP至少增加一个服务、两套部署和跨服务契约，暂不作为默认方案。
+| 层 | 当前技术与职责 |
+|---|---|
+| 前端 | Vue 3、TypeScript、Vite、Vue Router、Element Plus；调用 REST API，不直接访问数据库或模型 |
+| API | FastAPI、Pydantic、SQLAlchemy Async；处理认证、岗位、上传、任务查询和结果展示 |
+| 数据库 | MySQL 8 + asyncmy；Alembic 管理结构迁移 |
+| 异步处理 | `processing_tasks` 表 + 独立 Python Worker，无 Redis |
+| 文件 | 本地 `LOCAL_STORAGE_PATH`；数据库保存相对存储键 |
+| PDF/OCR | PyPDF 文本提取；PyMuPDF 转图片后调用兼容 OpenAI Chat Completions 的视觉模型 |
+| LLM | 兼容 OpenAI `chat/completions` 的 JD 分析、简历画像和人岗匹配调用 |
 
-## 2. 处理流程
+## 2. 简历处理过程
 
-1. 上传文件并校验MIME、扩展名、大小、哈希和恶意文件。
-2. PyMuPDF提取文本；文本不足时触发OCR。
-3. 保存带页码、区块位置的规范化文本。
-4. LLM按Schema抽取事实，不进行评价。
-5. 匹配岗位能力项并附证据、状态和置信度。
-6. 规则引擎计算明细及总分。
-7. LLM基于已验证的事实和分数生成解释与面试问题。
-8. 保存完整版本快照与调用日志。
+1. API 校验扩展名、PDF 文件头和 20 MB 大小限制。
+2. 使用 PyPDF 提取文本；少于 30 字时调用视觉模型 OCR（默认最多 5 页、160 DPI）。
+3. 从文本中识别姓名、电话、邮箱，按“电话优先；无电话时邮箱”去重。
+4. 将文件及预解析文字保存到本地存储，创建 `PARSE_RESUME` 任务。
+5. Worker 读取任务，生成结构化画像与 `resume_parse_versions`。
+6. 用户选中已解析的申请记录，批量创建 `ANALYZE_APPLICATION` 任务。
+7. Worker 读取已发布能力模型，调用模型匹配并用代码计算分数、写入证据和评估结果。
 
-## 3. API约定
+## 3. 认证与访问控制现状
 
-- 前缀：`/api/v1`
-- 鉴权：短时访问令牌＋刷新令牌或企业SSO
-- 错误：统一`code/message/request_id/details`
-- 列表：`page/page_size/sort/filter`
-- 写操作支持`Idempotency-Key`
-- 异步请求返回`202`及`task_id`
+- 首次初始化由 `/api/v1/setup/bootstrap` 创建组织；`/api/v1/setup/admin` 仅在系统没有用户时可创建首位管理员。
+- `POST /api/v1/auth/login` 使用邮箱和密码登录，返回 HMAC 签名的 Bearer Token；有效期为 24 小时。
+- 密码使用 `hashlib.scrypt` 派生哈希保存，数据库不保存明文密码。
+- 管理员可通过 `/api/v1/auth/users` 创建普通用户。
+- 所有候选人、简历上传、批量分析、能力模型、评估和任务接口均要求 Bearer Token。普通用户通过“资源 → 申请/岗位”链路只能访问自己创建的岗位数据；管理员可访问同组织全部数据。
+- 简历身份声明按“组织 + 账户 + 电话/邮箱”唯一，普通用户之间不会复用候选人和简历。历史数据未绑定账户时，仅管理员可安全处理。
+- 初始化状态接口可匿名访问，以支持首次安装；组织枚举接口已移除。首次初始化接口仅应在受控网络环境中开放。
 
-## 4. 核心API
+## 4. 实际路由
 
-### 岗位
+所有业务路由前缀为 `/api/v1`。下表列出当前实现的主要接口，不表示尚未实现的规划接口。
 
-| 方法 | 路径 | 用途 |
+| 分组 | 方法和路径 | 说明 |
 |---|---|---|
-| POST | `/jobs` | 创建岗位 |
-| GET | `/jobs` | 岗位列表 |
-| GET | `/jobs/{id}` | 岗位详情 |
-| PATCH | `/jobs/{id}` | 修改草稿 |
-| POST | `/jobs/{id}/analyze-jd` | 创建JD分析任务 |
-| POST | `/jobs/{id}/requirement-versions` | 保存能力模型版本 |
-| POST | `/jobs/{id}/requirement-versions/{vid}/publish` | 发布版本 |
-| POST | `/jobs/{id}/archive` | 归档岗位 |
+| 健康检查 | `GET /health`、`GET /health/database` | 服务与数据库连通性 |
+| 初始化 | `GET /setup/status`、`POST /setup/bootstrap`、`POST /setup/admin` | 首次组织/管理员初始化 |
+| 认证 | `POST /auth/login`、`GET /auth/me` | 登录和当前账户 |
+| 账户 | `GET /auth/users`、`POST /auth/users` | 仅管理员列出/创建普通账户 |
+| 岗位 | `POST/GET /jobs`、`GET/PATCH/DELETE /jobs/{id}` | 岗位管理；删除为物理清理逻辑 |
+| JD | `POST /jobs/{id}/analyze-jd` | 分析 JD 并保存能力模型草稿 |
+| 能力模型 | `GET /jobs/{id}/requirement-versions`、`GET/PATCH /jobs/{id}/requirement-versions/{vid}`、`POST .../publish` | 查看、修改、发布能力模型 |
+| 简历 | `POST /jobs/{id}/resumes` | 单文件上传；前端可并发批量调用 |
+| 候选人 | `GET /jobs/{id}/candidates`、`POST /jobs/{id}/evaluations/batch` | 列表与批量分析 |
+| 任务 | `GET /tasks/{id}`、`POST /tasks/{id}/retry` | 查询、重试失败任务 |
+| 评估 | `GET /evaluations/{id}`、`POST /evaluations/{id}/human-decision` | 查看结果和记录人工决定 |
 
-### 候选人与简历
+## 5. 配置
 
-| 方法 | 路径 | 用途 |
-|---|---|---|
-| POST | `/jobs/{id}/resumes` | 上传一份或多份简历 |
-| GET | `/jobs/{id}/candidates` | 候选人列表 |
-| GET | `/candidates/{id}` | 候选人资料 |
-| GET | `/resumes/{id}/download` | 鉴权后下载 |
-| POST | `/resumes/{id}/reparse` | 创建新解析版本 |
-| DELETE | `/candidates/{id}` | 发起合规删除 |
+`backend/.env` 是本地私密配置，不提交版本库。核心配置如下：
 
-### 评估与反馈
+| 配置 | 用途 |
+|---|---|
+| `MYSQL_*` | MySQL 地址、端口、库名、账号与密码 |
+| `LLM_PROVIDER/BASE_URL/API_KEY/MODEL` | JD 和简历分析模型 |
+| `RESUME_LLM_ENABLED` | 是否由模型生成简历画像与评估 |
+| `RESUME_VISION_ENABLED/MODEL/MAX_PAGES/DPI` | 扫描件视觉 OCR |
+| `TASK_MAX_ATTEMPTS/LEASE_SECONDS/HEARTBEAT_SECONDS` | Worker 最大自动尝试次数、任务租约和心跳周期 |
+| `TASK_RETRY_BASE_SECONDS/RETRY_MAX_SECONDS` | Worker 指数退避的初始与最大等待时间 |
+| `LOCAL_STORAGE_PATH` | PDF 和预解析文字本地存储目录 |
+| `APP_SECRET` | Bearer Token 签名密钥；生产环境必须随机且保密 |
 
-| 方法 | 路径 | 用途 |
-|---|---|---|
-| GET | `/evaluations/{id}` | 评估详情 |
-| POST | `/evaluations/{id}/rerun` | 以指定规则版本重评 |
-| POST | `/evaluations/{id}/human-decision` | 人工结论 |
-| POST | `/evaluations/{id}/corrections` | 事实纠正 |
-| POST | `/evaluations/{id}/interview-feedback` | 面试反馈 |
-| POST | `/jobs/{id}/compare` | 横向比较2–5人 |
+## 6. 运行与故障定位
 
-### 任务
-
-| 方法 | 路径 | 用途 |
-|---|---|---|
-| GET | `/tasks/{id}` | 查询任务 |
-| GET | `/tasks` | 任务中心 |
-| POST | `/tasks/{id}/retry` | 重试失败任务 |
-| POST | `/tasks/{id}/cancel` | 取消可取消任务 |
-
-## 5. 关键响应结构
-
-```json
-{
-  "evaluation_id": "uuid",
-  "status": "COMPLETED",
-  "score": 78.5,
-  "level": "RECOMMENDED",
-  "gate_result": "REVIEW_REQUIRED",
-  "dimensions": [
-    {
-      "code": "agent",
-      "score": 23,
-      "max_score": 30,
-      "confidence": 0.86,
-      "items": []
-    }
-  ],
-  "advantages": [],
-  "risks": [],
-  "unknowns": [],
-  "interview_questions": [],
-  "versions": {
-    "requirement": 3,
-    "rubric": "1.0.0",
-    "prompt": "resume-extract-1.0.0",
-    "model": "provider/model"
-  }
-}
-```
-
-## 6. 稳定性与可观测性
-
-- 超时、指数退避、最大3次自动重试。
-- 每阶段可单独重跑，使用输入哈希避免重复计费。
-- 记录request_id、task_id、阶段耗时、Token和费用，不记录完整简历正文。
-- 指标：成功率、P95耗时、OCR触发率、Schema失败率、模型错误率、单份成本。
-- 外部模型不可用时保留任务并允许稍后重试，不返回伪造结果。
-
-## 7. 前后端工程结构
-
-```text
-apps/
-  web/                 # Vue 3
-  api/                 # FastAPI路由、鉴权、业务服务
-  worker/              # MySQL任务轮询与处理入口
-packages/
-  domain/              # 领域模型和评分规则
-  ai/                  # Prompt、Schema、模型适配器
-  document/            # PDF与OCR
-  shared/              # 配置、日志、错误码
-```
-
-前端只调用FastAPI，不直接访问模型、MySQL或对象存储。下载文件由后端鉴权后签发短时URL。
+- API 仅负责创建/查询任务；“一直等待解析”通常表示 Worker 未启动、数据库连接异常或模型/OCR 调用失败。
+- Worker 每 30 秒回收过期租约；失败任务按指数退避自动重试，达到最大尝试次数后标记为 `FAILED`，可由有权限的用户手动重试。
+- 先查 `GET /api/v1/tasks/{id}` 的 `status`、`error_code`、`error_message`，再查看 Worker 日志。
+- JD 分析失败通常与 `LLM_*` 配置、模型接口兼容性或模型返回的结构不符有关。
+- 扫描件失败通常与视觉模型不支持图片输入、密钥/地址错误、页数限制或 PDF 图像质量有关。

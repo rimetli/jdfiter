@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     app_name: str = "AI Resume Screening"
     app_secret: SecretStr
     api_prefix: str = "/api/v1"
-    cors_origins: list[str] = ["http://localhost:5173"]
+    cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
 
     mysql_host: str
     mysql_port: int = 3306
@@ -26,6 +26,32 @@ class Settings(BaseSettings):
     mysql_password: SecretStr
     mysql_ssl: bool = False
     mysql_ssl_ca: str | None = None
+
+    llm_provider: str
+    llm_base_url: str | None = None
+    llm_api_key: SecretStr
+    llm_model: str
+    resume_llm_enabled: bool = False
+    resume_vision_enabled: bool = True
+    resume_vision_model: str | None = None
+    resume_vision_max_pages: int = 5
+    resume_vision_dpi: int = 160
+    local_storage_path: str = "storage"
+    task_max_attempts: int = 3
+    task_lease_seconds: int = 300
+    task_heartbeat_seconds: int = 30
+    task_retry_base_seconds: int = 15
+    task_retry_max_seconds: int = 300
+
+    @property
+    def effective_llm_base_url(self) -> str:
+        if self.llm_base_url:
+            return self.llm_base_url.rstrip("/")
+        if self.llm_provider.startswith(("http://", "https://")):
+            return self.llm_provider.rstrip("/")
+        if self.llm_provider == "openai":
+            return "https://api.openai.com/v1"
+        raise ValueError("请配置LLM_BASE_URL，或在LLM_PROVIDER中填写兼容接口地址")
 
     @property
     def database_url(self) -> URL:

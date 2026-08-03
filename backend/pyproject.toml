@@ -10,15 +10,21 @@ dependencies = [
   "asyncmy>=0.2.10,<1",
   "alembic>=1.14,<2",
   "python-multipart>=0.0.20,<1",
+  "httpx>=0.28,<1",
+  "pypdf>=5.1,<7",
+  "pymupdf>=1.25,<2",
 ]
 
 [project.optional-dependencies]
 dev = [
-  "httpx>=0.28,<1",
   "pytest>=8.3,<9",
   "pytest-asyncio>=0.25,<1",
   "ruff>=0.9,<1",
 ]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+exclude = ["storage*", "migrations*"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
@@ -26,3 +32,6 @@ testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 100
+
+[tool.ruff.lint]
+ignore = ["B008", "DTZ003"]
