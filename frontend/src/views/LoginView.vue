@@ -17,6 +17,7 @@ async function login() {
     const { data } = await api.post("/auth/login", form)
     localStorage.setItem("access_token", data.access_token)
     localStorage.setItem("current_user", JSON.stringify(data.user))
+    localStorage.setItem("organization_id", String(data.user.organization_id))
     await router.replace("/")
   } catch (error: any) {
     ElMessage.error(error?.response?.data?.detail || "登录失败")

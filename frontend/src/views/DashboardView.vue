@@ -60,16 +60,25 @@ type CandidateRow = {
   uploaded_at: string
 }
 
-type Account = { id: number; email: string; name: string; role: string; status: string }
+type Account = {
+  id: number
+  email: string
+  name: string
+  role: string
+  status: string
+  organization_id: number
+}
 
 const stages = ["确认岗位模型", "上传简历", "AI事实提取", "规则评分", "人工决策"]
 const loading = ref(true)
 const initialized = ref(false)
-const organizationId = ref<number | null>(Number(localStorage.getItem("organization_id")) || null)
 const jobs = ref<Job[]>([])
 const setupName = ref("")
 const setupSubmitting = ref(false)
 const currentUser = ref<Account | null>(JSON.parse(localStorage.getItem("current_user") || "null"))
+const organizationId = ref<number | null>(
+  Number(localStorage.getItem("organization_id")) || currentUser.value?.organization_id || null,
+)
 const accountVisible = ref(false)
 const accounts = ref<Account[]>([])
 const accountSubmitting = ref(false)
@@ -261,7 +270,18 @@ function openEdit(job: Job) {
 }
 
 async function saveJob() {
-  if (!organizationId.value) return
+  if (!organizationId.value) {
+    ElMessage.error("未找到当前组织，请重新登录后再试")
+    return
+  }
+  if (!form.name.trim()) {
+    ElMessage.warning("请填写岗位名称")
+    return
+  }
+  if (form.jd_content.trim().length < 10) {
+    ElMessage.warning("请填写至少 10 个字符的岗位 JD")
+    return
+  }
   createSubmitting.value = true
   try {
     if (editingJob.value) {
@@ -702,7 +722,7 @@ onMounted(() => {
         <el-button
           type="primary"
           :loading="createSubmitting"
-          :disabled="!form.name.trim() || form.jd_content.trim().length < 10"
+          :disabled="createSubmitting"
           @click="saveJob"
         >
           {{ editingJob ? "保存修改" : "创建岗位" }}
