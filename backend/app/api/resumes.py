@@ -29,7 +29,8 @@ from app.schemas.resumes import ResumeUploadRead
 router = APIRouter(prefix="/jobs", tags=["resumes"])
 MAX_FILE_SIZE = 20 * 1024 * 1024
 EMAIL_RE = re.compile(r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}", re.IGNORECASE)
-PHONE_RE = re.compile(r"(?:\+?86[-\s]?)?(?:1[3-9]\d[-\s]?\d{4}[-\s]?\d{4})")
+# OCR and exported PDFs often insert a space or dash between every phone digit.
+PHONE_RE = re.compile(r"(?:(?:\+?\s*8\s*6)[-\s]?)?1[-\s]*[3-9](?:[-\s]*\d){9}")
 
 
 def _normalize(value: str | None) -> str | None:
@@ -89,8 +90,9 @@ def _looks_like_name(value: str) -> bool:
 
 def _extract_identity(text: str, filename: str) -> tuple[str | None, str | None, str | None]:
     lines = [line.strip() for line in text.splitlines() if line.strip()]
-    email = EMAIL_RE.search(text)
-    phone = PHONE_RE.search(text)
+    compact_text = re.sub(r"\s+", "", text)
+    email = EMAIL_RE.search(text) or EMAIL_RE.search(compact_text)
+    phone = PHONE_RE.search(text) or PHONE_RE.search(compact_text)
     name = None
     for line in lines[:12]:
         cleaned = re.sub(r"^(姓名|Name|name)[:：\s]*", "", line).strip()
@@ -234,6 +236,21 @@ async def upload_resume(
                 detail="扫描版PDF视觉识别失败，请确认模型支持图片输入或上传清晰版PDF",
             ) from exc
     candidate_name, candidate_email, candidate_phone = _extract_identity(extracted_text, filename)
+    # Hybrid PDFs may have selectable body text but render contact details as an
+    # image. In that case pypdf succeeds, yet identity extraction still needs OCR.
+    if (candidate_name is None or (candidate_phone is None and candidate_email is None)) and not ocr_used:
+        try:
+            vision_text = await extract_text_with_vision(content)
+        except Exception:
+            # Keep the original validation message if the optional fallback is
+            # unavailable; it is clearer than exposing a model implementation error.
+            pass
+        else:
+            extracted_text = f"{extracted_text}\n{vision_text}".strip()
+            ocr_used = True
+            candidate_name, candidate_email, candidate_phone = _extract_identity(
+                extracted_text, filename
+            )
     if candidate_name is None:
         raise HTTPException(status_code=422, detail="无法从PDF中识别姓名，暂不能上传")
     if candidate_phone is None and candidate_email is None:
