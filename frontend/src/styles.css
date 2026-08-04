@@ -8,6 +8,15 @@
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; }
 
+.login-page { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(360px, .85fr); background: #f5f7f2; }
+.login-intro { display: flex; flex-direction: column; justify-content: center; padding: clamp(48px, 9vw, 144px); background: radial-gradient(circle at 80% 8%, rgba(173, 224, 164, .82), transparent 28rem), linear-gradient(145deg, #f4f8ef, #e6f0e1); }
+.login-intro h1 { max-width: 650px; margin: 18px 0; font-size: clamp(42px, 5vw, 72px); }
+.login-subtitle { max-width: 560px; color: #647167; font-size: 17px; line-height: 1.8; }
+.flow-steps { display: grid; gap: 16px; max-width: 580px; margin: 46px 0 0; padding: 0; list-style: none; }
+.flow-steps li { display: flex; gap: 16px; align-items: center; padding: 16px 18px; border: 1px solid rgba(57, 98, 69, .12); border-radius: 16px; background: rgba(255,255,255,.52); }
+.flow-steps span { color: #41805a; font-size: 12px; font-weight: 800; letter-spacing: .1em; }.flow-steps strong, .flow-steps small { display: block; }.flow-steps small { margin-top: 4px; color: #738075; }
+.login-card { display: flex; flex-direction: column; justify-content: center; padding: clamp(32px, 7vw, 96px); background: #fff; box-shadow: -20px 0 80px rgba(45, 72, 51, .05); }.login-card-head { margin-bottom: 28px; }.login-card h2 { font-size: 32px; }.login-form { display: grid; gap: 4px; }.login-form .el-button { width: 100%; margin-top: 10px; min-height: 44px; }.login-note { margin-top: 28px; color: #8a938b; font-size: 12px; line-height: 1.7; }
+
 .shell {
   min-height: 100vh;
   padding: 64px clamp(24px, 7vw, 112px);
@@ -92,6 +101,7 @@ h2 { margin: 6px 0 0; font-size: 28px; }
 .stage span { color: #6c8d74; font-size: 12px; }
 
 @media (max-width: 800px) {
+  .login-page { grid-template-columns: 1fr; }.login-intro { padding: 48px 28px 32px; }.login-intro h1 { font-size: 42px; }.flow-steps { margin-top: 26px; }.login-card { padding: 36px 28px 48px; }
   .shell { padding: 32px 20px; }
   .hero { min-height: auto; padding: 56px 0; flex-direction: column; align-items: flex-start; }
   .setup { grid-template-columns: 1fr; }

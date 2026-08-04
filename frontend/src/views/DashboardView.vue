@@ -185,6 +185,13 @@ function decisionTagType(v: string | null) {
   return "warning"
 }
 
+async function logout() {
+  localStorage.removeItem("access_token")
+  localStorage.removeItem("current_user")
+  localStorage.removeItem("organization_id")
+  await router.replace("/login")
+}
+
 async function load() {
   loading.value = true
   try {
@@ -638,6 +645,7 @@ onMounted(() => {
       <div class="hero-actions">
         <el-button v-if="currentUser?.role === 'ADMIN'" text size="small" @click="openAccounts">账户管理</el-button>
         <el-tag v-if="currentUser" effect="plain">{{ currentUser.name }} · {{ currentUser.role === 'ADMIN' ? '管理员' : '普通用户' }}</el-tag>
+        <el-button text size="small" @click="logout">退出登录</el-button>
         <el-button v-if="initialized" type="primary" size="large" @click="openCreate">
           创建岗位
         </el-button>
