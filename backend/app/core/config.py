@@ -38,6 +38,9 @@ class Settings(BaseSettings):
     jd_llm_max_tokens: int = 1200
     jd_llm_timeout_seconds: int = 55
     resume_llm_enabled: bool = False
+    # 简历全文与评分规则同时传给模型，限制输入和输出以适配第三方网关。
+    resume_llm_max_input_chars: int = 24000
+    resume_llm_max_tokens: int = 1600
     resume_vision_enabled: bool = True
     resume_vision_model: str | None = None
     resume_vision_max_pages: int = 5
@@ -48,6 +51,8 @@ class Settings(BaseSettings):
     task_heartbeat_seconds: int = 30
     task_retry_base_seconds: int = 15
     task_retry_max_seconds: int = 300
+    # 外部模型请求通常较重；小规格服务器和第三方网关默认以低并发运行。
+    worker_concurrency: int = 2
 
     @property
     def effective_llm_base_url(self) -> str:

@@ -32,7 +32,6 @@ from app.db.session import SessionLocal, engine
 from app.services.job_analysis import create_jd_requirement_draft
 
 WORKER_ID = f"{gethostname()}-{id(object())}"
-MAX_CONCURRENCY = 8
 
 DEPTH_ROLE_FACTOR = {
     ("MET", "DEEP", "LEAD"): Decimal("1.0"),
@@ -469,7 +468,8 @@ async def execute_task(task_id: int) -> None:
 
 
 async def run_worker() -> None:
-    print(f"Resume worker started: {WORKER_ID} (concurrency={MAX_CONCURRENCY})", flush=True)
+    max_concurrency = max(get_settings().worker_concurrency, 1)
+    print(f"Resume worker started: {WORKER_ID} (concurrency={max_concurrency})", flush=True)
     running: set[asyncio.Task] = set()
     last_recovery: datetime | None = None
     try:
@@ -479,7 +479,7 @@ async def run_worker() -> None:
                 if recovered:
                     print(f"Recovered {recovered} expired task lease(s)", flush=True)
                 last_recovery = datetime.utcnow()
-            while len(running) < MAX_CONCURRENCY:
+            while len(running) < max_concurrency:
                 task_id = await claim_task()
                 if task_id is None:
                     break

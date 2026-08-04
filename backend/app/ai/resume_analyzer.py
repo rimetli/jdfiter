@@ -1,9 +1,13 @@
 import json
+import logging
 
 import httpx
 from pydantic import BaseModel, Field
 
 from app.core.config import get_settings
+
+
+logger = logging.getLogger(__name__)
 
 VALID_STATUS = {"MET", "PARTIAL", "UNKNOWN", "NOT_MET"}
 VALID_DEPTH = {"DEEP", "SHALLOW", "NONE"}
@@ -56,6 +60,32 @@ class ResumeMatch(BaseModel):
     dimensions: list[DimensionMatch]
 
 
+class ModelRequestError(RuntimeError):
+    """A concise, user-safe error returned by an OpenAI-compatible gateway."""
+
+
+def _raise_for_model_error(response: httpx.Response) -> None:
+    if not response.is_error:
+        return
+    detail = ""
+    try:
+        body = response.json()
+        if isinstance(body, dict):
+            error = body.get("error")
+            if isinstance(error, dict):
+                detail = str(error.get("message") or error.get("code") or "")
+            elif error:
+                detail = str(error)
+    except (ValueError, TypeError):
+        pass
+    detail = detail.strip().replace("\n", " ")[:300]
+    message = f"模型服务返回 HTTP {response.status_code}"
+    if detail:
+        message = f"{message}：{detail}"
+    logger.warning("%s", message)
+    raise ModelRequestError(message)
+
+
 def _validate_match(matched: ResumeMatch, requirements: list[dict]) -> None:
     expected = [item["code"] for item in requirements]
     if [item.code for item in matched.dimensions] != expected:
@@ -84,10 +114,14 @@ async def analyze_resume_text(text: str) -> ResumeProfile:
         "model": settings.llm_model,
         "messages": [
             {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": f"<resume>\n{text[:50000]}\n</resume>"},
+            {
+                "role": "user",
+                "content": f"<resume>\n{text[:settings.resume_llm_max_input_chars]}\n</resume>",
+            },
         ],
         "temperature": settings.llm_temperature,
         "response_format": {"type": "json_object"},
+        "max_tokens": settings.resume_llm_max_tokens,
     }
     headers = {
         "Authorization": f"Bearer {settings.llm_api_key.get_secret_value()}",
@@ -99,7 +133,7 @@ async def analyze_resume_text(text: str) -> ResumeProfile:
             headers=headers,
             json=payload,
         )
-        response.raise_for_status()
+        _raise_for_model_error(response)
     content = response.json()["choices"][0]["message"]["content"]
     return ResumeProfile.model_validate(json.loads(content))
 
@@ -120,12 +154,13 @@ async def match_resume(text: str, requirements: list[dict]) -> ResumeMatch:
                 "role": "user",
                 "content": (
                     f"<requirements>{json.dumps(requirements, ensure_ascii=False)}</requirements>\n"
-                    f"<resume>{text[:50000]}</resume>"
+                    f"<resume>{text[:settings.resume_llm_max_input_chars]}</resume>"
                 ),
             },
         ],
         "temperature": settings.llm_temperature,
         "response_format": {"type": "json_object"},
+        "max_tokens": settings.resume_llm_max_tokens,
     }
     headers = {
         "Authorization": f"Bearer {settings.llm_api_key.get_secret_value()}",
@@ -135,7 +170,7 @@ async def match_resume(text: str, requirements: list[dict]) -> ResumeMatch:
         response = await client.post(
             f"{settings.effective_llm_base_url}/chat/completions", headers=headers, json=payload
         )
-        response.raise_for_status()
+        _raise_for_model_error(response)
     result = ResumeMatch.model_validate(json.loads(response.json()["choices"][0]["message"]["content"]))
     _validate_match(result, requirements)
     return result
@@ -165,12 +200,13 @@ async def analyze_and_match(text: str, requirements: list[dict]) -> tuple[Resume
                 "role": "user",
                 "content": (
                     f"<requirements>{json.dumps(requirements, ensure_ascii=False)}</requirements>\n"
-                    f"<resume>{text[:50000]}</resume>"
+                    f"<resume>{text[:settings.resume_llm_max_input_chars]}</resume>"
                 ),
             },
         ],
         "temperature": settings.llm_temperature,
         "response_format": {"type": "json_object"},
+        "max_tokens": settings.resume_llm_max_tokens,
     }
     headers = {
         "Authorization": f"Bearer {settings.llm_api_key.get_secret_value()}",
@@ -180,7 +216,7 @@ async def analyze_and_match(text: str, requirements: list[dict]) -> tuple[Resume
         response = await client.post(
             f"{settings.effective_llm_base_url}/chat/completions", headers=headers, json=payload
         )
-        response.raise_for_status()
+        _raise_for_model_error(response)
     content = json.loads(response.json()["choices"][0]["message"]["content"])
     profile = ResumeProfile.model_validate(content.get("profile") or {})
     matched = ResumeMatch.model_validate({"dimensions": content.get("dimensions") or []})
