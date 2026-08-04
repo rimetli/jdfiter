@@ -22,7 +22,7 @@ router = APIRouter(prefix="/jobs", tags=["candidates"])
 
 
 class BatchAnalyzeRequest(BaseModel):
-    application_ids: list[int] = Field(min_length=1, max_length=50)
+    application_ids: list[int] = Field(min_length=1, max_length=5)
     confirm_reevaluate: bool = False
 
 
@@ -51,12 +51,11 @@ async def list_candidates(
             .where(CandidateEvaluation.application_id == application.id)
             .order_by(CandidateEvaluation.created_at.desc()).limit(1)
         )
-        active_task = await db.scalar(
+        latest_analysis_task = await db.scalar(
             select(ProcessingTask)
             .where(
                 ProcessingTask.task_type == "ANALYZE_APPLICATION",
                 ProcessingTask.entity_id == application.id,
-                ProcessingTask.status.in_(["PENDING", "PROCESSING"]),
             ).order_by(ProcessingTask.created_at.desc()).limit(1)
         )
         parse_task = await db.scalar(
@@ -80,8 +79,10 @@ async def list_candidates(
             "filename": resume.original_filename if resume else "unknown.pdf",
             "parse_status": parse.status if parse else "PENDING",
             "parse_task_id": parse_task.id if parse_task else None,
-            "analysis_status": active_task.status if active_task else (evaluation.status if evaluation else "NOT_ANALYZED"),
-            "analysis_progress": active_task.progress if active_task else (100 if evaluation else 0),
+            "analysis_task_id": latest_analysis_task.id if latest_analysis_task else None,
+            "analysis_status": latest_analysis_task.status if latest_analysis_task else (evaluation.status if evaluation else "NOT_ANALYZED"),
+            "analysis_progress": latest_analysis_task.progress if latest_analysis_task else (100 if evaluation else 0),
+            "analysis_error": latest_analysis_task.error_message_safe if latest_analysis_task else None,
             "evaluation_id": evaluation.id if evaluation else None,
             "score": float(evaluation.total_score) if evaluation and evaluation.total_score is not None else None,
             "level": evaluation.level if evaluation else None,

@@ -7,6 +7,7 @@ from socket import gethostname
 from pypdf import PdfReader
 from sqlalchemy import func, select
 
+from app.ai.jd_analyzer import analyze_jd
 from app.ai.resume_analyzer import (
     ResumeProfile,
     analyze_and_match,
@@ -28,6 +29,7 @@ from app.db.models import (
     ResumeParseVersion,
 )
 from app.db.session import SessionLocal, engine
+from app.services.job_analysis import create_jd_requirement_draft
 
 WORKER_ID = f"{gethostname()}-{id(object())}"
 MAX_CONCURRENCY = 8
@@ -41,12 +43,23 @@ DEPTH_ROLE_FACTOR = {
     ("MET", "SHALLOW", "EXPOSURE"): Decimal("0.3"),
 }
 
+# PARTIAL 代表只有部分岗位证据，仍需根据证据深度和实际角色拉开差距。
+PARTIAL_DEPTH_ROLE_FACTOR = {
+    ("DEEP", "LEAD"): Decimal("0.6"),
+    ("DEEP", "CONTRIBUTOR"): Decimal("0.5"),
+    ("DEEP", "EXPOSURE"): Decimal("0.4"),
+    ("SHALLOW", "LEAD"): Decimal("0.4"),
+    ("SHALLOW", "CONTRIBUTOR"): Decimal("0.3"),
+    ("SHALLOW", "EXPOSURE"): Decimal("0.25"),
+}
+SCORING_POLICY_VERSION = "depth-role-1.1.0"
+
 
 def score_factor(status: str, depth: str | None, role: str | None) -> Decimal:
     if status in {"UNKNOWN", "NOT_MET"}:
         return Decimal(0)
     if status == "PARTIAL":
-        return Decimal("0.3")
+        return PARTIAL_DEPTH_ROLE_FACTOR.get((depth, role), Decimal("0.3"))
     return DEPTH_ROLE_FACTOR.get((status, depth, role), Decimal("0.5"))
 
 
@@ -184,7 +197,6 @@ async def process_resume(task_id: int) -> None:
         text = text.encode("utf-8", errors="replace").decode("utf-8")
         task.progress = 40
         await db.commit()
-
         profile = ResumeProfile()
         latest = await db.scalar(
             select(func.max(ResumeParseVersion.version_no)).where(
@@ -212,6 +224,23 @@ async def process_resume(task_id: int) -> None:
             completed_at=datetime.utcnow(),
         )
         db.add(parse_version)
+        task.status = "COMPLETED"
+        task.progress = 100
+        task.completed_at = datetime.utcnow()
+        task.locked_by = None
+        task.locked_at = None
+        await db.commit()
+
+
+async def process_job_jd_analysis(task_id: int) -> None:
+    async with SessionLocal() as db:
+        task = await db.get(ProcessingTask, task_id)
+        job = await db.get(JobPosition, task.entity_id) if task is not None else None
+        if task is None or job is None:
+            raise ValueError("岗位不存在")
+        analysis = await analyze_jd(job.jd_content)
+        task.progress = 85
+        await create_jd_requirement_draft(db, job, analysis, created_by=job.created_by)
         task.status = "COMPLETED"
         task.progress = 100
         task.completed_at = datetime.utcnow()
@@ -369,6 +398,7 @@ async def process_evaluation(task_id: int) -> None:
                     "status": match.status,
                     "depth": match.depth,
                     "role": match.role,
+                    "scoring_policy_version": SCORING_POLICY_VERSION,
                 },
             )
             db.add(detail)
@@ -423,6 +453,8 @@ async def execute_task(task_id: int) -> None:
             task_type = claimed.task_type if claimed else None
         if task_type == "PARSE_RESUME":
             await process_resume(task_id)
+        elif task_type == "ANALYZE_JOB_JD":
+            await process_job_jd_analysis(task_id)
         elif task_type == "ANALYZE_APPLICATION":
             await process_evaluation(task_id)
         else:

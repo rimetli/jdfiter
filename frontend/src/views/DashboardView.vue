@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, reactive, ref } from "vue"
+import { computed, defineAsyncComponent, nextTick, onMounted, reactive, ref } from "vue"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { useRouter } from "vue-router"
 
@@ -51,8 +51,10 @@ type CandidateRow = {
   filename: string
   parse_status: string
   parse_task_id: number | null
+  analysis_task_id: number | null
   analysis_status: string
   analysis_progress: number
+  analysis_error: string | null
   evaluation_id: number | null
   score: number | null
   level: string | null
@@ -121,9 +123,13 @@ const candidatesJob = ref<Job | null>(null)
 const candidates = ref<CandidateRow[]>([])
 const selectedCandidates = ref<CandidateRow[]>([])
 const batchAnalyzing = ref(false)
+const candidateTableRef = ref<{
+  toggleRowSelection: (row: CandidateRow, selected?: boolean) => void
+} | null>(null)
 const gateFilter = ref("")
 const retryingParseId = ref<number | null>(null)
 let candidatePollTimer: number | null = null
+const MAX_BATCH_ANALYZE = 5
 
 const resultVisible = ref(false)
 const resultLoading = ref(false)
@@ -325,15 +331,35 @@ async function deleteJob(job: Job) {
 async function analyzeJob(job: Job) {
   analyzingJobId.value = job.id
   try {
-    const { data } = await api.post(`/jobs/${job.id}/analyze-jd`, undefined, { timeout: 120000 })
-    ElMessage.success("JD分析完成，能力模型草稿已生成")
-    await load()
-    const jobAfter = jobs.value.find((item) => item.id === job.id) || job
-    await openRequirement(jobAfter, data.id)
+    const { data } = await api.post(`/jobs/${job.id}/analyze-jd`)
+    ElMessage.success(data.reused ? "JD分析仍在后台进行" : "JD分析已提交，页面关闭后仍会继续")
+    void pollJobAnalysis(job, data.task_id)
+  } catch (error: any) {
+    const detail = error?.response?.data?.detail
+    ElMessage.error(detail || "JD分析失败，请稍后重试")
+  }
+}
+
+async function pollJobAnalysis(job: Job, taskId: number) {
+  try {
+    const { data } = await api.get(`/tasks/${taskId}`)
+    if (data.status === "COMPLETED") {
+      analyzingJobId.value = null
+      ElMessage.success("JD分析完成，能力模型草稿已生成")
+      await load()
+      const jobAfter = jobs.value.find((item) => item.id === job.id) || job
+      await openRequirement(jobAfter)
+      return
+    }
+    if (data.status === "FAILED") {
+      analyzingJobId.value = null
+      ElMessage.error(data.error_message || "JD分析失败，可再次提交")
+      return
+    }
+    window.setTimeout(() => void pollJobAnalysis(job, taskId), 2000)
   } catch {
-    ElMessage.error("JD分析失败，请查看后端日志")
-  } finally {
     analyzingJobId.value = null
+    ElMessage.error("JD分析任务状态查询失败")
   }
 }
 
@@ -491,6 +517,7 @@ async function pollUploadTasks() {
         const { data } = await api.get(`/tasks/${item.taskId}`)
         item.status = data.status
         item.progress = data.progress
+        item.message = data.error_message || ""
       } catch {
         // 下一轮继续查询，避免瞬时网络错误覆盖真实任务状态。
       }
@@ -550,7 +577,14 @@ async function loadCandidates() {
 }
 
 function selectCandidates(rows: CandidateRow[]) {
-  selectedCandidates.value = rows
+  if (rows.length <= MAX_BATCH_ANALYZE) {
+    selectedCandidates.value = rows
+    return
+  }
+  const extras = rows.slice(MAX_BATCH_ANALYZE)
+  selectedCandidates.value = rows.slice(0, MAX_BATCH_ANALYZE)
+  void nextTick(() => extras.forEach((row) => candidateTableRef.value?.toggleRowSelection(row, false)))
+  ElMessage.warning(`单次最多选择 ${MAX_BATCH_ANALYZE} 份简历`)
 }
 
 function candidateSelectable(row: CandidateRow) {
@@ -559,6 +593,10 @@ function candidateSelectable(row: CandidateRow) {
 
 async function submitBatchAnalyze(confirm: boolean) {
   if (!candidatesJob.value || !selectedCandidates.value.length) return
+  if (selectedCandidates.value.length > MAX_BATCH_ANALYZE) {
+    ElMessage.warning(`单次最多选择 ${MAX_BATCH_ANALYZE} 份简历`)
+    return
+  }
   batchAnalyzing.value = true
   try {
     const { data } = await api.post(`/jobs/${candidatesJob.value.id}/evaluations/batch`, {
@@ -850,7 +888,7 @@ onMounted(() => {
                     : result.status === "UPLOAD_FAILED"
                       ? `上传失败：${result.message}`
                       : result.status === "FAILED"
-                        ? "解析失败"
+                        ? `解析失败：${result.message || "请重试"}`
                         : `解析中 ${result.progress}%`
                 }}
               </el-tag>
@@ -900,17 +938,18 @@ onMounted(() => {
             :disabled="!selectedCandidates.length"
             @click="batchAnalyzeCandidates"
           >
-            批量分析 {{ selectedCandidates.length || "" }}
+            批量分析 {{ selectedCandidates.length ? `${selectedCandidates.length}/${MAX_BATCH_ANALYZE}` : "" }}
           </el-button>
         </div>
       </div>
       <el-alert
-        title="简历只需上传一次。勾选已有简历后可反复按当前岗位规则重新分析，历史结果会保留。"
+        title="简历只需上传一次。每批最多选择 5 份；可按当前岗位规则重新分析，历史结果会保留。"
         type="info"
         :closable="false"
         show-icon
       />
       <el-table
+        ref="candidateTableRef"
         v-loading="candidatesLoading"
         :data="filteredCandidates"
         row-key="application_id"
@@ -942,6 +981,9 @@ onMounted(() => {
             <span v-if="['PENDING', 'PROCESSING'].includes(row.analysis_status)">
               分析中 {{ row.analysis_progress }}%
             </span>
+            <el-tooltip v-else-if="row.analysis_status === 'FAILED'" :content="row.analysis_error || '分析任务失败，可重新勾选后提交'">
+              <span class="analysis-failed">分析失败</span>
+            </el-tooltip>
             <span v-else>{{ analysisStatusText(row.analysis_status) }}</span>
           </template>
         </el-table-column>

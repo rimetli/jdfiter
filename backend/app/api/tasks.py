@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.jobs import get_job_or_404
 from app.core.auth import get_current_user
-from app.db.models import JobApplication, ProcessingTask, ResumeFile, User
+from app.db.models import JobApplication, JobPosition, ProcessingTask, ResumeFile, User
 from app.db.session import get_db
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
@@ -25,6 +25,11 @@ async def _get_task_for_user(task_id: int, db: AsyncSession, user: User) -> Proc
     if task.entity_type == "RESUME_FILE":
         resume = await db.get(ResumeFile, task.entity_id)
         if resume is not None and resume.uploaded_by == user.id:
+            return task
+    if task.entity_type == "JOB_POSITION":
+        job = await db.get(JobPosition, task.entity_id)
+        if job is not None:
+            await get_job_or_404(job.id, db, user)
             return task
     raise HTTPException(status_code=404, detail="任务不存在")
 

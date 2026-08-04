@@ -1,3 +1,4 @@
+import hashlib
 from datetime import datetime
 from pathlib import Path
 
@@ -5,7 +6,6 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import delete, func, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.ai.jd_analyzer import DIMENSIONS, analyze_jd
 from app.core.auth import get_current_user
 from app.core.config import get_settings
 from app.db.models import (
@@ -266,60 +266,41 @@ async def delete_job(job_id: int, db: AsyncSession = Depends(get_db), user: User
 
 @router.post(
     "/{job_id}/analyze-jd",
-    response_model=RequirementVersionRead,
-    status_code=status.HTTP_201_CREATED,
+    status_code=status.HTTP_202_ACCEPTED,
 )
 async def analyze_job_jd(
     job_id: int,
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
-) -> JobRequirementVersion:
+) -> dict:
     job = await get_job_or_404(job_id, db, user)
-    try:
-        analysis = await analyze_jd(job.jd_content)
-    except Exception as exc:
-        raise HTTPException(status_code=502, detail=f"模型分析失败：{type(exc).__name__}") from exc
-
-    latest = await db.scalar(
-        select(func.max(JobRequirementVersion.version_no)).where(
-            JobRequirementVersion.job_id == job_id
+    existing = await db.scalar(
+        select(ProcessingTask)
+        .where(
+            ProcessingTask.task_type == "ANALYZE_JOB_JD",
+            ProcessingTask.entity_type == "JOB_POSITION",
+            ProcessingTask.entity_id == job.id,
+            ProcessingTask.status.in_(["PENDING", "PROCESSING"]),
         )
+        .order_by(ProcessingTask.created_at.desc())
+        .limit(1)
     )
-    weights = {code: score for code, (_, score) in DIMENSIONS.items()}
-    version = JobRequirementVersion(
-        job_id=job_id,
-        version_no=(latest or 0) + 1,
-        summary=analysis.summary,
-        rubric_version="1.0.0",
-        weight_config=weights,
-        status="DRAFT",
-        created_by=user.id,
+    if existing is not None:
+        return {"task_id": existing.id, "status": existing.status, "reused": True}
+
+    task = ProcessingTask(
+        organization_id=job.organization_id,
+        task_type="ANALYZE_JOB_JD",
+        entity_type="JOB_POSITION",
+        entity_id=job.id,
+        status="PENDING",
+        progress=0,
+        input_hash=hashlib.sha256(job.jd_content.encode("utf-8")).hexdigest(),
     )
-    db.add(version)
-    await db.flush()
-    by_code = {item.code: item for item in analysis.dimensions}
-    db.add_all(
-        [
-            RequirementItem(
-                requirement_version_id=version.id,
-                dimension_code=code,
-                item_code=code,
-                name=name,
-                description=by_code[code].description,
-                requirement_type="MUST_HAVE" if by_code[code].is_gate else "NICE_HAVE",
-                max_score=score,
-                is_gate=by_code[code].is_gate,
-                acceptable_alternatives=by_code[code].acceptable_alternatives,
-                evidence_rule=by_code[code].evidence_rule,
-                sort_order=index,
-            )
-            for index, (code, (name, score)) in enumerate(DIMENSIONS.items())
-        ]
-    )
-    job.status = "REVIEW"
+    db.add(task)
     await db.commit()
-    await db.refresh(version)
-    return version
+    await db.refresh(task)
+    return {"task_id": task.id, "status": task.status, "reused": False}
 
 
 @router.get(

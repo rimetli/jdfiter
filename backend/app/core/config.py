@@ -31,6 +31,9 @@ class Settings(BaseSettings):
     llm_base_url: str | None = None
     llm_api_key: SecretStr
     llm_model: str
+    # JD 分析需要较快返回，避免长篇 JSON 占用模型推理时间。
+    jd_llm_max_tokens: int = 1200
+    jd_llm_timeout_seconds: int = 55
     resume_llm_enabled: bool = False
     resume_vision_enabled: bool = True
     resume_vision_model: str | None = None

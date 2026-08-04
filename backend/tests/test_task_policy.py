@@ -14,7 +14,10 @@ def test_exponential_retry_delay_is_bounded() -> None:
 def test_score_factor_uses_depth_and_role() -> None:
     assert score_factor("MET", "DEEP", "LEAD") == Decimal(1)
     assert score_factor("MET", "SHALLOW", "EXPOSURE") == Decimal("0.3")
-    assert score_factor("PARTIAL", "DEEP", "LEAD") == Decimal("0.3")
+    assert score_factor("PARTIAL", "DEEP", "LEAD") == Decimal("0.6")
+    assert score_factor("PARTIAL", "DEEP", "CONTRIBUTOR") == Decimal("0.5")
+    assert score_factor("PARTIAL", "SHALLOW", "LEAD") == Decimal("0.4")
+    assert score_factor("PARTIAL", "SHALLOW", "CONTRIBUTOR") == Decimal("0.3")
     assert score_factor("UNKNOWN", "NONE", "EXPOSURE") == Decimal(0)
 
 
