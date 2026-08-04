@@ -26,6 +26,7 @@ class JobRead(BaseModel):
     jd_content: str
     status: str
     active_requirement_version_id: int | None
+    owner_name: str | None = None
     created_at: datetime
     updated_at: datetime
 

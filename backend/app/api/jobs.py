@@ -83,10 +83,12 @@ async def list_jobs(
     job_status: str | None = Query(default=None, alias="status"),
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
-) -> list[JobPosition]:
+) -> list[JobRead]:
     if organization_id != user.organization_id:
         raise HTTPException(status_code=403, detail="无权访问该组织")
-    statement = select(JobPosition).where(
+    statement = select(JobPosition, User.display_name).outerjoin(
+        User, JobPosition.created_by == User.id
+    ).where(
         JobPosition.organization_id == organization_id,
         JobPosition.archived_at.is_(None),
     )
@@ -94,8 +96,11 @@ async def list_jobs(
         statement = statement.where(JobPosition.status == job_status)
     if user.role != "ADMIN":
         statement = statement.where(JobPosition.created_by == user.id)
-    result = await db.scalars(statement.order_by(JobPosition.updated_at.desc()))
-    return list(result)
+    result = await db.execute(statement.order_by(JobPosition.updated_at.desc()))
+    return [
+        JobRead.model_validate(job).model_copy(update={"owner_name": owner_name})
+        for job, owner_name in result.all()
+    ]
 
 
 @router.get("/{job_id}", response_model=JobRead)

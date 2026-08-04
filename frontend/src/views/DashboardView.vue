@@ -15,6 +15,7 @@ type Job = {
   name: string
   department: string | null
   status: string
+  owner_name?: string | null
   jd_content?: string
   updated_at: string
 }
