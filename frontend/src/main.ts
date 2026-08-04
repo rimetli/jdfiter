@@ -1,11 +1,45 @@
 import { createPinia } from "pinia"
 import { createApp } from "vue"
-import ElementPlus from "element-plus"
+import {
+  ElAlert,
+  ElButton,
+  ElDialog,
+  ElDrawer,
+  ElForm,
+  ElFormItem,
+  ElInput,
+  ElInputNumber,
+  ElLoading,
+  ElOption,
+  ElSelect,
+  ElTable,
+  ElTableColumn,
+  ElTag,
+} from "element-plus"
 import "element-plus/dist/index.css"
 
 import App from "./App.vue"
 import router from "./router"
 import "./styles.css"
 
-createApp(App).use(createPinia()).use(router).use(ElementPlus).mount("#app")
-
+const app = createApp(App)
+app.use(createPinia()).use(router)
+for (const component of [
+  ElAlert,
+  ElButton,
+  ElDialog,
+  ElDrawer,
+  ElForm,
+  ElFormItem,
+  ElInput,
+  ElInputNumber,
+  ElLoading,
+  ElOption,
+  ElSelect,
+  ElTable,
+  ElTableColumn,
+  ElTag,
+]) {
+  app.use(component)
+}
+app.mount("#app")

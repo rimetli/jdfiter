@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from "vue"
+import { computed, defineAsyncComponent, onMounted, reactive, ref } from "vue"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { useRouter } from "vue-router"
 
 import { api } from "../api/client"
+
+const EvaluationDrawer = defineAsyncComponent(() => import("../components/dashboard/EvaluationDrawer.vue"))
+const JobTable = defineAsyncComponent(() => import("../components/dashboard/JobTable.vue"))
 
 const router = useRouter()
 
@@ -150,11 +153,6 @@ const DECISION_TEXT: Record<string, string> = {
   REJECT: "不通过",
   HOLD: "待定",
 }
-const JOB_STATUS_TEXT: Record<string, string> = {
-  DRAFT: "草稿",
-  REVIEW: "待确认",
-  ACTIVE: "招聘中",
-}
 const ANALYSIS_STATUS_TEXT: Record<string, string> = {
   PENDING: "排队中",
   PROCESSING: "分析中",
@@ -171,9 +169,6 @@ function gateText(v: string | null) {
 }
 function decisionText(v: string | null) {
   return v ? DECISION_TEXT[v] || v : "--"
-}
-function jobStatusText(v: string) {
-  return JOB_STATUS_TEXT[v] || v
 }
 function analysisStatusText(v: string) {
   return ANALYSIS_STATUS_TEXT[v] || v
@@ -624,18 +619,6 @@ async function submitDecision(decision: string) {
   }
 }
 
-function dimensionName(code: string) {
-  return ({ agent: "Agent能力", llm: "LLM应用", engineering: "软件工程", saas: "SaaS经验", industry: "行业匹配", growth: "成长潜力" } as Record<string, string>)[code] || code
-}
-
-function depthText(depth: string | null) {
-  return ({ DEEP: "深度实践", SHALLOW: "泛泛提及", NONE: "无证据" } as Record<string, string>)[depth || ""] || ""
-}
-
-function roleText(role: string | null) {
-  return ({ LEAD: "主导", CONTRIBUTOR: "参与", EXPOSURE: "了解" } as Record<string, string>)[role || ""] || ""
-}
-
 onMounted(() => {
   if (!localStorage.getItem("access_token")) {
     void router.replace("/login")
@@ -694,67 +677,7 @@ onMounted(() => {
           <strong>{{ stage }}</strong>
         </div>
       </div>
-      <el-table v-else :data="jobs" class="jobs-table">
-        <el-table-column prop="name" label="岗位" min-width="160" />
-        <el-table-column prop="department" label="部门" min-width="120" />
-        <el-table-column label="状态" width="100">
-          <template #default="{ row }">
-            <el-tag :type="row.status === 'ACTIVE' ? 'success' : 'warning'" effect="plain">
-              {{ jobStatusText(row.status) }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="360" fixed="right">
-          <template #default="{ row }">
-            <el-button
-              v-if="row.status === 'ACTIVE'"
-              link
-              type="primary"
-              @click="openUpload(row)"
-            >
-              上传简历
-            </el-button>
-            <el-button
-              v-if="row.status === 'ACTIVE'"
-              link
-              type="success"
-              @click="openCandidates(row)"
-            >
-              候选人
-            </el-button>
-            <el-button
-              v-if="row.status !== 'DRAFT'"
-              link
-              type="success"
-              @click="openRequirement(row)"
-            >
-              能力模型
-            </el-button>
-            <el-button
-              v-if="row.status === 'DRAFT'"
-              link
-              type="primary"
-              :loading="analyzingJobId === row.id"
-              @click="analyzeJob(row)"
-            >
-              AI分析JD
-            </el-button>
-            <el-button
-              link
-              @click="openEdit(row)"
-            >
-              编辑
-            </el-button>
-            <el-button
-              link
-              type="danger"
-              @click="deleteJob(row)"
-            >
-              删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <JobTable v-else :jobs="jobs" :analyzing-job-id="analyzingJobId" @upload="openUpload" @candidates="openCandidates" @requirement="openRequirement" @analyze="analyzeJob" @edit="openEdit" @delete="deleteJob" />
       </template>
     </section>
 
@@ -1028,97 +951,13 @@ onMounted(() => {
       </el-table>
     </el-drawer>
 
-    <el-drawer v-model="resultVisible" title="候选人评估报告" size="min(860px, 96vw)">
-      <div v-loading="resultLoading" class="result-panel">
-        <template v-if="evaluationResult">
-          <section class="result-identity">
-            <div>
-              <p class="eyebrow">简历</p>
-              <h3>{{ evaluationResult.filename || `申请 #${evaluationResult.application_id}` }}</h3>
-            </div>
-            <div class="result-identity-meta">
-              <el-tag v-if="evaluationResult.requirement_version_no" effect="plain">
-                模型 V{{ evaluationResult.requirement_version_no }}
-              </el-tag>
-              <el-tag
-                v-if="evaluationResult.human_decision"
-                :type="decisionTagType(evaluationResult.human_decision.decision)"
-              >
-                已决策：{{ decisionText(evaluationResult.human_decision.decision) }}
-              </el-tag>
-            </div>
-          </section>
-          <section class="result-hero">
-            <div class="result-score">{{ evaluationResult.score }}</div>
-            <div>
-              <p class="eyebrow">综合评分 / 100</p>
-              <h2>{{ levelText(evaluationResult.level) }}</h2>
-              <p class="muted">门槛：{{ gateText(evaluationResult.gate_result) }} · 置信度：{{ (evaluationResult.confidence * 100).toFixed(0) }}%</p>
-            </div>
-          </section>
-          <section class="result-summary">
-            <div><strong>优势</strong><p v-for="item in evaluationResult.summary.advantages || []" :key="item">{{ item }}</p></div>
-            <div><strong>风险</strong><p v-for="item in evaluationResult.summary.risks || []" :key="item">{{ item }}</p></div>
-            <div><strong>待确认</strong><p v-for="item in evaluationResult.summary.unknowns || []" :key="item">{{ item }}</p></div>
-          </section>
-          <section class="result-details">
-            <article
-              v-for="detail in evaluationResult.details"
-              :key="detail.id"
-              class="result-detail-card"
-              :class="{ 'is-unknown': detail.status === 'UNKNOWN' }"
-            >
-              <div class="dimension-title">
-                <div>
-                  <strong>{{ dimensionName(detail.dimension_code) }}</strong>
-                  <el-tag :type="detail.status === 'MET' ? 'success' : detail.status === 'NOT_MET' ? 'danger' : detail.status === 'UNKNOWN' ? 'warning' : 'info'" effect="plain">
-                    {{ detail.status === "MET" ? "满足" : detail.status === "PARTIAL" ? "部分满足" : detail.status === "UNKNOWN" ? "证据不足" : "不满足" }}
-                  </el-tag>
-                  <el-tag v-if="detail.depth && (detail.status === 'MET' || detail.status === 'PARTIAL')" :type="detail.depth === 'DEEP' ? 'success' : 'warning'" effect="plain">
-                    {{ depthText(detail.depth) }}<template v-if="detail.role"> · {{ roleText(detail.role) }}</template>
-                  </el-tag>
-                </div>
-                <span>{{ detail.score }} / {{ detail.max_score }}</span>
-              </div>
-              <p>{{ detail.reason }}</p>
-              <blockquote v-for="evidence in detail.evidence" :key="evidence.quote">{{ evidence.quote }}</blockquote>
-            </article>
-          </section>
-          <section class="decision-panel">
-            <p class="eyebrow">人工决策</p>
-            <el-input
-              v-model="decisionComment"
-              type="textarea"
-              :rows="2"
-              placeholder="决策备注（可选）"
-            />
-            <div class="decision-buttons">
-              <el-button
-                type="success"
-                :loading="decisionSubmitting"
-                @click="submitDecision('ADVANCE')"
-              >
-                进入面试
-              </el-button>
-              <el-button
-                type="warning"
-                :loading="decisionSubmitting"
-                @click="submitDecision('HOLD')"
-              >
-                待定
-              </el-button>
-              <el-button
-                type="danger"
-                :loading="decisionSubmitting"
-                @click="submitDecision('REJECT')"
-              >
-                不通过
-              </el-button>
-            </div>
-          </section>
-          <p class="model-note">模型：{{ evaluationResult.model }} · Prompt：{{ evaluationResult.prompt_version }} · 规则：{{ evaluationResult.rubric_version }}</p>
-        </template>
-      </div>
-    </el-drawer>
+    <EvaluationDrawer
+      v-model:visible="resultVisible"
+      v-model:comment="decisionComment"
+      :loading="resultLoading"
+      :result="evaluationResult"
+      :submitting="decisionSubmitting"
+      @decide="submitDecision"
+    />
   </main>
 </template>
