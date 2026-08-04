@@ -204,6 +204,9 @@ async def upload_resume(
     user: User = Depends(get_current_user),
 ) -> ResumeUploadRead:
     job = await get_job_or_404(job_id, db, user)
+    # Save scalar ownership data before a rollback. SQLAlchemy expires ORM objects
+    # after rollback; accessing user.id later can otherwise trigger async lazy IO.
+    owner_user_id = user.id
     if job.status != "ACTIVE" or job.active_requirement_version_id is None:
         raise HTTPException(status_code=409, detail="请先发布岗位能力模型")
 
@@ -246,15 +249,19 @@ async def upload_resume(
         ("phone", phone_hash) if phone_hash else ("email", email_hash)
     )
     existing_candidate = await _find_candidate_by_claim(
-        db, job.organization_id, user.id, identity_type, identity_hash
+        db, job.organization_id, owner_user_id, identity_type, identity_hash
     )
     match_rule = identity_type
     # 去重规则：电话是候选人的首要唯一标识；仅在简历没有电话时才使用邮箱。
     # 姓名只用于展示和人工核验，避免同一人改名/简写后绕过重复校验。
     if existing_candidate is None and phone_hash:
-        existing_candidate = await _find_candidate_by_phone(db, job.organization_id, phone_hash, user.id)
+        existing_candidate = await _find_candidate_by_phone(
+            db, job.organization_id, phone_hash, owner_user_id
+        )
     if existing_candidate is None and not candidate_phone and email_hash:
-        existing_candidate = await _find_candidate_by_email(db, job.organization_id, email_hash, user.id)
+        existing_candidate = await _find_candidate_by_email(
+            db, job.organization_id, email_hash, owner_user_id
+        )
     if existing_candidate is None:
         match_rule = "new"
 
@@ -269,7 +276,7 @@ async def upload_resume(
         if candidate is None:
             candidate = Candidate(
                 organization_id=organization_id,
-                owner_user_id=user.id,
+                owner_user_id=owner_user_id,
                 name_ciphertext=candidate_name,
                 name_hash=name_hash,
                 email_ciphertext=candidate_email,
@@ -280,14 +287,20 @@ async def upload_resume(
             )
             db.add(candidate)
             await db.flush()
-            await _claim_identity(db, organization_id, user.id, identity_type, identity_hash, candidate.id)
+            await _claim_identity(
+                db, organization_id, owner_user_id, identity_type, identity_hash, candidate.id
+            )
             created_candidate = True
         else:
             # Gradually establish claims for historical candidates encountered during upload.
-            await _claim_identity(db, organization_id, user.id, identity_type, identity_hash, candidate.id)
+            await _claim_identity(
+                db, organization_id, owner_user_id, identity_type, identity_hash, candidate.id
+            )
     except IntegrityError as exc:
         await db.rollback()
-        candidate = await _find_candidate_by_claim(db, organization_id, user.id, identity_type, identity_hash)
+        candidate = await _find_candidate_by_claim(
+            db, organization_id, owner_user_id, identity_type, identity_hash
+        )
         if candidate is None:
             raise HTTPException(status_code=409, detail="候选人身份占位冲突，请稍后重试") from exc
         created_candidate = False
@@ -308,7 +321,7 @@ async def upload_resume(
                 size_bytes=len(content),
                 sha256=digest,
                 malware_status="PENDING",
-                uploaded_by=user.id,
+                uploaded_by=owner_user_id,
             )
             db.add(resume)
             await db.flush()
