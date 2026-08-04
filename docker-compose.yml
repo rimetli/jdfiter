@@ -1,0 +1,44 @@
+services:
+  api:
+    build:
+      context: .
+      target: backend-runtime
+    env_file:
+      - ./backend/.env
+    environment:
+      LOCAL_STORAGE_PATH: /data/storage
+    command: >
+      uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 1
+    volumes:
+      - /srv/data/ai-resume-screening/storage:/data/storage
+    expose:
+      - "8000"
+    restart: unless-stopped
+    mem_limit: 900m
+
+  worker:
+    build:
+      context: .
+      target: backend-runtime
+    env_file:
+      - ./backend/.env
+    environment:
+      LOCAL_STORAGE_PATH: /data/storage
+    command: python -m app.worker
+    volumes:
+      - /srv/data/ai-resume-screening/storage:/data/storage
+    depends_on:
+      - api
+    restart: unless-stopped
+    mem_limit: 1500m
+
+  web:
+    build:
+      context: .
+      target: frontend-runtime
+    ports:
+      - "127.0.0.1:8080:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+    mem_limit: 200m
