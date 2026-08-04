@@ -71,7 +71,7 @@ async def analyze_jd(jd_content: str) -> JDAnalysis:
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": f"<job_description>\n{jd_content}\n</job_description>"},
         ],
-        "temperature": 0.1,
+        "temperature": settings.llm_temperature,
         "response_format": {"type": "json_object"},
         "max_tokens": settings.jd_llm_max_tokens,
     }

@@ -31,6 +31,9 @@ class Settings(BaseSettings):
     llm_base_url: str | None = None
     llm_api_key: SecretStr
     llm_model: str
+    # 某些兼容网关（如部分 Kimi 路由）仅接受 temperature=1。
+    # 保持可配置，避免将模型供应商的限制写死在业务代码中。
+    llm_temperature: float = 0.1
     # JD 分析需要较快返回，避免长篇 JSON 占用模型推理时间。
     jd_llm_max_tokens: int = 1200
     jd_llm_timeout_seconds: int = 55

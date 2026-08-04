@@ -86,7 +86,7 @@ async def analyze_resume_text(text: str) -> ResumeProfile:
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": f"<resume>\n{text[:50000]}\n</resume>"},
         ],
-        "temperature": 0.1,
+        "temperature": settings.llm_temperature,
         "response_format": {"type": "json_object"},
     }
     headers = {
@@ -124,7 +124,7 @@ async def match_resume(text: str, requirements: list[dict]) -> ResumeMatch:
                 ),
             },
         ],
-        "temperature": 0.1,
+        "temperature": settings.llm_temperature,
         "response_format": {"type": "json_object"},
     }
     headers = {
@@ -169,7 +169,7 @@ async def analyze_and_match(text: str, requirements: list[dict]) -> tuple[Resume
                 ),
             },
         ],
-        "temperature": 0.1,
+        "temperature": settings.llm_temperature,
         "response_format": {"type": "json_object"},
     }
     headers = {

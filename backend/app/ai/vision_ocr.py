@@ -51,7 +51,7 @@ async def extract_text_with_vision(pdf_content: bytes) -> str:
             {"role": "system", "content": VISION_OCR_PROMPT},
             {"role": "user", "content": content},
         ],
-        "temperature": 0,
+        "temperature": settings.llm_temperature,
         "response_format": {"type": "json_object"},
     }
     headers = {
