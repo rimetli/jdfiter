@@ -5,7 +5,9 @@ from pathlib import Path
 from socket import gethostname
 
 from pypdf import PdfReader
+from pypdf.errors import PdfReadError
 from sqlalchemy import func, select
+from sqlalchemy.exc import IntegrityError
 
 from app.ai.jd_analyzer import analyze_jd
 from app.ai.resume_analyzer import (
@@ -17,12 +19,15 @@ from app.ai.vision_ocr import extract_text_with_vision
 from app.core.config import get_settings
 from app.core.task_policy import retry_available_after
 from app.db.models import (
+    Candidate,
     CandidateEvaluation,
+    CandidateIdentityClaim,
     EvaluationEvidence,
     EvaluationScoreDetail,
     JobApplication,
     JobPosition,
     JobRequirementVersion,
+    PendingResumeUpload,
     ProcessingTask,
     RequirementItem,
     ResumeFile,
@@ -30,6 +35,7 @@ from app.db.models import (
 )
 from app.db.session import SessionLocal, engine
 from app.services.job_analysis import create_jd_requirement_draft
+from app.services.resume_identity import extract_identity, value_hash
 
 WORKER_ID = f"{gethostname()}-{id(object())}"
 
@@ -94,11 +100,11 @@ def credibility_adjustment(
 def gate_score_cap(total: Decimal, gate_statuses: list[str]) -> tuple[Decimal, list[str]]:
     """Keep an otherwise strong total from hiding an unmet hard requirement."""
     if "NOT_MET" in gate_statuses:
-        capped = min(total, Decimal("59"))
+        capped = min(total, Decimal(59))
         if capped < total:
             return capped, ["存在未满足的硬门槛，综合评分已封顶为 59 分"]
     elif any(status in {"UNKNOWN", "PARTIAL"} for status in gate_statuses):
-        capped = min(total, Decimal("69"))
+        capped = min(total, Decimal(69))
         if capped < total:
             return capped, ["存在证据不足或部分满足的硬门槛，综合评分已封顶为 69 分"]
     return total, []
@@ -185,6 +191,242 @@ def extract_pdf_text(path: Path) -> tuple[str, int]:
     reader = PdfReader(path)
     pages = [page.extract_text() or "" for page in reader.pages]
     return "\n\n".join(pages).strip(), len(pages)
+
+
+async def _find_candidate_by_identity(
+    db, organization_id: int, owner_user_id: int, identity_type: str, identity_hash: str
+) -> Candidate | None:
+    return await db.scalar(
+        select(Candidate)
+        .join(CandidateIdentityClaim, CandidateIdentityClaim.candidate_id == Candidate.id)
+        .where(
+            CandidateIdentityClaim.organization_id == organization_id,
+            CandidateIdentityClaim.owner_user_id == owner_user_id,
+            CandidateIdentityClaim.identity_type == identity_type,
+            CandidateIdentityClaim.identity_hash == identity_hash,
+            Candidate.deleted_at.is_(None),
+        )
+    )
+
+
+async def _find_candidate_by_contact(
+    db, organization_id: int, owner_user_id: int, phone_hash: str | None, email_hash: str | None
+) -> Candidate | None:
+    if phone_hash:
+        candidate = await db.scalar(
+            select(Candidate).where(
+                Candidate.organization_id == organization_id,
+                Candidate.owner_user_id == owner_user_id,
+                Candidate.phone_hash == phone_hash,
+                Candidate.deleted_at.is_(None),
+            )
+        )
+        if candidate is not None:
+            return candidate
+    if not phone_hash and email_hash:
+        return await db.scalar(
+            select(Candidate).where(
+                Candidate.organization_id == organization_id,
+                Candidate.owner_user_id == owner_user_id,
+                Candidate.email_hash == email_hash,
+                Candidate.deleted_at.is_(None),
+            )
+        )
+    return None
+
+
+async def _claim_or_find_candidate(
+    db,
+    pending: PendingResumeUpload,
+    name: str,
+    email: str | None,
+    phone: str | None,
+) -> tuple[Candidate, bool, str]:
+    """Atomically reserve the primary identity so concurrent uploads cannot create duplicates."""
+    phone_hash = value_hash(phone)
+    email_hash = value_hash(email)
+    name_hash = value_hash(name)
+    identity_type, identity_hash = ("phone", phone_hash) if phone_hash else ("email", email_hash)
+    if identity_hash is None:
+        raise ValueError("无法从PDF中识别电话或邮箱，暂不能上传")
+
+    candidate = await _find_candidate_by_identity(
+        db, pending.organization_id, pending.uploaded_by, identity_type, identity_hash
+    )
+    if candidate is not None:
+        return candidate, True, identity_type
+
+    candidate = await _find_candidate_by_contact(
+        db, pending.organization_id, pending.uploaded_by, phone_hash, email_hash
+    )
+    if candidate is not None:
+        try:
+            async with db.begin_nested():
+                db.add(CandidateIdentityClaim(
+                    organization_id=pending.organization_id,
+                    owner_user_id=pending.uploaded_by,
+                    identity_type=identity_type,
+                    identity_hash=identity_hash,
+                    candidate_id=candidate.id,
+                ))
+                await db.flush()
+        except IntegrityError:
+            candidate = await _find_candidate_by_identity(
+                db, pending.organization_id, pending.uploaded_by, identity_type, identity_hash
+            )
+        if candidate is None:
+            raise ValueError("候选人身份占位冲突，请稍后重试")
+        return candidate, True, identity_type
+
+    try:
+        async with db.begin_nested():
+            candidate = Candidate(
+                organization_id=pending.organization_id,
+                owner_user_id=pending.uploaded_by,
+                name_ciphertext=name,
+                name_hash=name_hash,
+                email_ciphertext=email,
+                email_hash=email_hash,
+                phone_ciphertext=phone,
+                phone_hash=phone_hash,
+                source="MANUAL_UPLOAD",
+            )
+            db.add(candidate)
+            await db.flush()
+            db.add(CandidateIdentityClaim(
+                organization_id=pending.organization_id,
+                owner_user_id=pending.uploaded_by,
+                identity_type=identity_type,
+                identity_hash=identity_hash,
+                candidate_id=candidate.id,
+            ))
+            await db.flush()
+        return candidate, False, "new"
+    except IntegrityError:
+        candidate = await _find_candidate_by_identity(
+            db, pending.organization_id, pending.uploaded_by, identity_type, identity_hash
+        )
+        if candidate is None:
+            raise ValueError("候选人身份占位冲突，请稍后重试")
+        return candidate, True, identity_type
+
+
+async def process_pending_resume_upload(task_id: int) -> None:
+    """Do OCR, identity validation and deduplication in the Worker, never in the API request."""
+    settings = get_settings()
+    async with SessionLocal() as db:
+        task = await db.get(ProcessingTask, task_id)
+        pending = await db.get(PendingResumeUpload, task.entity_id) if task else None
+        if task is None or pending is None:
+            raise ValueError("待处理上传不存在")
+        source = Path(settings.local_storage_path).resolve() / pending.storage_key
+        if not source.is_file():
+            raise ValueError("上传的PDF文件不存在")
+
+        try:
+            text, page_count = await asyncio.to_thread(extract_pdf_text, source)
+        except (EOFError, PdfReadError, ValueError):
+            text, page_count = "", 0
+        ocr_used = False
+        if len(text) < 30:
+            text = await extract_text_with_vision(source.read_bytes())
+            ocr_used = True
+        name, email, phone = extract_identity(text, pending.original_filename)
+        if name is None:
+            raise ValueError("无法从PDF中识别姓名，暂不能上传")
+        if phone is None and email is None:
+            raise ValueError("无法从PDF中识别电话或邮箱，暂不能上传")
+
+        task.progress = 40
+        await db.commit()
+        candidate, duplicate, match_rule = await _claim_or_find_candidate(db, pending, name, email, phone)
+        if duplicate:
+            resume = await db.scalar(
+                select(ResumeFile)
+                .where(ResumeFile.candidate_id == candidate.id, ResumeFile.deleted_at.is_(None))
+                .order_by(ResumeFile.created_at.desc(), ResumeFile.id.desc())
+                .limit(1)
+            )
+            if resume is not None:
+                application = await db.scalar(
+                    select(JobApplication).where(
+                        JobApplication.job_id == pending.job_id,
+                        JobApplication.candidate_id == candidate.id,
+                        JobApplication.resume_file_id == resume.id,
+                    )
+                )
+                if application is None:
+                    application = JobApplication(
+                        job_id=pending.job_id,
+                        candidate_id=candidate.id,
+                        resume_file_id=resume.id,
+                        stage="APPLIED",
+                        source=f"DUPLICATE_{match_rule.upper()}",
+                    )
+                    db.add(application)
+                    await db.flush()
+                pending.resume_file_id = resume.id
+                pending.application_id = application.id
+                pending.duplicate = True
+                pending.match_rule = match_rule
+                pending.result_message = "电话重复，已复用已有简历" if match_rule == "phone" else "邮箱重复，已复用已有简历"
+                task.status = "COMPLETED"
+                task.progress = 100
+                task.completed_at = datetime.utcnow()
+                task.locked_by = None
+                task.locked_at = None
+                await db.commit()
+                source.unlink(missing_ok=True)
+                return
+
+        resume = ResumeFile(
+            candidate_id=candidate.id,
+            storage_key=pending.storage_key,
+            original_filename=pending.original_filename,
+            mime_type=pending.mime_type,
+            size_bytes=pending.size_bytes,
+            sha256=pending.sha256,
+            malware_status="PENDING",
+            uploaded_by=pending.uploaded_by,
+        )
+        db.add(resume)
+        await db.flush()
+        parsed_key = Path("parsed") / f"{resume.id}-v1.txt"
+        parsed_path = Path(settings.local_storage_path).resolve() / parsed_key
+        parsed_path.parent.mkdir(parents=True, exist_ok=True)
+        parsed_path.write_text(text.encode("utf-8", errors="replace").decode("utf-8"), encoding="utf-8")
+        db.add(ResumeParseVersion(
+            resume_file_id=resume.id,
+            version_no=1,
+            status="COMPLETED",
+            parser_version="pypdf-1.0.0",
+            ocr_used=ocr_used,
+            normalized_text_storage_key=str(parsed_key),
+            profile_json={"page_count": page_count, "ai_analysis_status": "PENDING_BATCH_ANALYSIS"},
+            validation_errors=[],
+            started_at=task.started_at,
+            completed_at=datetime.utcnow(),
+        ))
+        application = JobApplication(
+            job_id=pending.job_id,
+            candidate_id=candidate.id,
+            resume_file_id=resume.id,
+            stage="APPLIED",
+            source="MANUAL_UPLOAD",
+        )
+        db.add(application)
+        await db.flush()
+        pending.resume_file_id = resume.id
+        pending.application_id = application.id
+        pending.duplicate = False
+        pending.match_rule = "new"
+        pending.result_message = "解析完成，可在候选人列表批量分析"
+        task.status = "COMPLETED"
+        task.progress = 100
+        task.completed_at = datetime.utcnow()
+        task.locked_by = None
+        task.locked_at = None
+        await db.commit()
 
 
 async def process_resume(task_id: int) -> None:
@@ -467,6 +709,8 @@ async def execute_task(task_id: int) -> None:
             task_type = claimed.task_type if claimed else None
         if task_type == "PARSE_RESUME":
             await process_resume(task_id)
+        elif task_type == "PROCESS_RESUME_UPLOAD":
+            await process_pending_resume_upload(task_id)
         elif task_type == "ANALYZE_JOB_JD":
             await process_job_jd_analysis(task_id)
         elif task_type == "ANALYZE_APPLICATION":

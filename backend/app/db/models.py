@@ -159,6 +159,28 @@ class ResumeFile(Base):
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime)
 
 
+class PendingResumeUpload(Base):
+    """A safely persisted upload awaiting Worker OCR, identity validation and deduplication."""
+
+    __tablename__ = "pending_resume_uploads"
+    __table_args__ = (Index("ix_pending_resume_job_owner", "job_id", "uploaded_by", "created_at"),)
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    organization_id: Mapped[int] = mapped_column(ForeignKey("organizations.id"))
+    job_id: Mapped[int] = mapped_column(ForeignKey("job_positions.id"), index=True)
+    storage_key: Mapped[str] = mapped_column(String(500))
+    original_filename: Mapped[str] = mapped_column(String(255))
+    mime_type: Mapped[str] = mapped_column(String(100))
+    size_bytes: Mapped[int] = mapped_column(BigInteger)
+    sha256: Mapped[str] = mapped_column(String(64), index=True)
+    uploaded_by: Mapped[int | None] = mapped_column(ForeignKey("app_users.id"))
+    resume_file_id: Mapped[int | None] = mapped_column(ForeignKey("resume_files.id"))
+    application_id: Mapped[int | None] = mapped_column(ForeignKey("job_applications.id"))
+    duplicate: Mapped[bool | None] = mapped_column(Boolean)
+    match_rule: Mapped[str | None] = mapped_column(String(16))
+    result_message: Mapped[str | None] = mapped_column(Text)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.current_timestamp())
+
+
 class ResumeParseVersion(Base):
     __tablename__ = "resume_parse_versions"
     __table_args__ = (UniqueConstraint("resume_file_id", "version_no"),)

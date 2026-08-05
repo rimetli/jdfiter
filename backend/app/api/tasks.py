@@ -5,7 +5,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.jobs import get_job_or_404
 from app.core.auth import get_current_user
-from app.db.models import JobApplication, JobPosition, ProcessingTask, ResumeFile, User
+from app.db.models import (
+    JobApplication,
+    JobPosition,
+    PendingResumeUpload,
+    ProcessingTask,
+    ResumeFile,
+    User,
+)
 from app.db.session import get_db
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
@@ -26,6 +33,10 @@ async def _get_task_for_user(task_id: int, db: AsyncSession, user: User) -> Proc
         resume = await db.get(ResumeFile, task.entity_id)
         if resume is not None and resume.uploaded_by == user.id:
             return task
+    if task.entity_type == "PENDING_RESUME_UPLOAD":
+        pending = await db.get(PendingResumeUpload, task.entity_id)
+        if pending is not None and pending.uploaded_by == user.id:
+            return task
     if task.entity_type == "JOB_POSITION":
         job = await db.get(JobPosition, task.entity_id)
         if job is not None:
@@ -39,7 +50,7 @@ async def get_task(
     task_id: int, db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user)
 ) -> dict:
     task = await _get_task_for_user(task_id, db, user)
-    return {
+    response = {
         "id": task.id,
         "task_type": task.task_type,
         "status": task.status,
@@ -47,6 +58,16 @@ async def get_task(
         "error_code": task.error_code,
         "error_message": task.error_message_safe,
     }
+    if task.entity_type == "PENDING_RESUME_UPLOAD":
+        pending = await db.get(PendingResumeUpload, task.entity_id)
+        if pending is not None:
+            response.update({
+                "duplicate": pending.duplicate,
+                "match_rule": pending.match_rule,
+                "result_message": pending.result_message,
+                "application_id": pending.application_id,
+            })
+    return response
 
 
 @router.post("/{task_id}/retry", status_code=status.HTTP_202_ACCEPTED)

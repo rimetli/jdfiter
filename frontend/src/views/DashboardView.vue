@@ -490,8 +490,8 @@ async function uploadResumes() {
         taskId: data.task_id,
         progress: 0,
         duplicate: Boolean(data.duplicate),
-        matchRule: data.match_rule,
-        message: data.duplicate ? duplicateMessage(data.match_rule) : "已接收，等待解析",
+        matchRule: data.match_rule || "pending",
+        message: "文件已接收，正在后台校验与解析",
       })
     } catch (error: any) {
       const detail = error?.response?.data?.detail
@@ -511,8 +511,7 @@ async function uploadResumes() {
   }
   uploading.value = false
   const success = uploadResults.value.filter((item) => item.status !== "UPLOAD_FAILED").length
-  const duplicates = uploadResults.value.filter((item) => item.duplicate).length
-  ElMessage.success(`已处理 ${success} 份简历${duplicates ? `，其中 ${duplicates} 份为重复复用` : ""}`)
+  ElMessage.success(`已接收 ${success} 份简历，正在后台校验与解析`)
   if (success) void pollUploadTasks()
 }
 
@@ -527,7 +526,9 @@ async function pollUploadTasks() {
         const { data } = await api.get(`/tasks/${item.taskId}`)
         item.status = data.status
         item.progress = data.progress
-        item.message = data.error_message || ""
+        item.duplicate = Boolean(data.duplicate)
+        item.matchRule = data.match_rule || item.matchRule
+        item.message = data.error_message || data.result_message || item.message
       } catch {
         // 下一轮继续查询，避免瞬时网络错误覆盖真实任务状态。
       }
@@ -539,6 +540,8 @@ async function pollUploadTasks() {
     )
   ) {
     window.setTimeout(pollUploadTasks, 2000)
+  } else {
+    void loadCandidates()
   }
 }
 
@@ -885,7 +888,7 @@ onMounted(() => {
 
     <el-dialog v-model="uploadVisible" title="上传PDF简历" width="min(620px, 92vw)">
       <div class="upload-panel">
-        <p class="muted">岗位：{{ uploadJob?.name }}。系统会自动从PDF识别姓名、电话和邮箱来校验重复。</p>
+        <p class="muted">岗位：{{ uploadJob?.name }}。文件会立即保存，随后在后台完成 OCR、姓名电话邮箱校验和去重；关闭页面不会中断处理。</p>
         <p class="field-label">简历 PDF 文件 <span aria-hidden="true">*</span></p>
         <label class="file-picker">
           <input type="file" accept="application/pdf,.pdf" multiple @change="selectResumeFiles" />
@@ -914,7 +917,9 @@ onMounted(() => {
               >
                 {{
                   result.status === "COMPLETED"
-                    ? "解析完成"
+                    ? result.duplicate
+                      ? result.message || "重复命中，已复用已有简历"
+                      : "解析完成，可进行批量分析"
                     : result.status === "UPLOAD_FAILED"
                       ? `上传失败：${result.message}`
                       : result.status === "FAILED"

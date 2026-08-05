@@ -19,6 +19,7 @@ from app.db.models import (
     JobApplication,
     JobPosition,
     JobRequirementVersion,
+    PendingResumeUpload,
     ProcessingTask,
     RequirementItem,
     ResumeFile,
@@ -127,6 +128,20 @@ async def update_job(
 async def delete_job(job_id: int, db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user)) -> None:
     """Remove a job and its exclusive resume data while preserving shared candidates."""
     job = await get_job_or_404(job_id, db, user)
+
+    pending_uploads = list(
+        await db.scalars(select(PendingResumeUpload).where(PendingResumeUpload.job_id == job_id))
+    )
+    pending_ids = [upload.id for upload in pending_uploads]
+    if pending_ids:
+        await db.execute(
+            delete(ProcessingTask).where(
+                ProcessingTask.task_type == "PROCESS_RESUME_UPLOAD",
+                ProcessingTask.entity_type == "PENDING_RESUME_UPLOAD",
+                ProcessingTask.entity_id.in_(pending_ids),
+            )
+        )
+        await db.execute(delete(PendingResumeUpload).where(PendingResumeUpload.id.in_(pending_ids)))
 
     applications = list(
         await db.scalars(select(JobApplication).where(JobApplication.job_id == job_id))
@@ -260,6 +275,7 @@ async def delete_job(job_id: int, db: AsyncSession = Depends(get_db), user: User
             *(resume.storage_key for resume in removable_resumes),
             *(resume.preparsed_text_storage_key for resume in removable_resumes),
             *(version.normalized_text_storage_key for version in parse_versions),
+            *(upload.storage_key for upload in pending_uploads),
         ]
     )
 
