@@ -237,7 +237,7 @@ async def process_job_jd_analysis(task_id: int) -> None:
         job = await db.get(JobPosition, task.entity_id) if task is not None else None
         if task is None or job is None:
             raise ValueError("岗位不存在")
-        analysis = await analyze_jd(job.jd_content)
+        analysis = await analyze_jd(job.jd_content, job.job_category)
         task.progress = 85
         await create_jd_requirement_draft(db, job, analysis, created_by=job.created_by)
         task.status = "COMPLETED"

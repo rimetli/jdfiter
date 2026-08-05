@@ -1,19 +1,40 @@
 from datetime import datetime
 from decimal import Decimal
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+
+JobCategory = Literal[
+    "TECH_ENGINEERING",
+    "AI_AGENT",
+    "PRODUCT",
+    "DESIGN",
+    "SALES_BD",
+    "MARKETING",
+    "OPERATIONS",
+    "CUSTOMER_SUCCESS",
+    "HR",
+    "FINANCE",
+    "LEGAL_COMPLIANCE",
+    "SUPPLY_CHAIN",
+    "MANAGEMENT",
+    "GENERAL",
+]
 
 
 class JobCreate(BaseModel):
     organization_id: int
     name: str = Field(min_length=1, max_length=200)
     department: str | None = Field(default=None, max_length=200)
+    job_category: JobCategory = "GENERAL"
     jd_content: str = Field(min_length=10)
 
 
 class JobUpdate(BaseModel):
     name: str | None = Field(default=None, min_length=1, max_length=200)
     department: str | None = Field(default=None, max_length=200)
+    job_category: JobCategory | None = None
     jd_content: str | None = Field(default=None, min_length=10)
 
 
@@ -23,6 +44,7 @@ class JobRead(BaseModel):
     organization_id: int
     name: str
     department: str | None
+    job_category: JobCategory
     jd_content: str
     status: str
     active_requirement_version_id: int | None

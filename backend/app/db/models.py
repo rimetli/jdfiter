@@ -58,6 +58,7 @@ class JobPosition(Base, TimestampMixin):
     organization_id: Mapped[int] = mapped_column(ForeignKey("organizations.id"))
     name: Mapped[str] = mapped_column(String(200))
     department: Mapped[str | None] = mapped_column(String(200))
+    job_category: Mapped[str] = mapped_column(String(50), default="GENERAL", server_default="GENERAL")
     jd_content: Mapped[str] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(32), default="DRAFT")
     active_requirement_version_id: Mapped[int | None] = mapped_column(BigInteger)

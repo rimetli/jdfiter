@@ -59,6 +59,7 @@ h2 { margin: 6px 0 0; font-size: 28px; }
 .field-label { margin: 0; color: #303a33; font-size: 14px; font-weight: 600; }
 .field-label span { color: var(--el-color-danger); }
 .field-block small { color: #768078; font-size: 12px; line-height: 1.45; }
+.form-hint { display: block; margin-top: 6px; color: #768078; font-size: 12px; line-height: 1.45; }
 .muted { color: #707a73; line-height: 1.7; }
 .jobs-table { margin-top: 28px; --el-table-header-bg-color: #eff4eb; }
 .requirement-panel { min-height: 420px; padding: 0 8px 32px; }

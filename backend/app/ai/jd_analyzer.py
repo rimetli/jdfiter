@@ -62,14 +62,21 @@ def _normalize_analysis_payload(content: str) -> dict[str, object]:
     return payload
 
 
-async def analyze_jd(jd_content: str) -> JDAnalysis:
+async def analyze_jd(jd_content: str, job_category: str = "GENERAL") -> JDAnalysis:
     settings = get_settings()
     started_at = time.perf_counter()
     payload = {
         "model": settings.llm_model,
         "messages": [
             {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": f"<job_description>\n{jd_content}\n</job_description>"},
+            {
+                "role": "user",
+                "content": (
+                    f"<job_category>{job_category}</job_category>\n"
+                    "岗位类别仅用于理解岗位语境；若它和 JD 冲突，以 JD 为准。\n"
+                    f"<job_description>\n{jd_content}\n</job_description>"
+                ),
+            },
         ],
         "temperature": settings.llm_temperature,
         "response_format": {"type": "json_object"},

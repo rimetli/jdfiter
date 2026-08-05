@@ -14,6 +14,7 @@ type Job = {
   id: number
   name: string
   department: string | null
+  job_category: string
   status: string
   owner_name?: string | null
   jd_content?: string
@@ -132,6 +133,12 @@ let candidatePollTimer: number | null = null
 const MAX_BATCH_ANALYZE = 5
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const validEmail = (value: string) => emailPattern.test(value.trim())
+const jobCategoryOptions = [
+  ["TECH_ENGINEERING", "技术研发"], ["AI_AGENT", "AI / Agent"], ["PRODUCT", "产品"], ["DESIGN", "设计"],
+  ["SALES_BD", "销售 / 商务拓展"], ["MARKETING", "市场 / 品牌"], ["OPERATIONS", "运营"], ["CUSTOMER_SUCCESS", "客户成功 / 服务"],
+  ["HR", "人力资源"], ["FINANCE", "财务 / 审计"], ["LEGAL_COMPLIANCE", "法务 / 合规"], ["SUPPLY_CHAIN", "采购 / 供应链"],
+  ["MANAGEMENT", "管理岗位"], ["GENERAL", "通用 / 其他"],
+].map(([value, label]) => ({ value, label }))
 
 const resultVisible = ref(false)
 const resultLoading = ref(false)
@@ -144,7 +151,7 @@ const scoreTotal = computed(() =>
 )
 const scoresValid = computed(() => Math.abs(scoreTotal.value - 100) < 0.001)
 const uploadReady = computed(() => selectedFiles.value.length > 0)
-const form = reactive({ name: "", department: "", jd_content: "" })
+const form = reactive({ name: "", department: "", job_category: "", jd_content: "" })
 
 const filteredCandidates = computed(() => {
   if (!gateFilter.value) return candidates.value
@@ -264,7 +271,7 @@ async function createAccount() {
 
 function openCreate() {
   editingJob.value = null
-  Object.assign(form, { name: "", department: "", jd_content: "" })
+  Object.assign(form, { name: "", department: "", job_category: "", jd_content: "" })
   createVisible.value = true
 }
 
@@ -273,6 +280,7 @@ function openEdit(job: Job) {
   Object.assign(form, {
     name: job.name,
     department: job.department || "",
+    job_category: job.job_category || "GENERAL",
     jd_content: job.jd_content || "",
   })
   createVisible.value = true
@@ -301,7 +309,7 @@ async function saveJob() {
       ElMessage.success("岗位已创建")
     }
     createVisible.value = false
-    Object.assign(form, { name: "", department: "", jd_content: "" })
+    Object.assign(form, { name: "", department: "", job_category: "", jd_content: "" })
     editingJob.value = null
     await load()
   } catch (error: any) {
@@ -766,6 +774,12 @@ onMounted(() => {
     <el-dialog v-model="createVisible" :title="editingJob ? '编辑岗位' : '创建招聘岗位'" width="min(640px, 92vw)">
       <el-form label-position="top">
         <el-form-item label="岗位名称" required><el-input v-model="form.name" placeholder="例如：AI Agent 工程师" maxlength="100" show-word-limit /></el-form-item>
+        <el-form-item label="岗位类别" required>
+          <el-select v-model="form.job_category" placeholder="请选择岗位类别" style="width: 100%">
+            <el-option v-for="option in jobCategoryOptions" :key="option.value" :label="option.label" :value="option.value" />
+          </el-select>
+          <small class="form-hint">用于辅助 AI 理解岗位语境，最终仍以 JD 内容为准。</small>
+        </el-form-item>
         <el-form-item label="所属部门（可选）"><el-input v-model="form.department" placeholder="例如：技术中心" maxlength="100" show-word-limit /></el-form-item>
         <el-form-item label="岗位JD" required>
           <el-input v-model="form.jd_content" type="textarea" :rows="10" placeholder="粘贴岗位职责、任职要求和加分项，至少 10 个字符" maxlength="10000" show-word-limit />
@@ -776,7 +790,7 @@ onMounted(() => {
         <el-button
           type="primary"
           :loading="createSubmitting"
-          :disabled="createSubmitting || !form.name.trim() || form.jd_content.trim().length < 10"
+          :disabled="createSubmitting || !form.name.trim() || !form.job_category || form.jd_content.trim().length < 10"
           @click="saveJob"
         >
           {{ editingJob ? "保存修改" : "创建岗位" }}
