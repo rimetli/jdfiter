@@ -34,24 +34,25 @@ from app.services.job_analysis import create_jd_requirement_draft
 WORKER_ID = f"{gethostname()}-{id(object())}"
 
 DEPTH_ROLE_FACTOR = {
-    ("MET", "DEEP", "LEAD"): Decimal("1.0"),
-    ("MET", "DEEP", "CONTRIBUTOR"): Decimal("0.8"),
-    ("MET", "SHALLOW", "LEAD"): Decimal("0.7"),
-    ("MET", "SHALLOW", "CONTRIBUTOR"): Decimal("0.5"),
-    ("MET", "DEEP", "EXPOSURE"): Decimal("0.4"),
-    ("MET", "SHALLOW", "EXPOSURE"): Decimal("0.3"),
+    # 满足不等于满分：只有具备直接、量化的主导证据，才接近该维度满分。
+    ("MET", "DEEP", "LEAD"): Decimal("0.90"),
+    ("MET", "DEEP", "CONTRIBUTOR"): Decimal("0.75"),
+    ("MET", "SHALLOW", "LEAD"): Decimal("0.55"),
+    ("MET", "SHALLOW", "CONTRIBUTOR"): Decimal("0.40"),
+    ("MET", "DEEP", "EXPOSURE"): Decimal("0.25"),
+    ("MET", "SHALLOW", "EXPOSURE"): Decimal("0.15"),
 }
 
 # PARTIAL 代表只有部分岗位证据，仍需根据证据深度和实际角色拉开差距。
 PARTIAL_DEPTH_ROLE_FACTOR = {
-    ("DEEP", "LEAD"): Decimal("0.6"),
-    ("DEEP", "CONTRIBUTOR"): Decimal("0.5"),
-    ("DEEP", "EXPOSURE"): Decimal("0.4"),
-    ("SHALLOW", "LEAD"): Decimal("0.4"),
-    ("SHALLOW", "CONTRIBUTOR"): Decimal("0.3"),
-    ("SHALLOW", "EXPOSURE"): Decimal("0.25"),
+    ("DEEP", "LEAD"): Decimal("0.45"),
+    ("DEEP", "CONTRIBUTOR"): Decimal("0.35"),
+    ("DEEP", "EXPOSURE"): Decimal("0.25"),
+    ("SHALLOW", "LEAD"): Decimal("0.30"),
+    ("SHALLOW", "CONTRIBUTOR"): Decimal("0.20"),
+    ("SHALLOW", "EXPOSURE"): Decimal("0.10"),
 }
-SCORING_POLICY_VERSION = "depth-role-1.1.0"
+SCORING_POLICY_VERSION = "depth-role-1.2.0"
 
 
 def score_factor(status: str, depth: str | None, role: str | None) -> Decimal:
@@ -88,6 +89,19 @@ def credibility_adjustment(
             f"{deep_lead_count}/{len(items)} 维度判为深度实践+主导，存在过度包装风险，已施加可信度校准(×0.85)，建议面试核验关键维度的实际贡献深度"
         )
     return total, warnings
+
+
+def gate_score_cap(total: Decimal, gate_statuses: list[str]) -> tuple[Decimal, list[str]]:
+    """Keep an otherwise strong total from hiding an unmet hard requirement."""
+    if "NOT_MET" in gate_statuses:
+        capped = min(total, Decimal("59"))
+        if capped < total:
+            return capped, ["存在未满足的硬门槛，综合评分已封顶为 59 分"]
+    elif any(status in {"UNKNOWN", "PARTIAL"} for status in gate_statuses):
+        capped = min(total, Decimal("69"))
+        if capped < total:
+            return capped, ["存在证据不足或部分满足的硬门槛，综合评分已封顶为 69 分"]
+    return total, []
 
 
 async def claim_task() -> int | None:
@@ -331,6 +345,7 @@ async def process_evaluation(task_id: int) -> None:
         total = sum((item.max_score * factors[item.dimension_code] for item in items), Decimal(0))
         total, credibility_warnings = credibility_adjustment(items, by_code, total)
         gate_statuses = [by_code[item.dimension_code].status for item in items if item.is_gate]
+        total, gate_warnings = gate_score_cap(total, gate_statuses)
         gate_result = "PASSED"
         if any(value == "NOT_MET" for value in gate_statuses):
             gate_result = "NOT_MET"
@@ -352,7 +367,7 @@ async def process_evaluation(task_id: int) -> None:
             if by_code[item.dimension_code].status == "MET"
             and by_code[item.dimension_code].depth == "SHALLOW"
         ]
-        shallow_met = shallow_met + credibility_warnings
+        shallow_met = shallow_met + credibility_warnings + gate_warnings
         evaluation = CandidateEvaluation(
             application_id=application.id,
             parse_version_id=parse_version.id,
@@ -370,7 +385,7 @@ async def process_evaluation(task_id: int) -> None:
                 str(sum(x.confidence for x in matched.dimensions) / len(matched.dimensions))
             ).quantize(Decimal("0.001")),
             rubric_version=version.rubric_version if version else "1.0.0",
-            prompt_version="resume-match-1.1.0",
+            prompt_version="resume-match-1.2.0",
             model_provider="openai-compatible",
             model_name=settings.llm_model,
             supersedes_evaluation_id=previous.id if previous else None,

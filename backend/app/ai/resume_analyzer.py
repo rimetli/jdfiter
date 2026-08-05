@@ -26,12 +26,22 @@ role 取值 LEAD/CONTRIBUTOR/EXPOSURE：
 - EXPOSURE：仅了解/熟悉/接触过或课程自学
 
 判定规则（严格执行）：
+0. MET 仅适用于简历原文能够直接证明该维度的核心要求及 evidence_rule；仅技能关键词、相近领域经历或泛泛职责不能判 MET
 1. 技能列表式描述（"熟悉/掌握/了解/熟练使用/具备...经验"）不是 DEEP 证据，不构成 LEAD 角色依据
 2. 项目描述需区分"系统做了什么"和"我做了什么"：只有系统功能描述而无个人具体贡献的，depth 至多为 SHALLOW
 3. 量化指标必须是个人贡献的成果（如"我优化后召回率提升X%"），系统级指标（如"系统处理160+文档"）不构成 DEEP 证据
 4. 警惕关键词堆砌：罗列名词但无个人贡献细节、无失败与取舍描述的，depth 必须判 SHALLOW
 5. 可信度审查：如果候选人年龄/工龄与声称的深度经验明显不匹配（如3年经验声称主导多个大型项目），应提高审查标准，对缺乏具体个人贡献细节的维度判 SHALLOW
 6. 如果所有维度都声称 DEEP+LEAD，需特别审视：真正的技术领导者在多数维度会有取舍、失败、挑战的具体描述；全是成功声明无反思的，至少部分维度应降级"""
+
+MATCH_EVIDENCE_RULE = """
+匹配强度规则（严格执行）：
+- MET：简历中有直接原文证据，能满足该维度的核心要求和 evidence_rule；若岗位要求年限、行业、主导经历或量化成果，简历也必须能直接支持相应关键点
+- PARTIAL：只满足部分核心要求，或有相关经历但缺少关键年限、成果、职责范围或岗位指定场景
+- UNKNOWN：简历没有足够直接证据。不能因为技能名称相近、项目名称相近或常识推断而判为 MET/PARTIAL
+- NOT_MET：简历明确显示与硬性要求冲突，例如年限明显不足、要求的资格/语言/地点明确不满足
+- 每个 MET 或 PARTIAL 至少提供一条可在简历中定位的短原文；没有原文证据时必须判 UNKNOWN
+"""
 
 
 class ResumeProfile(BaseModel):
@@ -145,7 +155,7 @@ async def match_resume(text: str, requirements: list[dict]) -> ResumeMatch:
 未提及必须是UNKNOWN，不能判为NOT_MET。evidence必须是简历中的短原文，禁止虚构。
 严格输出JSON：{"dimensions":[{"code":...,"status":...,"confidence":0-1,
 "reason":...,"evidence":[...],"depth":...,"role":...}]}，维度数量和code必须与岗位要求完全一致。
-""" + DEPTH_RULE
+""" + DEPTH_RULE + MATCH_EVIDENCE_RULE
     payload = {
         "model": settings.llm_model,
         "messages": [
@@ -187,7 +197,7 @@ profile 只提取简历明确出现的事实，不评价、不补全、不猜测
 dimensions 只依据简历直接证据，逐项输出MET、PARTIAL、UNKNOWN、NOT_MET之一，
 未提及必须是UNKNOWN，不能判为NOT_MET，evidence必须是简历中的短原文，禁止虚构，
 维度数量和code必须与岗位要求完全一致。
-""" + DEPTH_RULE
+""" + DEPTH_RULE + MATCH_EVIDENCE_RULE
 
 
 async def analyze_and_match(text: str, requirements: list[dict]) -> tuple[ResumeProfile, ResumeMatch]:
