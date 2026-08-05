@@ -1002,7 +1002,9 @@ onMounted(() => {
         @selection-change="selectCandidates"
       >
         <el-table-column type="selection" width="48" :selectable="candidateSelectable" />
-        <el-table-column prop="filename" label="简历" min-width="200" show-overflow-tooltip />
+        <el-table-column label="简历" min-width="360">
+          <template #default="{ row }"><span class="resume-filename">{{ row.filename }}</span></template>
+        </el-table-column>
         <el-table-column label="解析" width="150">
           <template #default="{ row }">
             <el-tag v-if="row.parse_status === 'COMPLETED'" type="success" effect="plain">已解析</el-tag>

@@ -90,6 +90,7 @@ h2 { margin: 6px 0 0; font-size: 28px; }
 .candidate-toolbar h2 { margin-bottom: 0; }
 .candidate-table { margin-top: 18px; }
 .candidate-score { color: #245f3a; font-size: 20px; }
+.resume-filename { display: block; white-space: normal; word-break: break-all; line-height: 1.55; }
 .result-panel { min-height: 480px; padding: 0 8px 32px; }
 .result-hero { display: flex; align-items: center; gap: 24px; padding: 24px; border-radius: 20px; background: #eef5e9; }
 .result-score { display: grid; place-items: center; width: 116px; height: 116px; border-radius: 50%; background: #285e3d; color: #fff; font-size: 38px; font-weight: 800; }
