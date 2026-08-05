@@ -55,6 +55,10 @@ h2 { margin: 6px 0 0; font-size: 28px; }
 
 .panel-heading { display: flex; justify-content: space-between; align-items: start; }
 .setup { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(240px, .8fr) auto; gap: 24px; align-items: center; }
+.field-block { display: grid; gap: 6px; }
+.field-label { margin: 0; color: #303a33; font-size: 14px; font-weight: 600; }
+.field-label span { color: var(--el-color-danger); }
+.field-block small { color: #768078; font-size: 12px; line-height: 1.45; }
 .muted { color: #707a73; line-height: 1.7; }
 .jobs-table { margin-top: 28px; --el-table-header-bg-color: #eff4eb; }
 .requirement-panel { min-height: 420px; padding: 0 8px 32px; }
@@ -73,6 +77,7 @@ h2 { margin: 6px 0 0; font-size: 28px; }
 .score-total.invalid { color: #b83b3b; }
 .action-buttons { display: flex; align-items: center; gap: 10px; }
 .upload-panel { display: grid; gap: 16px; }
+.upload-panel > .field-label { margin-bottom: -8px; }
 .file-picker { display: grid; place-items: center; min-height: 140px; border: 1.5px dashed #8daf96; border-radius: 18px; background: #f4f8f1; color: #2d6642; cursor: pointer; font-weight: 700; }
 .file-picker input { position: absolute; width: 1px; height: 1px; opacity: 0; }
 .file-list, .result-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }

@@ -130,6 +130,8 @@ const gateFilter = ref("")
 const retryingParseId = ref<number | null>(null)
 let candidatePollTimer: number | null = null
 const MAX_BATCH_ANALYZE = 5
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const validEmail = (value: string) => emailPattern.test(value.trim())
 
 const resultVisible = ref(false)
 const resultLoading = ref(false)
@@ -727,7 +729,11 @@ onMounted(() => {
             <h2>初始化你的招聘空间</h2>
             <p class="muted">创建组织后即可添加岗位。这里不会创建默认候选人或演示数据。</p>
           </div>
-          <el-input v-model="setupName" size="large" placeholder="请输入公司或团队名称" />
+          <div class="field-block">
+            <label class="field-label" for="organization-name">组织名称 <span aria-hidden="true">*</span></label>
+            <el-input id="organization-name" v-model="setupName" size="large" placeholder="请输入公司或团队名称" maxlength="80" show-word-limit />
+            <small>创建后将作为岗位、简历和账户的数据归属。</small>
+          </div>
           <el-button
             type="primary"
             size="large"
@@ -759,10 +765,10 @@ onMounted(() => {
 
     <el-dialog v-model="createVisible" :title="editingJob ? '编辑岗位' : '创建招聘岗位'" width="min(640px, 92vw)">
       <el-form label-position="top">
-        <el-form-item label="岗位名称"><el-input v-model="form.name" /></el-form-item>
-        <el-form-item label="所属部门"><el-input v-model="form.department" /></el-form-item>
-        <el-form-item label="岗位JD">
-          <el-input v-model="form.jd_content" type="textarea" :rows="10" />
+        <el-form-item label="岗位名称" required><el-input v-model="form.name" placeholder="例如：AI Agent 工程师" maxlength="100" show-word-limit /></el-form-item>
+        <el-form-item label="所属部门（可选）"><el-input v-model="form.department" placeholder="例如：技术中心" maxlength="100" show-word-limit /></el-form-item>
+        <el-form-item label="岗位JD" required>
+          <el-input v-model="form.jd_content" type="textarea" :rows="10" placeholder="粘贴岗位职责、任职要求和加分项，至少 10 个字符" maxlength="10000" show-word-limit />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -770,7 +776,7 @@ onMounted(() => {
         <el-button
           type="primary"
           :loading="createSubmitting"
-          :disabled="createSubmitting"
+          :disabled="createSubmitting || !form.name.trim() || form.jd_content.trim().length < 10"
           @click="saveJob"
         >
           {{ editingJob ? "保存修改" : "创建岗位" }}
@@ -780,10 +786,10 @@ onMounted(() => {
 
     <el-dialog v-model="accountVisible" title="账户管理" width="min(620px, 92vw)">
       <el-form label-position="top" @submit.prevent="createAccount">
-        <el-form-item label="姓名"><el-input v-model="accountForm.name" /></el-form-item>
-        <el-form-item label="邮箱"><el-input v-model="accountForm.email" /></el-form-item>
-        <el-form-item label="初始密码"><el-input v-model="accountForm.password" type="password" show-password /></el-form-item>
-        <el-button type="primary" native-type="submit" :loading="accountSubmitting" :disabled="!accountForm.name || !accountForm.email || accountForm.password.length < 6">创建普通用户</el-button>
+        <el-form-item label="姓名" required><el-input v-model="accountForm.name" placeholder="请输入姓名" /></el-form-item>
+        <el-form-item label="邮箱" required><el-input v-model="accountForm.email" type="email" placeholder="name@company.com" /></el-form-item>
+        <el-form-item label="初始密码" required><el-input v-model="accountForm.password" type="password" show-password placeholder="至少 6 位" /></el-form-item>
+        <el-button type="primary" native-type="submit" :loading="accountSubmitting" :disabled="!accountForm.name.trim() || !validEmail(accountForm.email) || accountForm.password.length < 6">创建普通用户</el-button>
       </el-form>
       <el-table :data="accounts" style="margin-top: 20px"><el-table-column prop="name" label="姓名" /><el-table-column prop="email" label="邮箱" /><el-table-column label="角色"><template #default="{ row }">{{ row.role === 'ADMIN' ? '管理员' : '普通用户' }}</template></el-table-column></el-table>
     </el-dialog>
@@ -866,9 +872,10 @@ onMounted(() => {
     <el-dialog v-model="uploadVisible" title="上传PDF简历" width="min(620px, 92vw)">
       <div class="upload-panel">
         <p class="muted">岗位：{{ uploadJob?.name }}。系统会自动从PDF识别姓名、电话和邮箱来校验重复。</p>
+        <p class="field-label">简历 PDF 文件 <span aria-hidden="true">*</span></p>
         <label class="file-picker">
           <input type="file" accept="application/pdf,.pdf" multiple @change="selectResumeFiles" />
-          <span>{{ selectedFiles.length ? `已选择 ${selectedFiles.length} 份简历` : "选择PDF简历" }}</span>
+          <span>{{ selectedFiles.length ? `已选择 ${selectedFiles.length} 份简历` : "选择PDF简历（支持多选）" }}</span>
         </label>
         <ul v-if="selectedFiles.length" class="file-list">
           <li v-for="file in selectedFiles" :key="`${file.name}-${file.size}`">

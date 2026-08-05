@@ -10,6 +10,8 @@ const submitting = ref(false)
 const needsAdminSetup = ref(false)
 const form = reactive({ email: "", password: "" })
 const admin = reactive({ email: "", name: "", password: "" })
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const validEmail = (value: string) => emailPattern.test(value.trim())
 
 async function login() {
   submitting.value = true
@@ -61,8 +63,17 @@ onMounted(async () => {
     </section>
     <section class="login-card">
       <div class="login-card-head"><p class="eyebrow">{{ needsAdminSetup ? "首次设置" : "欢迎回来" }}</p><h2>{{ needsAdminSetup ? "创建管理员账号" : "登录招聘工作台" }}</h2><p class="muted">{{ needsAdminSetup ? "管理员可创建普通账户并统一查看招聘数据。" : "使用管理员创建的账户和密码登录。" }}</p></div>
-      <el-form v-if="needsAdminSetup" class="login-form" @submit.prevent="createAdmin"><el-form-item label="姓名"><el-input v-model="admin.name" placeholder="请输入姓名" /></el-form-item><el-form-item label="邮箱"><el-input v-model="admin.email" placeholder="name@company.com" /></el-form-item><el-form-item label="初始密码"><el-input v-model="admin.password" type="password" show-password placeholder="至少 6 位" /></el-form-item><el-button type="primary" native-type="submit" :loading="submitting" :disabled="!admin.name || !admin.email || admin.password.length < 6">创建管理员账号</el-button></el-form>
-      <el-form v-else class="login-form" @submit.prevent="login"><el-form-item label="邮箱"><el-input v-model="form.email" placeholder="name@company.com" /></el-form-item><el-form-item label="密码"><el-input v-model="form.password" type="password" show-password placeholder="请输入密码" /></el-form-item><el-button type="primary" native-type="submit" :loading="submitting" :disabled="!form.email || !form.password">登录工作台</el-button></el-form>
+      <el-form v-if="needsAdminSetup" class="login-form" @submit.prevent="createAdmin">
+        <el-form-item label="姓名" required><el-input v-model="admin.name" placeholder="请输入姓名" /></el-form-item>
+        <el-form-item label="邮箱" required><el-input v-model="admin.email" type="email" placeholder="name@company.com" /></el-form-item>
+        <el-form-item label="初始密码" required><el-input v-model="admin.password" type="password" show-password placeholder="至少 6 位" /></el-form-item>
+        <el-button type="primary" native-type="submit" :loading="submitting" :disabled="!admin.name.trim() || !validEmail(admin.email) || admin.password.length < 6">创建管理员账号</el-button>
+      </el-form>
+      <el-form v-else class="login-form" @submit.prevent="login">
+        <el-form-item label="邮箱" required><el-input v-model="form.email" type="email" placeholder="name@company.com" /></el-form-item>
+        <el-form-item label="密码" required><el-input v-model="form.password" type="password" show-password placeholder="请输入密码" /></el-form-item>
+        <el-button type="primary" native-type="submit" :loading="submitting" :disabled="!validEmail(form.email) || !form.password">登录工作台</el-button>
+      </el-form>
       <p class="login-note">系统仅提供招聘辅助建议，不自动做出录用或淘汰决定。</p>
     </section>
   </main>
