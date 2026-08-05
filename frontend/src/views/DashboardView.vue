@@ -603,7 +603,15 @@ async function submitBatchAnalyze(confirm: boolean) {
       application_ids: selectedCandidates.value.map((item) => item.application_id),
       confirm_reevaluate: confirm,
     })
-    ElMessage.success(`已提交 ${data.created.length} 份简历进行分析`)
+    const createdCount = data.created.length
+    const reusedCount = data.reused?.length || 0
+    if (createdCount && reusedCount) {
+      ElMessage.success(`已提交 ${createdCount} 份分析，复用 ${reusedCount} 份已有结果`)
+    } else if (createdCount) {
+      ElMessage.success(`已提交 ${createdCount} 份简历进行分析`)
+    } else if (reusedCount) {
+      ElMessage.success(`已复用 ${reusedCount} 份已有评估结果`)
+    }
     if (data.skipped.length) {
       ElMessage.warning(`${data.skipped.length} 份被跳过：${data.skipped[0].reason}`)
     }
@@ -617,20 +625,21 @@ async function submitBatchAnalyze(confirm: boolean) {
 
 async function batchAnalyzeCandidates() {
   if (!selectedCandidates.value.length) return
-  if (reevaluateCount.value > 0) {
-    try {
-      await ElMessageBox.confirm(
-        `选中有 ${reevaluateCount.value} 份简历已有评估结果，重新分析将生成新报告（历史结果保留）。确定继续吗？`,
-        "确认重新分析",
-        { confirmButtonText: "重新分析", cancelButtonText: "取消", type: "warning" },
-      )
-    } catch {
-      return
-    }
-    await submitBatchAnalyze(true)
-  } else {
-    await submitBatchAnalyze(false)
+  await submitBatchAnalyze(false)
+}
+
+async function reanalyzeCandidates() {
+  if (!selectedCandidates.value.length || reevaluateCount.value === 0) return
+  try {
+    await ElMessageBox.confirm(
+      `将为选中的 ${selectedCandidates.value.length} 份简历生成新的评估报告；历史结果会保留。确定重新分析吗？`,
+      "确认重新分析",
+      { confirmButtonText: "重新分析", cancelButtonText: "取消", type: "warning" },
+    )
+  } catch {
+    return
   }
+  await submitBatchAnalyze(true)
 }
 
 async function retryParse(row: CandidateRow) {
@@ -940,10 +949,20 @@ onMounted(() => {
           >
             批量分析 {{ selectedCandidates.length ? `${selectedCandidates.length}/${MAX_BATCH_ANALYZE}` : "" }}
           </el-button>
+          <el-button
+            v-if="reevaluateCount > 0"
+            type="warning"
+            size="large"
+            :loading="batchAnalyzing"
+            :disabled="!selectedCandidates.length"
+            @click="reanalyzeCandidates"
+          >
+            重新分析
+          </el-button>
         </div>
       </div>
       <el-alert
-        title="简历只需上传一次。每批最多选择 5 份；可按当前岗位规则重新分析，历史结果会保留。"
+        title="简历只需上传一次。每批最多选择 5 份；再次点击“批量分析”会复用已有结果，只有点击“重新分析”才生成新报告。"
         type="info"
         :closable="false"
         show-icon

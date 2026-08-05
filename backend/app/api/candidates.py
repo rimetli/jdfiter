@@ -103,7 +103,7 @@ async def batch_analyze(
     job = await get_job_or_404(job_id, db, user)
     if job.status != "ACTIVE" or job.active_requirement_version_id is None:
         raise HTTPException(status_code=409, detail="请先发布能力模型")
-    created, skipped = [], []
+    created, reused, skipped = [], [], []
     for application_id in dict.fromkeys(payload.application_ids):
         application = await db.get(JobApplication, application_id)
         if application is None or application.job_id != job_id:
@@ -131,11 +131,19 @@ async def batch_analyze(
             continue
         prior_evaluation = await db.scalar(
             select(CandidateEvaluation)
-            .where(CandidateEvaluation.application_id == application_id)
+            .where(
+                CandidateEvaluation.application_id == application_id,
+                CandidateEvaluation.parse_version_id == parse.id,
+                CandidateEvaluation.requirement_version_id == job.active_requirement_version_id,
+                CandidateEvaluation.status == "COMPLETED",
+            )
+            .order_by(CandidateEvaluation.created_at.desc(), CandidateEvaluation.id.desc())
             .limit(1)
         )
         if prior_evaluation is not None and not payload.confirm_reevaluate:
-            skipped.append({"application_id": application_id, "reason": "已有评估结果，需确认重评"})
+            reused.append(
+                {"application_id": application_id, "evaluation_id": prior_evaluation.id}
+            )
             continue
         fingerprint = f"{application_id}:{parse.id}:{job.active_requirement_version_id}".encode()
         task = ProcessingTask(
@@ -151,4 +159,4 @@ async def batch_analyze(
         await db.flush()
         created.append({"application_id": application_id, "task_id": task.id})
     await db.commit()
-    return {"created": created, "skipped": skipped}
+    return {"created": created, "reused": reused, "skipped": skipped}
