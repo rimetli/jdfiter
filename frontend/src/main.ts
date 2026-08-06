@@ -5,16 +5,19 @@ import {
   ElButton,
   ElDialog,
   ElDrawer,
+  ElEmpty,
   ElForm,
   ElFormItem,
   ElInput,
   ElInputNumber,
   ElLoading,
   ElOption,
+  ElPagination,
   ElSelect,
   ElTable,
   ElTableColumn,
   ElTag,
+  ElTooltip,
 } from "element-plus"
 import "element-plus/dist/index.css"
 
@@ -29,16 +32,19 @@ for (const component of [
   ElButton,
   ElDialog,
   ElDrawer,
+  ElEmpty,
   ElForm,
   ElFormItem,
   ElInput,
   ElInputNumber,
   ElLoading,
   ElOption,
+  ElPagination,
   ElSelect,
   ElTable,
   ElTableColumn,
   ElTag,
+  ElTooltip,
 ]) {
   app.use(component)
 }

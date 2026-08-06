@@ -70,42 +70,68 @@ async def list_candidates(
         application_statement.order_by(JobApplication.created_at.desc())
         .offset((page - 1) * page_size).limit(page_size)
     ))
-    result = []
-    for application in applications:
-        resume = await db.get(ResumeFile, application.resume_file_id)
-        parse = await db.scalar(
+    application_ids = [application.id for application in applications]
+    resume_ids = [application.resume_file_id for application in applications]
+    resumes = {
+        resume.id: resume
+        for resume in await db.scalars(select(ResumeFile).where(ResumeFile.id.in_(resume_ids)))
+    } if resume_ids else {}
+    parses: dict[int, ResumeParseVersion] = {}
+    if resume_ids:
+        for parse in await db.scalars(
             select(ResumeParseVersion)
-            .where(ResumeParseVersion.resume_file_id == application.resume_file_id)
-            .order_by(ResumeParseVersion.version_no.desc()).limit(1)
-        )
-        evaluation = await db.scalar(
+            .where(ResumeParseVersion.resume_file_id.in_(resume_ids))
+            .order_by(ResumeParseVersion.resume_file_id, ResumeParseVersion.version_no.desc())
+        ):
+            parses.setdefault(parse.resume_file_id, parse)
+    evaluations: dict[int, CandidateEvaluation] = {}
+    if application_ids:
+        for evaluation in await db.scalars(
             select(CandidateEvaluation)
-            .where(CandidateEvaluation.application_id == application.id)
-            .order_by(CandidateEvaluation.created_at.desc()).limit(1)
-        )
-        latest_analysis_task = await db.scalar(
+            .where(CandidateEvaluation.application_id.in_(application_ids))
+            .order_by(CandidateEvaluation.application_id, CandidateEvaluation.created_at.desc(), CandidateEvaluation.id.desc())
+        ):
+            evaluations.setdefault(evaluation.application_id, evaluation)
+    analysis_tasks: dict[int, ProcessingTask] = {}
+    parse_tasks: dict[int, ProcessingTask] = {}
+    if application_ids:
+        for task in await db.scalars(
             select(ProcessingTask)
             .where(
                 ProcessingTask.task_type == "ANALYZE_APPLICATION",
-                ProcessingTask.entity_id == application.id,
-            ).order_by(ProcessingTask.created_at.desc()).limit(1)
-        )
-        parse_task = await db.scalar(
+                ProcessingTask.entity_id.in_(application_ids),
+            )
+            .order_by(ProcessingTask.entity_id, ProcessingTask.created_at.desc(), ProcessingTask.id.desc())
+        ):
+            analysis_tasks.setdefault(task.entity_id, task)
+    if resume_ids:
+        for task in await db.scalars(
             select(ProcessingTask)
             .where(
                 ProcessingTask.task_type == "PARSE_RESUME",
                 ProcessingTask.entity_type == "RESUME_FILE",
-                ProcessingTask.entity_id == application.resume_file_id,
-            ).order_by(ProcessingTask.created_at.desc()).limit(1)
-        )
-        decision = None
-        if evaluation is not None:
-            decision = await db.scalar(
-                select(HumanDecision)
-                .where(HumanDecision.evaluation_id == evaluation.id)
-                .order_by(HumanDecision.created_at.desc(), HumanDecision.id.desc())
-                .limit(1)
+                ProcessingTask.entity_id.in_(resume_ids),
             )
+            .order_by(ProcessingTask.entity_id, ProcessingTask.created_at.desc(), ProcessingTask.id.desc())
+        ):
+            parse_tasks.setdefault(task.entity_id, task)
+    evaluation_ids = [evaluation.id for evaluation in evaluations.values()]
+    decisions: dict[int, HumanDecision] = {}
+    if evaluation_ids:
+        for decision in await db.scalars(
+            select(HumanDecision)
+            .where(HumanDecision.evaluation_id.in_(evaluation_ids))
+            .order_by(HumanDecision.evaluation_id, HumanDecision.created_at.desc(), HumanDecision.id.desc())
+        ):
+            decisions.setdefault(decision.evaluation_id, decision)
+    result = []
+    for application in applications:
+        resume = resumes.get(application.resume_file_id)
+        parse = parses.get(application.resume_file_id)
+        evaluation = evaluations.get(application.id)
+        latest_analysis_task = analysis_tasks.get(application.id)
+        parse_task = parse_tasks.get(application.resume_file_id)
+        decision = decisions.get(evaluation.id) if evaluation is not None else None
         result.append({
             "application_id": application.id,
             "filename": resume.original_filename if resume else "unknown.pdf",

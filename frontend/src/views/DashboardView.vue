@@ -243,8 +243,8 @@ async function load() {
     initialized.value = setup.initialized
     if (initialized.value && organizationId.value) {
       const { data } = await api.get("/jobs", { params: { organization_id: organizationId.value, page: jobsPage.value, page_size: jobsPageSize.value } })
-      jobs.value = data.items
-      jobsTotal.value = data.total
+      jobs.value = Array.isArray(data) ? data : (data.items || [])
+      jobsTotal.value = Array.isArray(data) ? data.length : (data.total || 0)
     }
   } catch {
     ElMessage.error("无法连接后端服务")
@@ -276,8 +276,8 @@ async function openAccounts() {
 
 async function loadAccounts() {
   const { data } = await api.get("/auth/users", { params: { page: accountsPage.value, page_size: accountsPageSize.value } })
-  accounts.value = data.items
-  accountsTotal.value = data.total
+  accounts.value = Array.isArray(data) ? data : (data.items || [])
+  accountsTotal.value = Array.isArray(data) ? data.length : (data.total || 0)
 }
 
 async function createAccount() {
@@ -602,8 +602,8 @@ async function loadCandidates() {
   candidatesLoading.value = true
   try {
     const { data } = await api.get(`/jobs/${candidatesJob.value.id}/candidates`, { params: { page: candidatesPage.value, page_size: candidatesPageSize.value, gate_result: gateFilter.value || undefined } })
-    candidates.value = data.items
-    candidatesTotal.value = data.total
+    candidates.value = Array.isArray(data) ? data : (data.items || [])
+    candidatesTotal.value = Array.isArray(data) ? data.length : (data.total || 0)
     const running = candidates.value.some((item) => ["PENDING", "PROCESSING"].includes(item.analysis_status))
     if (running) {
       if (candidatePollTimer) window.clearTimeout(candidatePollTimer)
