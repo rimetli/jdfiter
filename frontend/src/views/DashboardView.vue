@@ -628,6 +628,13 @@ function changeCandidatePage(page: number) {
   void loadCandidates()
 }
 
+function changeCandidatePageSize(pageSize: number) {
+  candidatesPageSize.value = pageSize
+  candidatesPage.value = 1
+  selectedCandidates.value = []
+  void loadCandidates()
+}
+
 function changeJobPage(page: number) {
   jobsPage.value = page
   void load()
@@ -1151,7 +1158,18 @@ onMounted(() => {
           </template>
         </el-table-column>
       </el-table>
-      <div v-if="candidatesTotal > candidatesPageSize" class="list-pagination"><el-pagination background layout="total, prev, pager, next" :current-page="candidatesPage" :page-size="candidatesPageSize" :total="candidatesTotal" @current-change="changeCandidatePage" /></div>
+      <div v-if="candidatesTotal" class="list-pagination">
+        <el-pagination
+          background
+          layout="total, sizes, prev, pager, next, jumper"
+          :current-page="candidatesPage"
+          :page-size="candidatesPageSize"
+          :page-sizes="[5, 10, 20, 50]"
+          :total="candidatesTotal"
+          @current-change="changeCandidatePage"
+          @size-change="changeCandidatePageSize"
+        />
+      </div>
     </el-drawer>
 
     <EvaluationDrawer
