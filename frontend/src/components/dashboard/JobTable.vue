@@ -8,6 +8,13 @@ const categoryText = (value: string) => ({
   HR: "人力资源", FINANCE: "财务 / 审计", LEGAL_COMPLIANCE: "法务 / 合规",
   SUPPLY_CHAIN: "供应链", MANAGEMENT: "管理", GENERAL: "通用 / 其他",
 } as Record<string, string>)[value] || "通用 / 其他"
+const formatDateTime = (value?: string | null) => {
+  if (!value) return "--"
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value.replace("T", " ").slice(0, 19)
+  const pad = (number: number) => String(number).padStart(2, "0")
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+}
 </script>
 <template>
   <el-table :data="jobs" class="jobs-table">
@@ -16,6 +23,9 @@ const categoryText = (value: string) => ({
     <el-table-column prop="department" label="部门" min-width="120" />
     <el-table-column label="所属账号" min-width="120">
       <template #default="{ row }">{{ row.owner_name || "未知账号" }}</template>
+    </el-table-column>
+    <el-table-column label="更新时间" min-width="175">
+      <template #default="{ row }">{{ formatDateTime(row.updated_at) }}</template>
     </el-table-column>
     <el-table-column label="状态" width="100"><template #default="{ row }"><el-tag :type="row.status === 'ACTIVE' ? 'success' : 'warning'" effect="plain">{{ statusText(row.status) }}</el-tag></template></el-table-column>
     <el-table-column label="操作" width="360" fixed="right"><template #default="{ row }"><el-button v-if="row.status === 'ACTIVE'" link type="primary" @click="emit('upload', row)">上传简历</el-button><el-button v-if="row.status === 'ACTIVE'" link type="success" @click="emit('candidates', row)">候选人</el-button><el-button v-if="row.status !== 'DRAFT'" link type="success" @click="emit('requirement', row)">能力模型</el-button><el-button v-if="row.status === 'DRAFT'" link type="primary" :loading="analyzingJobId === row.id" @click="emit('analyze', row)">AI分析JD</el-button><el-button link @click="emit('edit', row)">编辑</el-button><el-button link type="danger" @click="emit('delete', row)">删除</el-button></template></el-table-column>

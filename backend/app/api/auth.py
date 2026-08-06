@@ -2,7 +2,7 @@ import hashlib
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.auth import (
@@ -23,7 +23,7 @@ def email_hash(email: str) -> str:
 
 
 def serialize(user: User) -> dict:
-    return {"id": user.id, "email": user.email_ciphertext, "name": user.display_name, "role": user.role, "organization_id": user.organization_id, "status": user.status}
+    return {"id": user.id, "email": user.email_ciphertext, "name": user.display_name, "role": user.role, "organization_id": user.organization_id, "status": user.status, "created_at": user.created_at, "updated_at": user.updated_at}
 
 
 class LoginRequest(BaseModel):
@@ -52,9 +52,18 @@ async def me(user: User = Depends(get_current_user)) -> dict:
 
 
 @router.get("/users")
-async def list_users(admin: User = Depends(require_admin), db: AsyncSession = Depends(get_db)) -> list[dict]:
-    users = list(await db.scalars(select(User).where(User.organization_id == admin.organization_id).order_by(User.id)))
-    return [serialize(user) for user in users]
+async def list_users(
+    page: int = 1,
+    page_size: int = 10,
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+) -> dict:
+    page = max(page, 1)
+    page_size = min(max(page_size, 1), 100)
+    statement = select(User).where(User.organization_id == admin.organization_id)
+    total = await db.scalar(select(func.count()).select_from(statement.subquery())) or 0
+    users = list(await db.scalars(statement.order_by(User.created_at.desc()).offset((page - 1) * page_size).limit(page_size)))
+    return {"items": [serialize(user) for user in users], "total": total, "page": page, "page_size": page_size}
 
 
 @router.post("/users", status_code=status.HTTP_201_CREATED)

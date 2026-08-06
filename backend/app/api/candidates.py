@@ -1,8 +1,8 @@
 import hashlib
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, Field
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.jobs import get_job_or_404
@@ -10,6 +10,7 @@ from app.core.auth import get_current_user
 from app.db.models import (
     CandidateEvaluation,
     HumanDecision,
+    InterviewFeedback,
     JobApplication,
     ProcessingTask,
     ResumeFile,
@@ -26,18 +27,49 @@ class BatchAnalyzeRequest(BaseModel):
     confirm_reevaluate: bool = False
 
 
+class InterviewFeedbackCreate(BaseModel):
+    round_name: str = Field(min_length=1, max_length=100)
+    result: str = Field(min_length=1, max_length=32)
+    dimension_feedback: dict[str, str] | None = None
+    comment: str | None = Field(default=None, max_length=5000)
+
+
+VALID_INTERVIEW_RESULTS = {"ADVANCE", "HOLD", "REJECT"}
+
+
+def _serialize_interview_feedback(feedback: InterviewFeedback, interviewer_name: str | None) -> dict:
+    return {
+        "id": feedback.id,
+        "round_name": feedback.round_name,
+        "result": feedback.result,
+        "dimension_feedback": feedback.dimension_feedback or {},
+        "comment": feedback.comment,
+        "interviewer_name": interviewer_name or "未知用户",
+        "created_at": feedback.created_at,
+    }
+
+
 @router.get("/{job_id}/candidates")
 async def list_candidates(
-    job_id: int, db: AsyncSession = Depends(get_db), user: User = Depends(get_current_user)
-) -> list[dict]:
+    job_id: int,
+    page: int = Query(default=1, ge=1),
+    page_size: int = Query(default=10, ge=1, le=100),
+    gate_result: str | None = Query(default=None),
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
+) -> dict:
     await get_job_or_404(job_id, db, user)
-    applications = list(
-        await db.scalars(
-            select(JobApplication)
-            .where(JobApplication.job_id == job_id)
-            .order_by(JobApplication.created_at.desc())
-        )
-    )
+    application_statement = select(JobApplication).where(JobApplication.job_id == job_id)
+    if gate_result:
+        application_statement = application_statement.join(
+            CandidateEvaluation,
+            CandidateEvaluation.application_id == JobApplication.id,
+        ).where(CandidateEvaluation.gate_result == gate_result).distinct()
+    total = await db.scalar(select(func.count()).select_from(application_statement.subquery())) or 0
+    applications = list(await db.scalars(
+        application_statement.order_by(JobApplication.created_at.desc())
+        .offset((page - 1) * page_size).limit(page_size)
+    ))
     result = []
     for application in applications:
         resume = await db.get(ResumeFile, application.resume_file_id)
@@ -90,7 +122,56 @@ async def list_candidates(
             "decision": decision.decision if decision else None,
             "uploaded_at": application.created_at,
         })
-    return result
+    return {"items": result, "total": total, "page": page, "page_size": page_size}
+
+
+@router.get("/{job_id}/candidates/{application_id}/interview-feedback")
+async def list_interview_feedback(
+    job_id: int,
+    application_id: int,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
+) -> list[dict]:
+    await get_job_or_404(job_id, db, user)
+    application = await db.get(JobApplication, application_id)
+    if application is None or application.job_id != job_id:
+        raise HTTPException(status_code=404, detail="候选人不存在")
+    rows = (await db.execute(
+        select(InterviewFeedback, User.display_name)
+        .outerjoin(User, InterviewFeedback.interviewer_id == User.id)
+        .where(InterviewFeedback.application_id == application_id)
+        .order_by(InterviewFeedback.created_at.desc(), InterviewFeedback.id.desc())
+    )).all()
+    return [_serialize_interview_feedback(feedback, interviewer_name) for feedback, interviewer_name in rows]
+
+
+@router.post("/{job_id}/candidates/{application_id}/interview-feedback", status_code=status.HTTP_201_CREATED)
+async def create_interview_feedback(
+    job_id: int,
+    application_id: int,
+    payload: InterviewFeedbackCreate,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
+) -> dict:
+    await get_job_or_404(job_id, db, user)
+    application = await db.get(JobApplication, application_id)
+    if application is None or application.job_id != job_id:
+        raise HTTPException(status_code=404, detail="候选人不存在")
+    result = payload.result.strip().upper()
+    if result not in VALID_INTERVIEW_RESULTS:
+        raise HTTPException(status_code=422, detail="无效的面试结论")
+    feedback = InterviewFeedback(
+        application_id=application_id,
+        round_name=payload.round_name.strip(),
+        result=result,
+        dimension_feedback=payload.dimension_feedback or None,
+        comment=payload.comment.strip() if payload.comment else None,
+        interviewer_id=user.id,
+    )
+    db.add(feedback)
+    await db.commit()
+    await db.refresh(feedback)
+    return _serialize_interview_feedback(feedback, user.display_name)
 
 
 @router.post("/{job_id}/evaluations/batch", status_code=202)

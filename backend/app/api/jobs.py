@@ -78,13 +78,15 @@ async def create_job(payload: JobCreate, db: AsyncSession = Depends(get_db), use
     return job
 
 
-@router.get("", response_model=list[JobRead])
+@router.get("")
 async def list_jobs(
     organization_id: int = Query(...),
     job_status: str | None = Query(default=None, alias="status"),
+    page: int = Query(default=1, ge=1),
+    page_size: int = Query(default=10, ge=1, le=100),
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
-) -> list[JobRead]:
+) -> dict:
     if organization_id != user.organization_id:
         raise HTTPException(status_code=403, detail="无权访问该组织")
     statement = select(JobPosition, User.display_name).outerjoin(
@@ -97,11 +99,15 @@ async def list_jobs(
         statement = statement.where(JobPosition.status == job_status)
     if user.role != "ADMIN":
         statement = statement.where(JobPosition.created_by == user.id)
-    result = await db.execute(statement.order_by(JobPosition.updated_at.desc()))
-    return [
+    total = await db.scalar(select(func.count()).select_from(statement.subquery())) or 0
+    result = await db.execute(
+        statement.order_by(JobPosition.updated_at.desc()).offset((page - 1) * page_size).limit(page_size)
+    )
+    items = [
         JobRead.model_validate(job).model_copy(update={"owner_name": owner_name})
         for job, owner_name in result.all()
     ]
+    return {"items": items, "total": total, "page": page, "page_size": page_size}
 
 
 @router.get("/{job_id}", response_model=JobRead)

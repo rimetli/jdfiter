@@ -6,6 +6,7 @@ import { useRouter } from "vue-router"
 import { api } from "../api/client"
 
 const EvaluationDrawer = defineAsyncComponent(() => import("../components/dashboard/EvaluationDrawer.vue"))
+const InterviewFeedbackDrawer = defineAsyncComponent(() => import("../components/dashboard/InterviewFeedbackDrawer.vue"))
 const JobTable = defineAsyncComponent(() => import("../components/dashboard/JobTable.vue"))
 
 const router = useRouter()
@@ -19,6 +20,7 @@ type Job = {
   owner_name?: string | null
   jd_content?: string
   updated_at: string
+  created_at: string
 }
 
 type RequirementItem = {
@@ -71,12 +73,16 @@ type Account = {
   role: string
   status: string
   organization_id: number
+  created_at: string
 }
 
 const stages = ["确认岗位模型", "上传简历", "AI事实提取", "规则评分", "人工决策"]
 const loading = ref(true)
 const initialized = ref(false)
 const jobs = ref<Job[]>([])
+const jobsTotal = ref(0)
+const jobsPage = ref(1)
+const jobsPageSize = ref(10)
 const setupName = ref("")
 const setupSubmitting = ref(false)
 const currentUser = ref<Account | null>(JSON.parse(localStorage.getItem("current_user") || "null"))
@@ -85,6 +91,9 @@ const organizationId = ref<number | null>(
 )
 const accountVisible = ref(false)
 const accounts = ref<Account[]>([])
+const accountsTotal = ref(0)
+const accountsPage = ref(1)
+const accountsPageSize = ref(10)
 const accountSubmitting = ref(false)
 const accountForm = reactive({ name: "", email: "", password: "" })
 
@@ -122,6 +131,9 @@ const candidatesVisible = ref(false)
 const candidatesLoading = ref(false)
 const candidatesJob = ref<Job | null>(null)
 const candidates = ref<CandidateRow[]>([])
+const candidatesTotal = ref(0)
+const candidatesPage = ref(1)
+const candidatesPageSize = ref(10)
 const selectedCandidates = ref<CandidateRow[]>([])
 const batchAnalyzing = ref(false)
 const candidateTableRef = ref<{
@@ -145,6 +157,11 @@ const resultLoading = ref(false)
 const evaluationResult = ref<any>(null)
 const decisionSubmitting = ref(false)
 const decisionComment = ref("")
+const feedbackVisible = ref(false)
+const feedbackLoading = ref(false)
+const feedbackSubmitting = ref(false)
+const feedbackCandidate = ref<CandidateRow | null>(null)
+const interviewFeedbacks = ref<any[]>([])
 
 const scoreTotal = computed(() =>
   requirement.value?.items.reduce((total, item) => total + Number(item.max_score || 0), 0) || 0,
@@ -152,11 +169,6 @@ const scoreTotal = computed(() =>
 const scoresValid = computed(() => Math.abs(scoreTotal.value - 100) < 0.001)
 const uploadReady = computed(() => selectedFiles.value.length > 0)
 const form = reactive({ name: "", department: "", job_category: "", jd_content: "" })
-
-const filteredCandidates = computed(() => {
-  if (!gateFilter.value) return candidates.value
-  return candidates.value.filter((item) => (item.gate_result || "") === gateFilter.value)
-})
 
 const reevaluateCount = computed(
   () => selectedCandidates.value.filter((item) => item.evaluation_id !== null).length,
@@ -209,6 +221,13 @@ function decisionTagType(v: string | null) {
   if (v === "REJECT") return "danger"
   return "warning"
 }
+function formatDateTime(value?: string | null) {
+  if (!value) return "--"
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value.replace("T", " ").slice(0, 19)
+  const pad = (number: number) => String(number).padStart(2, "0")
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
+}
 
 async function logout() {
   localStorage.removeItem("access_token")
@@ -223,8 +242,9 @@ async function load() {
     const { data: setup } = await api.get("/setup/status")
     initialized.value = setup.initialized
     if (initialized.value && organizationId.value) {
-      const { data } = await api.get("/jobs", { params: { organization_id: organizationId.value } })
-      jobs.value = data
+      const { data } = await api.get("/jobs", { params: { organization_id: organizationId.value, page: jobsPage.value, page_size: jobsPageSize.value } })
+      jobs.value = data.items
+      jobsTotal.value = data.total
     }
   } catch {
     ElMessage.error("无法连接后端服务")
@@ -251,8 +271,13 @@ async function bootstrap() {
 
 async function openAccounts() {
   accountVisible.value = true
-  const { data } = await api.get("/auth/users")
-  accounts.value = data
+  await loadAccounts()
+}
+
+async function loadAccounts() {
+  const { data } = await api.get("/auth/users", { params: { page: accountsPage.value, page_size: accountsPageSize.value } })
+  accounts.value = data.items
+  accountsTotal.value = data.total
 }
 
 async function createAccount() {
@@ -568,6 +593,7 @@ async function openCandidates(job: Job) {
   candidatesVisible.value = true
   selectedCandidates.value = []
   gateFilter.value = ""
+  candidatesPage.value = 1
   await loadCandidates()
 }
 
@@ -575,8 +601,9 @@ async function loadCandidates() {
   if (!candidatesJob.value) return
   candidatesLoading.value = true
   try {
-    const { data } = await api.get(`/jobs/${candidatesJob.value.id}/candidates`)
-    candidates.value = data
+    const { data } = await api.get(`/jobs/${candidatesJob.value.id}/candidates`, { params: { page: candidatesPage.value, page_size: candidatesPageSize.value, gate_result: gateFilter.value || undefined } })
+    candidates.value = data.items
+    candidatesTotal.value = data.total
     const running = candidates.value.some((item) => ["PENDING", "PROCESSING"].includes(item.analysis_status))
     if (running) {
       if (candidatePollTimer) window.clearTimeout(candidatePollTimer)
@@ -587,6 +614,28 @@ async function loadCandidates() {
   } finally {
     candidatesLoading.value = false
   }
+}
+
+function changeCandidateFilter() {
+  candidatesPage.value = 1
+  selectedCandidates.value = []
+  void loadCandidates()
+}
+
+function changeCandidatePage(page: number) {
+  candidatesPage.value = page
+  selectedCandidates.value = []
+  void loadCandidates()
+}
+
+function changeJobPage(page: number) {
+  jobsPage.value = page
+  void load()
+}
+
+function changeAccountPage(page: number) {
+  accountsPage.value = page
+  void loadAccounts()
 }
 
 function selectCandidates(rows: CandidateRow[]) {
@@ -707,6 +756,37 @@ async function submitDecision(decision: string) {
   }
 }
 
+async function openInterviewFeedback(row: CandidateRow) {
+  if (!candidatesJob.value) return
+  feedbackCandidate.value = row
+  feedbackVisible.value = true
+  feedbackLoading.value = true
+  interviewFeedbacks.value = []
+  try {
+    const { data } = await api.get(`/jobs/${candidatesJob.value.id}/candidates/${row.application_id}/interview-feedback`)
+    interviewFeedbacks.value = data
+  } catch (error: any) {
+    ElMessage.error(error?.response?.data?.detail || "面试评价加载失败")
+    feedbackVisible.value = false
+  } finally {
+    feedbackLoading.value = false
+  }
+}
+
+async function submitInterviewFeedback(payload: { round_name: string; result: string; dimension_feedback: Record<string, string>; comment: string }) {
+  if (!candidatesJob.value || !feedbackCandidate.value) return
+  feedbackSubmitting.value = true
+  try {
+    const { data } = await api.post(`/jobs/${candidatesJob.value.id}/candidates/${feedbackCandidate.value.application_id}/interview-feedback`, payload)
+    interviewFeedbacks.value.unshift(data)
+    ElMessage.success("面试评价已保存")
+  } catch (error: any) {
+    ElMessage.error(error?.response?.data?.detail || "面试评价保存失败")
+  } finally {
+    feedbackSubmitting.value = false
+  }
+}
+
 onMounted(() => {
   if (!localStorage.getItem("access_token")) {
     void router.replace("/login")
@@ -760,7 +840,7 @@ onMounted(() => {
       <div class="panel-heading">
         <div>
           <p class="eyebrow">岗位中心</p>
-          <h2>{{ jobs.length ? `${jobs.length} 个招聘岗位` : "从第一个岗位开始" }}</h2>
+          <h2>{{ jobsTotal ? `${jobsTotal} 个招聘岗位` : "从第一个岗位开始" }}</h2>
         </div>
         <el-tag effect="plain">数据库已连接</el-tag>
       </div>
@@ -771,6 +851,7 @@ onMounted(() => {
         </div>
       </div>
       <JobTable v-else :jobs="jobs" :analyzing-job-id="analyzingJobId" @upload="openUpload" @candidates="openCandidates" @requirement="openRequirement" @analyze="analyzeJob" @edit="openEdit" @delete="deleteJob" />
+      <div v-if="jobsTotal > jobsPageSize" class="list-pagination"><el-pagination background layout="total, prev, pager, next" :current-page="jobsPage" :page-size="jobsPageSize" :total="jobsTotal" @current-change="changeJobPage" /></div>
       </template>
     </section>
 
@@ -808,7 +889,8 @@ onMounted(() => {
         <el-form-item label="初始密码" required><el-input v-model="accountForm.password" type="password" show-password placeholder="至少 6 位" /></el-form-item>
         <el-button type="primary" native-type="submit" :loading="accountSubmitting" :disabled="!accountForm.name.trim() || !validEmail(accountForm.email) || accountForm.password.length < 6">创建普通用户</el-button>
       </el-form>
-      <el-table :data="accounts" style="margin-top: 20px"><el-table-column prop="name" label="姓名" /><el-table-column prop="email" label="邮箱" /><el-table-column label="角色"><template #default="{ row }">{{ row.role === 'ADMIN' ? '管理员' : '普通用户' }}</template></el-table-column></el-table>
+      <el-table :data="accounts" style="margin-top: 20px"><el-table-column prop="name" label="姓名" /><el-table-column prop="email" label="邮箱" /><el-table-column label="角色"><template #default="{ row }">{{ row.role === 'ADMIN' ? '管理员' : '普通用户' }}</template></el-table-column><el-table-column label="创建时间" min-width="175"><template #default="{ row }">{{ formatDateTime(row.created_at) }}</template></el-table-column></el-table>
+      <div v-if="accountsTotal > accountsPageSize" class="list-pagination"><el-pagination background layout="total, prev, pager, next" :current-page="accountsPage" :page-size="accountsPageSize" :total="accountsTotal" @current-change="changeAccountPage" /></div>
     </el-dialog>
 
     <el-drawer v-model="requirementVisible" title="能力模型确认" size="min(760px, 94vw)">
@@ -958,10 +1040,10 @@ onMounted(() => {
       <div class="candidate-toolbar">
         <div>
           <p class="eyebrow">{{ candidatesJob?.name }}</p>
-          <h2>已上传简历 {{ candidates.length }} 份</h2>
+          <h2>已上传简历 {{ candidatesTotal }} 份</h2>
         </div>
         <div class="candidate-filters">
-          <el-select v-model="gateFilter" placeholder="门槛结果" clearable style="width: 150px">
+          <el-select v-model="gateFilter" placeholder="门槛结果" clearable style="width: 150px" @change="changeCandidateFilter">
             <el-option label="门槛通过" value="PASSED" />
             <el-option label="需人工复核" value="REVIEW_REQUIRED" />
             <el-option label="门槛未达" value="NOT_MET" />
@@ -996,7 +1078,7 @@ onMounted(() => {
       <el-table
         ref="candidateTableRef"
         v-loading="candidatesLoading"
-        :data="filteredCandidates"
+        :data="candidates"
         row-key="application_id"
         class="candidate-table"
         @selection-change="selectCandidates"
@@ -1059,14 +1141,17 @@ onMounted(() => {
             <span v-else>--</span>
           </template>
         </el-table-column>
-        <el-table-column label="结果" width="90" fixed="right">
+        <el-table-column label="上传时间" min-width="175"><template #default="{ row }">{{ formatDateTime(row.uploaded_at) }}</template></el-table-column>
+        <el-table-column label="操作" width="150" fixed="right">
           <template #default="{ row }">
             <el-button v-if="row.evaluation_id" link type="primary" @click="openEvaluation(row.evaluation_id)">
               查看
             </el-button>
+            <el-button link type="success" @click="openInterviewFeedback(row)">面试评价</el-button>
           </template>
         </el-table-column>
       </el-table>
+      <div v-if="candidatesTotal > candidatesPageSize" class="list-pagination"><el-pagination background layout="total, prev, pager, next" :current-page="candidatesPage" :page-size="candidatesPageSize" :total="candidatesTotal" @current-change="changeCandidatePage" /></div>
     </el-drawer>
 
     <EvaluationDrawer
@@ -1077,5 +1162,17 @@ onMounted(() => {
       :submitting="decisionSubmitting"
       @decide="submitDecision"
     />
+    <InterviewFeedbackDrawer
+      v-model:visible="feedbackVisible"
+      :loading="feedbackLoading"
+      :candidate="feedbackCandidate"
+      :feedbacks="interviewFeedbacks"
+      :submitting="feedbackSubmitting"
+      @submit="submitInterviewFeedback"
+    />
   </main>
 </template>
+
+<style scoped>
+.list-pagination { display: flex; justify-content: flex-end; padding-top: 18px; }
+</style>
