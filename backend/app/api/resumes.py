@@ -2,13 +2,14 @@ import hashlib
 from pathlib import Path
 from uuid import uuid4
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile, status
+from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.jobs import get_job_or_404
 from app.core.auth import get_current_user
 from app.core.config import get_settings
-from app.db.models import PendingResumeUpload, ProcessingTask, User
+from app.db.models import JobApplication, PendingResumeUpload, ProcessingTask, ResumeFile, User
 from app.db.session import get_db
 from app.schemas.resumes import ResumeUploadRead
 from app.services.resume_identity import extract_identity
@@ -115,4 +116,35 @@ async def upload_resume(
         filename=filename,
         status=task.status,
         match_rule="pending",
+    )
+
+
+@router.get("/{job_id}/candidates/{application_id}/resume")
+async def get_candidate_resume(
+    job_id: int,
+    application_id: int,
+    disposition: str = Query(default="inline", pattern="^(inline|attachment)$"),
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
+) -> FileResponse:
+    """Serve one resume only after verifying access to its job and application."""
+    await get_job_or_404(job_id, db, user)
+    application = await db.get(JobApplication, application_id)
+    if application is None or application.job_id != job_id:
+        raise HTTPException(status_code=404, detail="候选人不存在")
+
+    resume = await db.get(ResumeFile, application.resume_file_id)
+    if resume is None or resume.deleted_at is not None:
+        raise HTTPException(status_code=404, detail="简历文件不存在")
+
+    storage_root = Path(get_settings().local_storage_path).resolve()
+    source = (storage_root / resume.storage_key).resolve()
+    if storage_root not in source.parents or not source.is_file():
+        raise HTTPException(status_code=404, detail="简历文件不存在")
+
+    return FileResponse(
+        source,
+        media_type=resume.mime_type or "application/pdf",
+        filename=resume.original_filename,
+        content_disposition_type=disposition,
     )

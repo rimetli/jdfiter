@@ -138,6 +138,11 @@ const candidates = ref<CandidateRow[]>([])
 const candidatesTotal = ref(0)
 const candidatesPage = ref(1)
 const candidatesPageSize = ref(10)
+const resumePreviewVisible = ref(false)
+const resumePreviewLoading = ref(false)
+const resumePreviewUrl = ref("")
+const resumePreviewFilename = ref("")
+const resumePreviewRow = ref<CandidateRow | null>(null)
 const selectedCandidates = ref<CandidateRow[]>([])
 const batchAnalyzing = ref(false)
 const candidateTableRef = ref<{
@@ -793,6 +798,54 @@ async function retryParse(row: CandidateRow) {
   }
 }
 
+function clearResumePreview() {
+  if (resumePreviewUrl.value) URL.revokeObjectURL(resumePreviewUrl.value)
+  resumePreviewUrl.value = ""
+  resumePreviewFilename.value = ""
+  resumePreviewRow.value = null
+}
+
+async function previewResume(row: CandidateRow) {
+  if (!candidatesJob.value) return
+  clearResumePreview()
+  resumePreviewVisible.value = true
+  resumePreviewLoading.value = true
+  resumePreviewFilename.value = row.filename
+  resumePreviewRow.value = row
+  try {
+    const { data } = await api.get(
+      `/jobs/${candidatesJob.value.id}/candidates/${row.application_id}/resume`,
+      { params: { disposition: "inline" }, responseType: "blob" },
+    )
+    resumePreviewUrl.value = URL.createObjectURL(new Blob([data], { type: "application/pdf" }))
+  } catch (error: any) {
+    ElMessage.error(error?.response?.data?.detail || "简历加载失败")
+    resumePreviewVisible.value = false
+  } finally {
+    resumePreviewLoading.value = false
+  }
+}
+
+async function downloadResume(row: CandidateRow | null) {
+  if (!candidatesJob.value || !row) return
+  try {
+    const { data } = await api.get(
+      `/jobs/${candidatesJob.value.id}/candidates/${row.application_id}/resume`,
+      { params: { disposition: "attachment" }, responseType: "blob" },
+    )
+    const objectUrl = URL.createObjectURL(new Blob([data], { type: "application/pdf" }))
+    const link = document.createElement("a")
+    link.href = objectUrl
+    link.download = row.filename
+    document.body.append(link)
+    link.click()
+    link.remove()
+    window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000)
+  } catch (error: any) {
+    ElMessage.error(error?.response?.data?.detail || "简历下载失败")
+  }
+}
+
 async function openEvaluation(evaluationId: number) {
   resultVisible.value = true
   resultLoading.value = true
@@ -1249,8 +1302,10 @@ onMounted(() => {
         </el-table-column>
         <el-table-column label="面试评价" min-width="105"><template #default="{ row }"><el-tag v-if="row.interview_feedback_count" type="success" effect="plain">{{ row.interview_feedback_count }} 条</el-tag><span v-else>--</span></template></el-table-column>
         <el-table-column label="上传时间" min-width="175"><template #default="{ row }">{{ formatDateTime(row.uploaded_at) }}</template></el-table-column>
-        <el-table-column label="操作" width="150" fixed="right">
+        <el-table-column label="操作" width="250" fixed="right">
           <template #default="{ row }">
+            <el-button link type="primary" @click="previewResume(row)">查看简历</el-button>
+            <el-button link @click="downloadResume(row)">下载</el-button>
             <el-button v-if="row.evaluation_id" link type="primary" @click="openEvaluation(row.evaluation_id)">
               查看
             </el-button>
@@ -1271,6 +1326,27 @@ onMounted(() => {
         />
       </div>
     </section>
+
+    <el-dialog
+      v-model="resumePreviewVisible"
+      :title="resumePreviewFilename || '简历预览'"
+      width="min(1100px, 96vw)"
+      top="3vh"
+      destroy-on-close
+      @closed="clearResumePreview"
+    >
+      <div v-loading="resumePreviewLoading" class="resume-preview">
+        <iframe
+          v-if="resumePreviewUrl"
+          :src="resumePreviewUrl"
+          :title="resumePreviewFilename"
+        />
+      </div>
+      <template #footer>
+        <el-button @click="resumePreviewVisible = false">关闭</el-button>
+        <el-button type="primary" :disabled="!resumePreviewRow" @click="downloadResume(resumePreviewRow)">下载 PDF</el-button>
+      </template>
+    </el-dialog>
 
     <EvaluationDrawer
       v-model:visible="resultVisible"
