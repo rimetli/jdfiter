@@ -2,12 +2,13 @@ import hashlib
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, Field
-from sqlalchemy import func, select
+from sqlalchemy import exists, func, not_, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.jobs import get_job_or_404
 from app.core.auth import get_current_user
 from app.db.models import (
+    Candidate,
     CandidateEvaluation,
     HumanDecision,
     InterviewFeedback,
@@ -55,6 +56,11 @@ async def list_candidates(
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=10, ge=1, le=100),
     gate_result: str | None = Query(default=None),
+    keyword: str | None = Query(default=None, max_length=100),
+    parse_status: str | None = Query(default=None, max_length=32),
+    analysis_status: str | None = Query(default=None, max_length=32),
+    decision: str | None = Query(default=None, max_length=32),
+    has_interview_feedback: bool | None = Query(default=None),
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
 ) -> dict:
@@ -65,6 +71,70 @@ async def list_candidates(
             CandidateEvaluation,
             CandidateEvaluation.application_id == JobApplication.id,
         ).where(CandidateEvaluation.gate_result == gate_result).distinct()
+    if keyword and keyword.strip():
+        pattern = f"%{keyword.strip().lower()}%"
+        application_statement = application_statement.join(
+            ResumeFile, ResumeFile.id == JobApplication.resume_file_id
+        ).outerjoin(Candidate, Candidate.id == JobApplication.candidate_id).where(
+            or_(
+                func.lower(ResumeFile.original_filename).like(pattern),
+                func.lower(func.coalesce(Candidate.name_ciphertext, "")).like(pattern),
+            )
+        )
+    latest_parse_status = (
+        select(ResumeParseVersion.status)
+        .where(ResumeParseVersion.resume_file_id == JobApplication.resume_file_id)
+        .order_by(ResumeParseVersion.version_no.desc())
+        .limit(1)
+        .scalar_subquery()
+    )
+    latest_evaluation_id = (
+        select(CandidateEvaluation.id)
+        .where(CandidateEvaluation.application_id == JobApplication.id)
+        .order_by(CandidateEvaluation.created_at.desc(), CandidateEvaluation.id.desc())
+        .limit(1)
+        .scalar_subquery()
+    )
+    latest_evaluation_status = (
+        select(CandidateEvaluation.status)
+        .where(CandidateEvaluation.id == latest_evaluation_id)
+        .scalar_subquery()
+    )
+    latest_analysis_status = (
+        select(ProcessingTask.status)
+        .where(
+            ProcessingTask.task_type == "ANALYZE_APPLICATION",
+            ProcessingTask.entity_id == JobApplication.id,
+        )
+        .order_by(ProcessingTask.created_at.desc(), ProcessingTask.id.desc())
+        .limit(1)
+        .scalar_subquery()
+    )
+    latest_decision = (
+        select(HumanDecision.decision)
+        .where(HumanDecision.evaluation_id == latest_evaluation_id)
+        .order_by(HumanDecision.created_at.desc(), HumanDecision.id.desc())
+        .limit(1)
+        .scalar_subquery()
+    )
+    feedback_exists = exists(
+        select(InterviewFeedback.id).where(InterviewFeedback.application_id == JobApplication.id)
+    )
+    if parse_status:
+        application_statement = application_statement.where(
+            func.coalesce(latest_parse_status, "PENDING") == parse_status
+        )
+    if analysis_status:
+        application_statement = application_statement.where(
+            func.coalesce(latest_analysis_status, latest_evaluation_status, "NOT_ANALYZED")
+            == analysis_status
+        )
+    if decision:
+        application_statement = application_statement.where(latest_decision == decision)
+    if has_interview_feedback is True:
+        application_statement = application_statement.where(feedback_exists)
+    elif has_interview_feedback is False:
+        application_statement = application_statement.where(not_(feedback_exists))
     total = await db.scalar(select(func.count()).select_from(application_statement.subquery())) or 0
     applications = list(await db.scalars(
         application_statement.order_by(JobApplication.created_at.desc())
@@ -76,6 +146,11 @@ async def list_candidates(
         resume.id: resume
         for resume in await db.scalars(select(ResumeFile).where(ResumeFile.id.in_(resume_ids)))
     } if resume_ids else {}
+    candidate_ids = [application.candidate_id for application in applications]
+    candidates = {
+        candidate.id: candidate
+        for candidate in await db.scalars(select(Candidate).where(Candidate.id.in_(candidate_ids)))
+    } if candidate_ids else {}
     parses: dict[int, ResumeParseVersion] = {}
     if resume_ids:
         for parse in await db.scalars(
@@ -118,15 +193,24 @@ async def list_candidates(
     evaluation_ids = [evaluation.id for evaluation in evaluations.values()]
     decisions: dict[int, HumanDecision] = {}
     if evaluation_ids:
-        for decision in await db.scalars(
+        for decision_record in await db.scalars(
             select(HumanDecision)
             .where(HumanDecision.evaluation_id.in_(evaluation_ids))
             .order_by(HumanDecision.evaluation_id, HumanDecision.created_at.desc(), HumanDecision.id.desc())
         ):
-            decisions.setdefault(decision.evaluation_id, decision)
+            decisions.setdefault(decision_record.evaluation_id, decision_record)
+    feedback_counts: dict[int, int] = {}
+    if application_ids:
+        for application_id, count in (await db.execute(
+            select(InterviewFeedback.application_id, func.count())
+            .where(InterviewFeedback.application_id.in_(application_ids))
+            .group_by(InterviewFeedback.application_id)
+        )).all():
+            feedback_counts[application_id] = int(count)
     result = []
     for application in applications:
         resume = resumes.get(application.resume_file_id)
+        candidate = candidates.get(application.candidate_id)
         parse = parses.get(application.resume_file_id)
         evaluation = evaluations.get(application.id)
         latest_analysis_task = analysis_tasks.get(application.id)
@@ -134,6 +218,7 @@ async def list_candidates(
         decision = decisions.get(evaluation.id) if evaluation is not None else None
         result.append({
             "application_id": application.id,
+            "candidate_name": candidate.name_ciphertext if candidate else None,
             "filename": resume.original_filename if resume else "unknown.pdf",
             "parse_status": parse.status if parse else "PENDING",
             "parse_task_id": parse_task.id if parse_task else None,
@@ -146,6 +231,7 @@ async def list_candidates(
             "level": evaluation.level if evaluation else None,
             "gate_result": evaluation.gate_result if evaluation else None,
             "decision": decision.decision if decision else None,
+            "interview_feedback_count": feedback_counts.get(application.id, 0),
             "uploaded_at": application.created_at,
         })
     return {"items": result, "total": total, "page": page, "page_size": page_size}

@@ -51,6 +51,7 @@ type RequirementVersionMeta = {
 
 type CandidateRow = {
   application_id: number
+  candidate_name: string | null
   filename: string
   parse_status: string
   parse_task_id: number | null
@@ -63,6 +64,7 @@ type CandidateRow = {
   level: string | null
   gate_result: string | null
   decision: string | null
+  interview_feedback_count: number
   uploaded_at: string
 }
 
@@ -77,6 +79,7 @@ type Account = {
 }
 
 const stages = ["确认岗位模型", "上传简历", "AI事实提取", "规则评分", "人工决策"]
+const activeModule = ref<"jobs" | "candidates">("jobs")
 const loading = ref(true)
 const initialized = ref(false)
 const jobs = ref<Job[]>([])
@@ -130,6 +133,7 @@ const retryingTaskId = ref<number | null>(null)
 const candidatesVisible = ref(false)
 const candidatesLoading = ref(false)
 const candidatesJob = ref<Job | null>(null)
+const candidateJobOptions = ref<Job[]>([])
 const candidates = ref<CandidateRow[]>([])
 const candidatesTotal = ref(0)
 const candidatesPage = ref(1)
@@ -140,6 +144,11 @@ const candidateTableRef = ref<{
   toggleRowSelection: (row: CandidateRow, selected?: boolean) => void
 } | null>(null)
 const gateFilter = ref("")
+const candidateKeyword = ref("")
+const parseStatusFilter = ref("")
+const analysisStatusFilter = ref("")
+const decisionFilter = ref("")
+const feedbackFilter = ref<"" | "true" | "false">("")
 const retryingParseId = ref<number | null>(null)
 let candidatePollTimer: number | null = null
 const MAX_BATCH_ANALYZE = 5
@@ -246,11 +255,24 @@ async function load() {
       jobs.value = Array.isArray(data) ? data : (data.items || [])
       jobsTotal.value = Array.isArray(data) ? data.length : (data.total || 0)
     }
-  } catch {
-    ElMessage.error("无法连接后端服务")
+  } catch (error: any) {
+    if (error?.response?.status === 401) {
+      ElMessage.warning("登录状态已失效，请重新登录")
+      await logout()
+      return
+    }
+    ElMessage.error("无法连接后端服务，请确认本地后端已启动")
   } finally {
     loading.value = false
   }
+}
+
+async function loadCandidateJobOptions() {
+  if (!organizationId.value) return
+  const { data } = await api.get("/jobs", {
+    params: { organization_id: organizationId.value, page: 1, page_size: 100 },
+  })
+  candidateJobOptions.value = Array.isArray(data) ? data : (data.items || [])
 }
 
 async function bootstrap() {
@@ -589,6 +611,14 @@ async function retryUploadTask(item: { taskId: number }) {
 }
 
 async function openCandidates(job: Job) {
+  activeModule.value = "candidates"
+  if (!candidateJobOptions.value.some((item) => item.id === job.id)) {
+    try {
+      await loadCandidateJobOptions()
+    } catch {
+      candidateJobOptions.value = [job]
+    }
+  }
   candidatesJob.value = job
   candidatesVisible.value = true
   selectedCandidates.value = []
@@ -597,11 +627,39 @@ async function openCandidates(job: Job) {
   await loadCandidates()
 }
 
+async function openCandidateManagement() {
+  activeModule.value = "candidates"
+  try {
+    await loadCandidateJobOptions()
+    const job = candidateJobOptions.value.find((item) => item.id === candidatesJob.value?.id)
+      || candidateJobOptions.value[0]
+    if (job) await openCandidates(job)
+  } catch {
+    ElMessage.error("候选人岗位列表加载失败")
+  }
+}
+
+async function switchCandidateJob(jobId: number) {
+  const job = candidateJobOptions.value.find((item) => item.id === jobId)
+  if (job) await openCandidates(job)
+}
+
 async function loadCandidates() {
   if (!candidatesJob.value) return
   candidatesLoading.value = true
   try {
-    const { data } = await api.get(`/jobs/${candidatesJob.value.id}/candidates`, { params: { page: candidatesPage.value, page_size: candidatesPageSize.value, gate_result: gateFilter.value || undefined } })
+    const { data } = await api.get(`/jobs/${candidatesJob.value.id}/candidates`, {
+      params: {
+        page: candidatesPage.value,
+        page_size: candidatesPageSize.value,
+        gate_result: gateFilter.value || undefined,
+        keyword: candidateKeyword.value.trim() || undefined,
+        parse_status: parseStatusFilter.value || undefined,
+        analysis_status: analysisStatusFilter.value || undefined,
+        decision: decisionFilter.value || undefined,
+        has_interview_feedback: feedbackFilter.value || undefined,
+      },
+    })
     candidates.value = Array.isArray(data) ? data : (data.items || [])
     candidatesTotal.value = Array.isArray(data) ? data.length : (data.total || 0)
     const running = candidates.value.some((item) => ["PENDING", "PROCESSING"].includes(item.analysis_status))
@@ -620,6 +678,16 @@ function changeCandidateFilter() {
   candidatesPage.value = 1
   selectedCandidates.value = []
   void loadCandidates()
+}
+
+function resetCandidateFilters() {
+  gateFilter.value = ""
+  candidateKeyword.value = ""
+  parseStatusFilter.value = ""
+  analysisStatusFilter.value = ""
+  decisionFilter.value = ""
+  feedbackFilter.value = ""
+  changeCandidateFilter()
 }
 
 function changeCandidatePage(page: number) {
@@ -804,7 +872,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <main class="shell">
+  <main class="workspace">
+    <aside v-if="initialized" class="sidebar">
+      <div class="sidebar-brand"><span>AI</span><strong>招聘工作台</strong></div>
+      <nav class="sidebar-nav" aria-label="主导航">
+        <button :class="{ active: activeModule === 'jobs' }" @click="activeModule = 'jobs'">
+          <span>JD</span><div><strong>JD 管理</strong><small>岗位与能力模型</small></div>
+        </button>
+        <button :class="{ active: activeModule === 'candidates' }" @click="openCandidateManagement">
+          <span>人</span><div><strong>候选人管理</strong><small>筛选、分析与面试</small></div>
+        </button>
+      </nav>
+    </aside>
+    <div class="shell" :class="{ 'candidate-page': initialized && activeModule === 'candidates' }">
     <header class="hero">
       <div>
         <p class="eyebrow">AI RECRUITING COPILOT</p>
@@ -814,12 +894,12 @@ onMounted(() => {
         <el-button v-if="currentUser?.role === 'ADMIN'" text size="small" @click="openAccounts">账户管理</el-button>
         <el-tag v-if="currentUser" effect="plain">{{ currentUser.name }} · {{ currentUser.role === 'ADMIN' ? '管理员' : '普通用户' }}</el-tag>
         <el-button text size="small" @click="logout">退出登录</el-button>
-        <el-button v-if="initialized" type="primary" size="large" @click="openCreate">
+        <el-button v-if="initialized && activeModule === 'jobs'" type="primary" size="large" @click="openCreate">
           创建岗位
         </el-button>
       </div>
     </header>
-    <section v-loading="loading" class="panel">
+    <section v-if="activeModule === 'jobs' || !initialized" v-loading="loading" class="panel">
       <template v-if="!initialized">
         <div class="setup">
           <div>
@@ -1043,18 +1123,36 @@ onMounted(() => {
       </template>
     </el-dialog>
 
-    <el-drawer v-model="candidatesVisible" title="候选人批量分析" size="min(1180px, 96vw)">
+    <section v-if="initialized && activeModule === 'candidates'" class="panel candidate-management">
       <div class="candidate-toolbar">
         <div>
-          <p class="eyebrow">{{ candidatesJob?.name }}</p>
-          <h2>已上传简历 {{ candidatesTotal }} 份</h2>
+          <p class="eyebrow">候选人管理</p>
+          <h2>{{ candidatesJob ? `${candidatesJob.name} · ${candidatesTotal} 份简历` : "选择岗位查看候选人" }}</h2>
         </div>
         <div class="candidate-filters">
+          <el-select :model-value="candidatesJob?.id" placeholder="选择岗位" style="width: 190px" @change="switchCandidateJob">
+            <el-option v-for="job in candidateJobOptions" :key="job.id" :label="job.name" :value="job.id" />
+          </el-select>
+          <el-input v-model="candidateKeyword" clearable placeholder="搜索姓名或简历名" style="width: 210px" @keyup.enter="changeCandidateFilter" @clear="changeCandidateFilter" />
+          <el-select v-model="parseStatusFilter" clearable placeholder="解析状态" style="width: 130px" @change="changeCandidateFilter">
+            <el-option label="已解析" value="COMPLETED" /><el-option label="待解析" value="PENDING" /><el-option label="解析失败" value="FAILED" />
+          </el-select>
+          <el-select v-model="analysisStatusFilter" clearable placeholder="AI 状态" style="width: 130px" @change="changeCandidateFilter">
+            <el-option label="未分析" value="NOT_ANALYZED" /><el-option label="分析中" value="PROCESSING" /><el-option label="已完成" value="COMPLETED" /><el-option label="分析失败" value="FAILED" />
+          </el-select>
           <el-select v-model="gateFilter" placeholder="门槛结果" clearable style="width: 150px" @change="changeCandidateFilter">
             <el-option label="门槛通过" value="PASSED" />
             <el-option label="需人工复核" value="REVIEW_REQUIRED" />
             <el-option label="门槛未达" value="NOT_MET" />
           </el-select>
+          <el-select v-model="decisionFilter" clearable placeholder="人工结论" style="width: 130px" @change="changeCandidateFilter">
+            <el-option label="进入面试" value="ADVANCE" /><el-option label="待定" value="HOLD" /><el-option label="不通过" value="REJECT" />
+          </el-select>
+          <el-select v-model="feedbackFilter" clearable placeholder="面试评价" style="width: 130px" @change="changeCandidateFilter">
+            <el-option label="已有评价" value="true" /><el-option label="未评价" value="false" />
+          </el-select>
+          <el-button @click="changeCandidateFilter">搜索</el-button>
+          <el-button text @click="resetCandidateFilters">重置</el-button>
           <el-button
             type="primary"
             size="large"
@@ -1091,6 +1189,7 @@ onMounted(() => {
         @selection-change="selectCandidates"
       >
         <el-table-column type="selection" width="48" :selectable="candidateSelectable" />
+        <el-table-column label="候选人" min-width="110"><template #default="{ row }">{{ row.candidate_name || "未识别姓名" }}</template></el-table-column>
         <el-table-column label="简历" min-width="360">
           <template #default="{ row }"><span class="resume-filename">{{ row.filename }}</span></template>
         </el-table-column>
@@ -1148,6 +1247,7 @@ onMounted(() => {
             <span v-else>--</span>
           </template>
         </el-table-column>
+        <el-table-column label="面试评价" min-width="105"><template #default="{ row }"><el-tag v-if="row.interview_feedback_count" type="success" effect="plain">{{ row.interview_feedback_count }} 条</el-tag><span v-else>--</span></template></el-table-column>
         <el-table-column label="上传时间" min-width="175"><template #default="{ row }">{{ formatDateTime(row.uploaded_at) }}</template></el-table-column>
         <el-table-column label="操作" width="150" fixed="right">
           <template #default="{ row }">
@@ -1170,7 +1270,7 @@ onMounted(() => {
           @size-change="changeCandidatePageSize"
         />
       </div>
-    </el-drawer>
+    </section>
 
     <EvaluationDrawer
       v-model:visible="resultVisible"
@@ -1188,6 +1288,7 @@ onMounted(() => {
       :submitting="feedbackSubmitting"
       @submit="submitInterviewFeedback"
     />
+    </div>
   </main>
 </template>
 

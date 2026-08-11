@@ -25,6 +25,14 @@ body { margin: 0; min-width: 320px; }
     linear-gradient(145deg, #f7f8f2 0%, #edf3e8 100%);
 }
 
+.workspace { min-height: 100vh; display: grid; grid-template-columns: 252px minmax(0, 1fr); background: #f3f5ef; }
+.workspace > .shell { min-width: 0; }
+.shell.candidate-page { padding: 36px clamp(20px, 3vw, 56px) 48px; }
+.sidebar { position: sticky; top: 0; height: 100vh; padding: 28px 18px; border-right: 1px solid rgba(38, 68, 49, .12); background: rgba(248, 250, 246, .92); }
+.sidebar-brand { display: flex; align-items: center; gap: 10px; padding: 4px 10px 28px; color: #254d35; }
+.sidebar-brand span { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: #2f6b47; color: #fff; font-size: 12px; font-weight: 800; }
+.sidebar-nav { display: grid; gap: 8px; }.sidebar-nav button { display: flex; align-items: center; width: 100%; gap: 12px; padding: 13px 12px; border: 0; border-radius: 12px; background: transparent; color: #55645a; text-align: left; cursor: pointer; }.sidebar-nav button:hover { background: #edf4e9; }.sidebar-nav button.active { background: #dfeeda; color: #1f5936; }.sidebar-nav button > span { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: rgba(54, 108, 73, .1); font-size: 12px; font-weight: 800; }.sidebar-nav strong, .sidebar-nav small { display: block; }.sidebar-nav small { margin-top: 3px; color: #7b887e; font-size: 11px; }
+
 .hero {
   min-height: 52vh;
   display: flex;
@@ -86,7 +94,10 @@ h2 { margin: 6px 0 0; font-size: 28px; }
 .file-list span, .result-list span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .upload-result-meta { display: grid; gap: 4px; }
 .upload-result-meta small { color: #7e877f; }
-.candidate-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
+.candidate-toolbar { display: grid; gap: 18px; margin-bottom: 20px; }
+.candidate-management { width: 100%; margin-top: 0; overflow: hidden; }
+.candidate-management .candidate-toolbar { align-items: start; }
+.candidate-management .candidate-filters { width: 100%; justify-content: flex-start; }
 .candidate-toolbar h2 { margin-bottom: 0; }
 .candidate-table { margin-top: 18px; }
 .candidate-score { color: #245f3a; font-size: 20px; }
@@ -113,6 +124,7 @@ h2 { margin: 6px 0 0; font-size: 28px; }
   .hero { min-height: auto; padding: 56px 0; flex-direction: column; align-items: flex-start; }
   .setup { grid-template-columns: 1fr; }
   .stages { grid-template-columns: 1fr; }
+  .workspace { grid-template-columns: 1fr; }.sidebar { position: static; height: auto; padding: 16px 20px; border-right: 0; border-bottom: 1px solid rgba(38, 68, 49, .12); }.sidebar-brand { padding: 0 0 12px; }.sidebar-nav { grid-template-columns: 1fr 1fr; }
 }
 
 /* 收敛顶部横幅：从半屏营销区改为紧凑标题栏 */
@@ -135,7 +147,9 @@ h2 { margin: 6px 0 0; font-size: 28px; }
 .upload-result-side { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
 
 /* 候选人筛选与工具栏 */
-.candidate-filters { display: flex; align-items: center; gap: 12px; }
+.candidate-filters { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.candidate-filters .el-button { margin-left: 0; }
+.candidate-management .el-table { width: 100%; }
 .parse-failed { display: flex; align-items: center; gap: 2px; }
 
 /* 报告：候选人身份区 */
